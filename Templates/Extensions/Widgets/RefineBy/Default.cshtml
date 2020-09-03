@@ -1,0 +1,23 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+@if (Model.RefineByWidget.Count > 0)
+{
+    <div class="lsf_widget LSF_@Model.Store.StoreModuleID lsf_aisoft">
+        <div class="widget-navigation refineby_widget space-bottom">
+            <h3>Refine By<span class="refine-icon"><em class="fa fa-caret-right"></em></span></h3>
+            @foreach (RefineByWidget widget in Model.RefineByWidget)
+            {
+                
+                <div class="refineByToggle">
+                    @if (widget.PermLink != null && widget.PermLink != "")
+                    {
+                    <a class="lsf_crossIcon ms-pull-right" rel="ajaxload" title="[L:Clear]" href="@widget.PermLink"><em class="ms-glyphicon ms-glyphicon-remove"></em></a>
+                    }
+                <h5>@widget.Name</h5>
+                @Include("Common/RefineBy", widget.Items)
+                    </div>
+            }
+        </div>
+    </div>
+}

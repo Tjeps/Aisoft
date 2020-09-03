@@ -1,0 +1,22 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+<ul class="ms-dropdown-menu">
+    @foreach (var item in Model)
+    {
+        if (item.Children != null && item.Children.Count > 0)
+        {
+            <li class="ms-dropdown @(item.IsSelected ? "ms-active" : null)">
+				<span class="nav-icon"><em class="fa fa-caret-down"></em></span>
+                <a  class="ms-dropdown-toggle" rel="ajaxload" href="@item.PermLink" data-toggle="ms-dropdown">@item.Name <em class="fa fa-caret-down"></em></a>
+                @Include("Common/NavigationList", @item.Children)
+            </li>
+        }
+        else
+        {
+            @:<li class="@(item.IsSelected ? "ms-active" : null)">
+                <a rel="ajaxload" href="@item.PermLink">@item.Name</a>
+        }
+    }
+</ul>

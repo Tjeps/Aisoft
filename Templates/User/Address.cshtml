@@ -1,0 +1,116 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+<div id="LSF_UserAddress">
+    <div>
+        <button type="button" class="ms-btn ms-btn-default newAddress_btn" onclick="MyAccount.NewAddress('@Model.Store.StoreModuleID')">
+            <i class="fa fa-plus"></i> &nbsp; [LS:AddNew]
+        </button>
+    </div>
+    <div class="ms-col-md-12 ViewAddress">
+        @if (Model.Store.Current.Customer != null && Model.Store.Current.Customer.Addresses != null && Model.Store.Current.Customer.Addresses.Count > 0)
+        {
+            foreach (CustomerAddress address in Model.Store.Current.Customer.Addresses)
+            {
+                if (Model.Store.Current.Customer.UserID != null && (Model.Store.Current.Customer.UserID > 0 || Model.Store.Current.Customer.UserID == -1))
+                {
+                    <div class="billing_address_info address_@address.Address.AddressID">
+
+                        <div class="ms-col-md-12">
+                            <h4>@address.Address.Firstname  @address.Address.Lastname</h4>
+                        </div>
+                        <div class="ms-col-md-12 Address_info">
+                            <ul class="address-box">
+                                @if (address.Address.Company != null)
+                                {
+                                    <li>
+                                        <span>@address.Address.Company</span>
+                                    </li>
+                                }
+
+                                @if (address.Address.Address1 != null)
+                                {
+                                    <li class="address1">
+                                        <span>@address.Address.Address1</span>
+                                    </li>
+                                }
+                                @if (address.Address.Address2 != null)
+                                {
+                                    <li class="address2">
+                                        <span>@address.Address.Address2</span>
+                                    </li>
+                                }
+                                @if (address.Address.City != null)
+                                {
+                                    <li>
+                                        <span>@address.Address.City,</span>
+                                        @if (address.Address.StateRegion != null && !String.IsNullOrEmpty(address.Address.StateRegion.Name))
+                                        {
+                                            if (!string.IsNullOrEmpty(address.Address.StateRegion.Abbreviation))
+                                            {
+                                                <span>@address.Address.StateRegion.Abbreviation</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@address.Address.StateRegion.Name</span>
+                                            }
+                                        }
+
+                                        @if (address.Address.ZipPostalCode != null)
+                                        {
+                                            <span>@address.Address.ZipPostalCode</span>
+                                        }
+
+                                    </li>
+
+                                    <li>
+                                        @if (address.Address.Country != null)
+                                        {
+                                            <span>@address.Address.Country.Name</span>
+                                        }
+                                    </li>
+                                }
+
+                                @if (address.Address.Email != null)
+                                {
+                                    <li class="email">
+                                        <span>@address.Address.Email</span>
+                                    </li>
+                                }
+                                @if (address.Address.Phone != null)
+                                {
+                                    <li class="phone">
+                                        <span>@address.Address.Phone</span>
+                                    </li>
+                                }
+                                @if (address.Address.VATNumber != null && !String.IsNullOrEmpty(address.Address.VATNumber))
+                                {
+                                    <li class="vatnumber">
+                                        <span>[LS:VATNumberShow]</span> <span>@address.Address.VATNumber</span>
+                                        @if (address.Address.VATResponse != null && !String.IsNullOrEmpty(address.Address.VATResponse) && address.Address.VATResponse == "VALID")
+                                        {
+                                        <span class="far fa-check-circle ms-text-success" title="[LS:Valid]"></span>
+                                        }
+                                        @if (address.Address.VATResponse == null || String.IsNullOrEmpty(address.Address.VATResponse) || address.Address.VATResponse == "UNKNOWN")
+                                        {
+                                        <span class="fas fa-question-circle ms-text-muted" title="[LS:Unknown]"></span>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="ms-col-md-12 action_btn">
+                            <a onclick="MyAccount.EditAddress(@address.Address.AddressID,'@Model.Store.StoreModuleID')">
+                                <span class="bnt_name">edit</span>
+                            </a>
+                            <span class="bnt_name">|</span>
+                            <a onclick="MyAccount.Delete(@address.Address.AddressID)">
+                                <span class="bnt_name">delete</span>
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>

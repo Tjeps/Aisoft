@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ThemeSetting xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ClientScripts>    
+    <string>Resources/Scripts/owl.carousel.min.js</string>
+    <string>Resources/Scripts/script.js</string>
+  </ClientScripts>
+  <ClientCss>
+    <string>Resources/Style/Default.css</string>
+    <string>Resources/Style/font-awesome.css</string>
+  </ClientCss>
+  <StartupScripts>
+  </StartupScripts>
+</ThemeSetting>

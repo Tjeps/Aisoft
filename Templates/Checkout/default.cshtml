@@ -1,0 +1,647 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@using System;
+@inherits TemplateBase<dynamic>
+@{
+    double total = 0.00;
+}
+<div id="LSF_@Model.Store.StoreModuleID" class="LSF_@Model.Store.StoreModuleID lsf_aisoft @((((IDictionary<string, Object>)Model).ContainsKey("SelectListItem") == true) && Model.SelectListItem !=null && !string.IsNullOrEmpty(Model.SelectListItem.Text) ? Model.SelectListItem.Text : "")">
+    <div class="lsf_checkout">
+        <div class="ms-container">
+            <div class="ms-row">
+                <div class="ms-col-md-12  checkoutPage">
+                    <div class="shopping_cart">
+                        <h2>[L:Checkout]</h2>
+                    </div>
+                    <div class="tablecart">
+                        <div id="accordion" class="ms-panel-group product_checkout" role="tablist" aria-multiselectable="true">
+                            <div class="ms-panel ms-panel-default">
+                                <div class="ms-panel-heading" role="tab" id="headingOne">
+                                    <h4 class="ms-panel-title">
+                                        <a class="ms-accordion-toggle accordian_heading collapsed" data-toggle="ms-collapse" data-parent="#accordion" href="#collapseOne" aria-controls="collapseOne" aria-expanded="true">
+                                            [L:BillingAddress]
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="ms-panel-collapse ms-collapse ms-in" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="ms-panel-body">
+                                        <input type="hidden" id="billing-address-select" name="BillingAddress.AddressID" />
+                                        <div id="frmBillingAddress_@Model.Store.StoreModuleID">
+                                            <div id="select-billing-address">
+                                                @if ((Model.SBAddress != null && Model.SBAddress.BillingAddress != null && Model.SBAddress.BillingAddress.Count > 0))
+                                                {
+                                                    <div class="ms-row">
+                                                        <div class="ms-col-md-12">
+                                                            <div class="ms-pull-left">
+                                                                <button type="button" id="btnBillingAdd" class="ms-btn ms-btn-default newAddress_btn selectedaddr" data-value="default" onclick="Billing.newAddress(this,-1)">
+                                                                    [L:AddNewAddress]
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear"></div>
+                                                    <hr />
+                                                    <div class="ms-row">
+                                                        <div class="ms-col-md-12">
+                                                            <div class="@(Model.SBAddress.BillingAddress.Count > 2 ? "owl-carousel": "billingitems") show-nav-title" id="select-billing-address" data-plugin-options="{'responsive': {'0': {'items': 1},'479': {'items': 1}, '768': {'items': 2}, '979': {'items': 2}, '1199': {'items': 3}}, 'loop': false, 'nav': true, 'dots': false,'navText': ['',''],'margin': 5, 'autoHeight': true}">
+                                                                @foreach (Address address in Model.SBAddress.BillingAddress)
+                                                                {
+                                                                    <div class="addresscarousel">
+                                                                        <div class="billing_address_info billingdetail LSF_@(Model.Store.StoreModuleID)BillingStep" id="BillingId_@address.AddressID" onclick="Billing.newAddress(this,@address.AddressID)">
+                                                                            <label class="custom-control-label">
+                                                                                <input type="radio" class="custom-control-input" name="BillingAddress.Id" onclick="Billing.newAddress(this,@address.AddressID)">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <div class="ms-col-sm-12 nameheading">
+                                                                                <h4>@address.Firstname @address.Lastname</h4>
+                                                                            </div>
+                                                                            <div class="Address_info">
+                                                                                <ul class="address-box">
+                                                                                    @if (!String.IsNullOrEmpty(address.Company))
+                                                                                    {
+                                                                                        <li class="company">
+                                                                                            <span>@address.Company</span>
+                                                                                        </li>
+                                                                                    }
+                                                                                    @if (!String.IsNullOrEmpty(address.Address1))
+                                                                                    {
+                                                                                        <li class="address1">
+                                                                                            <span>@address.Address1</span>
+
+                                                                                        </li>
+                                                                                    }
+
+                                                                                    @if (!String.IsNullOrEmpty(address.Address2))
+                                                                                    {
+                                                                                        <li class="address2">
+                                                                                            <span>@address.Address2</span>
+                                                                                        </li>
+                                                                                    }
+
+                                                                                    @if (!String.IsNullOrEmpty(address.City))
+                                                                                    {
+                                                                                        <li>
+                                                                                            <span>@address.City,</span>
+                                                                                            @if (address.StateRegion != null && !String.IsNullOrEmpty(address.StateRegion.Name))
+                                                                                            {
+                                                                                                if (!string.IsNullOrEmpty(address.StateRegion.Abbreviation))
+                                                                                                {
+                                                                                                    <span>@address.StateRegion.Abbreviation</span>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <span>@address.StateRegion.Name</span>
+                                                                                                }
+
+                                                                                            }
+                                                                                            @if (!String.IsNullOrEmpty(address.ZipPostalCode))
+                                                                                            {
+                                                                                                <span>@address.ZipPostalCode</span>
+                                                                                            }
+
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            @if (address.Country != null && !String.IsNullOrWhiteSpace(address.Country.Name))
+                                                                                            {
+                                                                                                <span>@address.Country.Name</span>
+                                                                                            }
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            @if (address.VATNumber != null && !String.IsNullOrEmpty(address.VATNumber))
+                                                                                            {
+                                                                                                <span>[LS:VATNumberShow]</span> <span>@address.VATNumber</span>
+                                                                                                if (address.VATResponse != null && !String.IsNullOrEmpty(address.VATResponse) && address.VATResponse == "VALID")
+                                                                                                {
+                                                                                                    <span class="far fa-check-circle ms-text-success" title="[LS:Valid]"></span>
+                                                                                                }
+                                                                                                if (address.VATResponse == null || String.IsNullOrEmpty(address.VATResponse) || address.VATResponse == "UNKNOWN")
+                                                                                                {
+                                                                                                    <span class="fas fa-question-circle ms-text-muted" title="[LS:Unknown]"></span>
+                                                                                                }
+                                                                                            }
+                                                                                        </li>
+                                                                                    }
+
+                                                                                </ul>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <a class="editaddressbtn" onclick="CheckoutCommonMethod.EditAddress('BillingAddress',@address.AddressID,'@Model.Store.StoreModuleID')">
+                                                                            <span class="edittext">[L:EditAddress]</span>
+                                                                        </a>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div id="BillingAddress">
+                                                <hr />
+                                                <div class="ms-form-group">
+                                                    <div class="checkoutForm">
+                                                        <div class="ms-row">
+                                                            <div class="ms-col-md-12">
+                                                                <label>[LS:Company]</label>
+                                                                <input type="text" name="BillingAddress.Compnyname" value="" class="ms-form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="ms-row">
+                                                            <div class="ms-col-md-6">
+                                                                <label>[LS:FirstName]<span class="required">*</span></label>
+                                                                <input type="text" name="BillingAddress.FirstName" value="@Model.Store.Current.UserInfo.FirstName" class="ms-form-control" required />
+                                                            </div>
+                                                            <div class="ms-col-md-6">
+                                                                <label>[LS:LastName]<span class="required">*</span></label>
+                                                                <input type="text" name="BillingAddress.LastName" value="@Model.Store.Current.UserInfo.LastName" class="ms-form-control" required />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="ms-row">
+                                                            <div class="ms-col-md-6">
+                                                                <label>[LS:Email]<span class="required">*</span></label>
+                                                                <input type="email" name="BillingAddress.Email" value="@Model.Store.Current.UserInfo.Email" class="ms-form-control" required />
+                                                            </div>
+                                                            <div class="ms-col-md-6">
+                                                                <label>[LS:Phone]<span class="required">*</span></label>
+                                                                <input type="text" name="BillingAddress.PhoneNumber" value="" class="ms-form-control" required numeric="numeric">
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="ms-row">
+                                                            <div class="ms-col-md-6">
+                                                                <label>[LS:Address1]<span class="required">*</span></label>
+                                                                <input type="text" name="BillingAddress.Address1" value="" class="ms-form-control formaddress1" required />
+                                                            </div>
+                                                            <div class="ms-col-md-6">
+                                                                <label>[LS:Address2]</label>
+                                                                <input type="text" name="BillingAddress.Address2" value="" class="ms-form-control formaddress2" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="ms-row">
+                                                            <div class="ms-col-md-6">
+                                                                <label>[LS:City]<span class="required">*</span></label>
+                                                                <input type="text" name="BillingAddress.City" value="" class="ms-form-control" required>
+                                                            </div>
+                                                            <div class="ms-col-md-6 BillingCountry">
+                                                                <label>[LS:Country]<span class="required">*</span></label>
+                                                                <select name="BillingAddress.Country" id="BillingAddress.Country" onchange="Billing.Change_Country(this)" class="ms-form-control" required>
+                                                                    <option value="">[LS:SelectCountry]</option>
+                                                                    @if (Model.Store.BillingCountry != null && Model.Store.BillingCountry.Count > 0)
+                                                                    {
+                                                                        foreach (Country country in Model.Store.BillingCountry)
+                                                                        {
+                                                                            <option enabledVat="@country.ApplyVAT.ToString().ToLower()" value="@country.CountryID">@country.Name</option>
+                                                                        }
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ms-row">
+                                                            <div class="ms-col-md-6">
+                                                                <label>[LS:State]<span class="required">*</span></label>
+                                                                <select id="BillingAddress_StateProvince" name="BillingAddress.StateProvince" onchange="Billing.Change_CountryRegion(this)" class="ms-form-control" required>
+                                                                    <option value="">[LS:SelectState]</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="ms-col-md-6">
+                                                                <label>[LS:ZipPostalCode]<span class="required">*</span></label>
+                                                                <input type="text" name="BillingAddress.ZipPostalCode" value="" class="ms-form-control" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ms-row VATNumber">
+                                                            <hr />
+                                                            <div class="ms-col-md-12">
+                                                                <label>[LS:VATNumber]</label>
+                                                                <input type="text" name="BillingAddress.VATNumber" value="" class="ms-form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="ms-row">
+                                                            <div class="ms-col-md-12">
+                                                                <input type="hidden" name="BillingAddress.VATResponse" value="2" class="AddressVATResponse ms-form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="msgbox"></div>
+                                            <hr />
+                                            <div class="ms-row">
+                                                <div class="ms-col-md-12">
+                                                    <input type="button" id="billingbtn" value="[LS:Continue]" class="ms-btn ms-pull-right chkout_btn LSF_@(@Model.Store.StoreModuleID)BillingStep" onclick="Billing.Save('#frmBillingAddress_@Model.Store.StoreModuleID')" data-loading-text="Loadings...">
+                                                    <input type="hidden" id="ShippingEnableValue" value="@Model.ShoppingCart.ShippingEnable.ToString()" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if ((((IDictionary<string, Object>)Model).ContainsKey("ShoppingCart") == true) && Model.ShoppingCart != null && Model.ShoppingCart.ShippingEnable)
+                            {
+                                <div class="ms-panel ms-panel-default">
+                                    <div class="ms-panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="ms-panel-title">
+                                            <a class="ms-accordion-toggle accordian_heading" data-toggle="ms-collapse" data-parent="#accordion" href="#collapseTwo" aria-controls="collapseTwo">
+                                                [L:ShippingAddress]
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="ms-collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                        <div class="ms-panel-body">
+                                            <input type="hidden" id="shipping-address-select" name="ShippingAddress.AddressID" />
+                                            <div id="frmShippingAddress_@Model.Store.StoreModuleID">
+                                                <div id="select-shipping-address">
+                                                    <div class="ms-row">
+                                                        <div class="ms-col-md-6">
+                                                            @if ((Model.SBAddress != null && Model.SBAddress.ShippingAddress != null && Model.SBAddress.ShippingAddress.Count > 0))
+                                                            {
+                                                                <button type="button" id="btnshippingAdd" class="ms-btn ms-btn-default newAddress_btn" data-value="default" onclick="Shipping.newAddress(this, -1)">
+                                                                    [L:AddNewAddress]
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                        <div class="ms-col-md-6">
+                                                            <div>
+                                                                @if ((((IDictionary<string, Object>)Model).ContainsKey("ShoppingCart") == true) && Model.ShoppingCart != null && Model.ShoppingCart.ShippingEnable)
+                                                                {
+                                                                    <div class="sameas_bill ms-pull-right">
+                                                                        <span class="shiplabel">[L:ShipToBillingAddress]</span>
+                                                                        <span class="togglebtn">
+                                                                            <label class="switch">
+                                                                                <input id="ShiptoBillingAddress" type="checkbox" class="same-as-billing LSF_@(@Model.Store.StoreModuleID)ShiipingAddress" value="false" onclick="Shipping.shippingAsBilling(this, @Model.SBAddress.ShippingAddress.Count)">
+                                                                                <span class="slider"><span class="optionchecked">[LS:Yes]</span><span class="optionunchecked">[LS:No]</span></span>
+                                                                            </label>
+                                                                        </span>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    @if ((Model.SBAddress != null && Model.SBAddress.ShippingAddress != null && Model.SBAddress.ShippingAddress.Count > 0))
+                                                    {
+                                                        <hr class="shipping-address-hr" />
+                                                        <div class="ms-row shipping-address-row">
+                                                            <div class="ms-col-md-12">
+                                                                <div class="@(Model.SBAddress.ShippingAddress.Count > 2 ? "owl-carousel": "billingitems") show-nav-title" id="select-shipping-address" data-plugin-options="{'responsive': {'0': {'items': 1},'479': {'items': 1}, '768': {'items': 2}, '979': {'items': 2}, '1199': {'items': 3}}, 'loop': false, 'nav': true, 'dots': false,'navText': ['',''],'margin': 5, 'autoHeight': true}">
+
+                                                                    @foreach (Address address in Model.SBAddress.ShippingAddress)
+                                                                    {
+
+                                                                        <div class="addresscarousel">
+                                                                            <div name="Shipping.Id" class="billing_address_info shippingdetail LSF_@(@Model.Store.StoreModuleID)ShiipingAddress" id="ShippingId_@address.AddressID" onclick="Shipping.newAddress(this,@address.AddressID)">
+
+                                                                                <label class="custom-control-label">
+                                                                                    <input type="radio" class="custom-control-input" name="ShippingAddress.Id" onclick="Shipping.newAddress(this,@address.AddressID)">
+                                                                                    <span class="checkmark"></span>
+                                                                                </label>
+                                                                                <div class="ms-col-sm-12 nameheading">
+                                                                                    <h4>@address.Firstname @address.Lastname</h4>
+                                                                                </div>
+                                                                                <div class="Address_info">
+                                                                                    <ul class="address-box">
+                                                                                        @if (!String.IsNullOrEmpty(address.Company))
+                                                                                        {
+                                                                                            <li class="company">
+                                                                                                <span>@address.Company</span>
+                                                                                            </li>
+                                                                                        }
+                                                                                        @if (!String.IsNullOrEmpty(address.Address1))
+                                                                                        {
+                                                                                            <li class="address1">
+                                                                                                <span>@address.Address1</span>
+
+                                                                                            </li>
+                                                                                        }
+
+                                                                                        @if (!String.IsNullOrEmpty(address.Address2))
+                                                                                        {
+                                                                                            <li class="address2">
+                                                                                                <span>@address.Address2</span>
+                                                                                            </li>
+                                                                                        }
+
+                                                                                        @if (!String.IsNullOrEmpty(address.City))
+                                                                                        {
+                                                                                            <li>
+                                                                                                <span>@address.City,</span>
+                                                                                                @if (address.StateRegion != null && !String.IsNullOrEmpty(address.StateRegion.Name))
+                                                                                                {
+                                                                                                    if (!string.IsNullOrEmpty(address.StateRegion.Abbreviation))
+                                                                                                    {
+                                                                                                        <span>@address.StateRegion.Abbreviation</span>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <span>@address.StateRegion.Name</span>
+                                                                                                    }
+                                                                                                }
+                                                                                                @if (!String.IsNullOrEmpty(address.ZipPostalCode))
+                                                                                                {
+                                                                                                    <span>@address.ZipPostalCode</span>
+                                                                                                }
+
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                @if (address.Country != null && !String.IsNullOrWhiteSpace(address.Country.Name))
+                                                                                                {
+                                                                                                    <span>@address.Country.Name</span>
+                                                                                                }
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                @if (address.VATNumber != null && !String.IsNullOrEmpty(address.VATNumber))
+                                                                                                {
+                                                                                                    <span>[LS:VATNumberShow]</span> <span>@address.VATNumber</span>
+                                                                                                    if (address.VATResponse != null && !String.IsNullOrEmpty(address.VATResponse) && address.VATResponse == "VALID")
+                                                                                                    {
+                                                                                                        <span class="far fa-check-circle ms-text-success" title="[LS:Valid]"></span>
+                                                                                                    }
+                                                                                                    if (address.VATResponse == null || String.IsNullOrEmpty(address.VATResponse) || address.VATResponse == "UNKNOWN")
+                                                                                                    {
+                                                                                                        <span class="fas fa-question-circle ms-text-muted" title="[LS:Unknown]"></span>
+                                                                                                    }
+                                                                                                }
+                                                                                            </li>
+                                                                                        }
+
+                                                                                    </ul>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <a class="editaddressbtn" onclick="CheckoutCommonMethod.EditAddress('ShippingAddress',@address.AddressID,'@Model.Store.StoreModuleID')">
+                                                                                <span class="edittext">[L:EditAddress]</span>
+                                                                            </a>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div id="ShippingAddress">
+                                                    <hr />
+                                                    <div class="ms-form-group">
+                                                        <div class="checkoutForm">
+                                                            <div class="ms-row">
+                                                                <div class="ms-col-md-12">
+                                                                    <label>[LS:Company]</label>
+                                                                    <input type="text" name="ShippingAddress.Compnyname" value="" class="ms-form-control" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="ms-row">
+                                                                <div class="ms-col-md-6">
+                                                                    <label>[LS:FirstName]<span class="required">*</span></label>
+                                                                    <input type="text" name="ShippingAddress.FirstName" value="@Model.Store.Current.UserInfo.FirstName" class="ms-form-control" required>
+                                                                </div>
+                                                                <div class="ms-col-md-6">
+                                                                    <label>[LS:LastName]<span class="required">*</span></label>
+                                                                    <input type="text" name="ShippingAddress.LastName" value="@Model.Store.Current.UserInfo.LastName" class="ms-form-control" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ms-row">
+                                                                <div class="ms-col-md-6">
+                                                                    <label>[LS:Email]<span class="required">*</span></label>
+                                                                    <input type="email" name="ShippingAddress.Email" value="@Model.Store.Current.UserInfo.Email" class="ms-form-control" required>
+                                                                </div>
+                                                                <div class="ms-col-md-6">
+                                                                    <label>[LS:Phone]<span class="required">*</span></label>
+                                                                    <input type="text" name="ShippingAddress.PhoneNumber" value="" class="ms-form-control" required numeric="numeric">
+                                                                </div>
+                                                            </div>
+                                                            <hr />
+                                                            <div class="ms-row">
+                                                                <div class="ms-col-md-6">
+                                                                    <label>[LS:Address1]<span class="required">*</span></label>
+                                                                    <input type="text" name="ShippingAddress.Address1" rows="5" value="" class="ms-form-control formaddress1" required />
+                                                                </div>
+                                                                <div class="ms-col-md-6">
+                                                                    <label>[LS:Address2]</label>
+                                                                    <input type="text" name="ShippingAddress.Address2" rows="5" value="" class="ms-form-control formaddress2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="ms-row">
+                                                                <div class="ms-col-md-6">
+                                                                    <label>[LS:City]<span class="required">*</span> </label>
+                                                                    <input type="text" name="ShippingAddress.City" value="" class="ms-form-control" required>
+                                                                </div>
+                                                                <div class="ms-col-md-6 ShippingCountry">
+                                                                    <label>[LS:Country]<span class="required">*</span></label>
+                                                                    <select name="ShippingAddress.Country" onchange="Shipping.Change_Country(this)" class="ms-form-control" required>
+                                                                        <option value="">[LS:SelectCountry]</option>
+                                                                        @if (Model.Store.ShippingCountry != null && Model.Store.ShippingCountry.Count > 0)
+                                                                        {
+                                                                            foreach (Country country in Model.Store.ShippingCountry)
+                                                                            {
+                                                                                <option enabledVat="@country.ApplyVAT.ToString().ToLower()" value="@country.CountryID">@country.Name</option>
+                                                                            }
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="ms-row">
+                                                                <div class="ms-col-md-6">
+                                                                    <label>[LS:State]<span class="required">*</span></label>
+                                                                    <select id="ShippingAddress_StateProvince" name="ShippingAddress.StateProvince" onchange="Shipping.Change_CountryRegion(this)" class="ms-form-control" required>
+                                                                        <option value="">[LS:SelectState]</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="ms-col-md-6">
+                                                                    <label>[LS:ZipPostalCode]<span class="required">*</span> </label>
+                                                                    <input type="text" name="ShippingAddress.ZipPostalCode" value="" class="ms-form-control" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ms-row VATNumber">
+                                                                <hr />
+                                                                <div class="ms-col-md-12">
+                                                                    <label>[LS:VATNumber]</label>
+                                                                    <input type="text" name="ShippingAddress.VATNumber" class="ms-form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="ms-row">
+                                                                <div class="ms-col-md-12">
+                                                                    <input type="hidden" name="ShippingAddress.VATResponse" value="2" class="AddressVATResponse ms-form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="msgbox"></div>
+                                                <hr />
+                                                <div class="ms-row">
+                                                    <div class="ms-col-md-12">
+
+                                                        <input type="button" id="shippingadd" value="[LS:Continue]" class="ms-btn  chkout_btn ms-pull-right LSF_@(Model.Store.StoreModuleID)ShiipingAddress" onclick="Shipping.Save('#frmShippingAddress_@Model.Store.StoreModuleID')" data-loading-text="Loading...">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            @if ((((IDictionary<string, Object>)Model).ContainsKey("ShoppingCart") == true) && Model.ShoppingCart != null && Model.ShoppingCart.ShippingEnable)
+                            {
+                                <div class="ms-panel ms-panel-default">
+                                    <div class="ms-panel-heading" role="tab" id="headingThree">
+                                        <h4 class="ms-panel-title">
+                                            <a class="ms-accordion-toggle accordian_heading" data-toggle="ms-collapse" data-parent="#accordion" href="#collapseThree" aria-controls="collapseThree">
+                                                [L:ShippingMethod]
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseThree" class="ms-collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div class="ms-panel-body">
+                                            <div class="ShippingErrorMessages_@Model.Store.StoreModuleID">
+                                            </div>
+                                            <div class="ms-form-group shipping-info" id="ShippingMethod_@Model.Store.StoreModuleID">
+                                                <div class="method-list"></div>
+                                            </div>
+                                            <hr />
+                                            <div class="ms-row">
+                                                <div class="ms-col-md-12">
+
+                                                    <input type="button" id="shippingmethod" value="[LS:Continue]" class="ms-btn  chkout_btn ms-pull-right LSF_@(@Model.Store.StoreModuleID)ShippingMethodNext" onclick="ShippingMethod.Next('#ShippingMethod_@Model.Store.StoreModuleID')" data-loading-text="Loading...">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="ms-panel ms-panel-default">
+
+                                <div class="ms-panel-heading" role="tab" id="headingFour">
+                                    <h4 class="ms-panel-title">
+                                        <a class="ms-accordion-toggle accordian_heading" data-toggle="ms-collapse" data-parent="#accordion" href="#collapseFour" aria-controls="collapseFour">
+                                            [L:PaymentMethod]
+                                        </a>
+                                    </h4>
+                                </div>
+
+                                <div id="collapseFour" class="ms-collapse" role="tabpanel" aria-labelledby="headingFour">
+                                    <div class="ms-panel-body">
+                                        <div id="PaymentMethod_@Model.Store.StoreModuleID">
+                                            <div class="extension-info">
+                                            </div>
+                                            <div class="method-list">
+                                                @{bool ExtensionFlag = true;}
+                                                @{int Count = 0;}
+                                                @if (Model.Store.Extension.StoreExtensions != null)
+                                                {
+                                                    foreach (var Extension in Model.Store.Extension.StoreExtensions)
+                                                    {
+                                                        if (Extension.Category == 0)
+                                                        {
+                                                            ExtensionFlag = false;
+                                                            Count = Count + 1;
+                                                            <div class="billing_address_info payment">
+                                                                <div class="Extension_Info Address_info @(@Extension.IsDefault ? "selectedaddr" : "")">
+                                                                    <label class="custom-control-label">
+                                                                        <span class="Paymentname">
+                                                                            <span class="paymentmethodname">
+                                                                                @if (string.IsNullOrEmpty(Extension.DisplayName))
+                                                                                {
+                                                                                    @Extension.FriendlyName
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    @Extension.DisplayName
+                                                                                }
+                                                                            </span>
+                                                                        </span>
+                                                                        <input type="radio" class="AvailablePaymentMethod" name="@Extension.Category" value="@Extension.ExtensionGUID" onclick="PaymentMethod.Select(this)" required="required">
+                                                                        <span class="checkmark"></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                }
+                                                <input type="hidden" id="PaymentExtensionCount" value="@Count" />
+                                                @if (ExtensionFlag)
+                                                {
+                                                    <div class="ms-col-md-12 ms-alert ms-alert-danger">
+                                                        [L:NoPaymentExtension]
+                                                    </div>
+                                                }
+                                            </div>
+                                            <label id="PaymentMethod_SelectError_@Model.Store.StoreModuleID" class="error" for="PaymentMethod_SelectError_@Model.Store.StoreModuleID">[LS:Required]</label>
+                                            @if (!ExtensionFlag)
+                                            {
+                                                <hr />
+                                                <div class="ms-row">
+                                                    <div class="ms-col-md-12">
+
+                                                        @if (Model.Store.Extension.HasDefaultPaymentExtension || Count == 1)
+                                                        {
+                                                            <input type="button" id="btnPayment" value="[LS:Continue]" class="ms-btn chkout_btn ms-pull-right LSF_@(@Model.Store.StoreModuleID)PaymentMethodNext" onclick="PaymentMethod.Continue('#PaymentMethod_@Model.Store.StoreModuleID')" data-loading-text="Loading...">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="button" id="btnPayment" value="[LS:Continue]" class="ms-btn chkout_btn ms-pull-right LSF_@(@Model.Store.StoreModuleID)PaymentMethodNext" onclick="PaymentMethod.Next('#PaymentMethod_@Model.Store.StoreModuleID')" data-loading-text="Loading...">
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ms-panel ms-panel-default">
+                                <div class="ms-panel-heading" role="tab" id="headingFive">
+                                    <h4 class="ms-panel-title">
+                                        <a class="ms-accordion-toggle accordian_heading" data-toggle="ms-collapse" data-parent="#accordion" href="#collapseFive" aria-controls="collapseFive">
+                                            [L:Review&Payment]
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="shoping_cart" class="ms-panel ms-panel-default">
+                                    <div id="collapseFive" class="ms-collapse" role="tabpanel" aria-labelledby="headingFive">
+                                        <div class="ms-panel-body">
+                                            @if (Model.Store.Current.Customer.TaxExempt && !string.IsNullOrEmpty(Model.Store.Current.Customer.TaxID) && Model.Store.Current.Customer.PermitExpiresOn != null && Model.Store.Current.Customer.PermitExpiresOn.Date < DateTime.UtcNow.Date)
+                                            {
+                                                <div class="ms-alert ms-alert-warning" style="margin:11px" role="alert">
+                                                    [L:ShowMessage_PermitExpiredForCustomerTaxExcept_Prefix] #@Model.Store.Current.Customer.TaxID [L:ShowMessage_PermitExpiredForCustomerTaxExcept_Middle] @Model.Store.Current.Customer.PermitExpiresOn.Date.ToShortDateString(). [L:ShowMessage_PermitExpiredForCustomerTaxExcept_Suffix]
+                                                </div>
+                                            }
+                                            <!--ReviewPayment-->
+                                            <div class="ms-panel-body">
+                                                <div id="ReviewPaymentRender" class="lsf_cart">
+                                                </div>
+                                            </div>
+                                            <!--ReviewPayment END-->                                           
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .slider:before {
+        content: "[LS:Yes]";
+    }
+
+    input:checked + .slider:before {
+        content: "[LS:No]";
+    }
+</style>
+<script>
+    $(".pickup_store").click(function () {
+        Shipping.InStorePickup(this);
+    });
+    $(document).ready(function () {
+        DefaultSetting.ModuleID = '@Model.Store.StoreModuleID';
+        DefaultSetting.Data_Selector = $(".LSF_" + '@Model.Store.StoreModuleID');
+        DefaultSetting.Init();
+
+    });
+</script>

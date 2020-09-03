@@ -1,0 +1,420 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@using Mandeeps.LSF.Entities
+@using Mandeeps.LSF
+@inherits TemplateBase<dynamic>
+
+@{
+    bool IsCrossSells = false;
+    if ((((IDictionary<string, Object>
+        )Model).ContainsKey("ShoppingCart") == true) && Model.ShoppingCart != null)
+    {
+        foreach (CartItem c in Model.ShoppingCart.Item)
+        {
+            foreach (Product p in c.CrossSells)
+            {
+                IsCrossSells = true;
+                break;
+            }
+        }
+    }
+}
+
+<div id="lsf_default_cart" class="LSF_@Model.Store.StoreModuleID lsf_aisoft @((((IDictionary<string, Object>)Model).ContainsKey("SelectListItem") == true) && Model.SelectListItem !=null && !string.IsNullOrEmpty(Model.SelectListItem.Text) ? Model.SelectListItem.Text : "")">
+    <div class="lsf_cart">
+        @if (Model.ShoppingCart != null && Model.ShoppingCart.Item.Count > 0)
+        {
+            <div class="ms-container lsf_shop">
+                <div class="ms-row">
+                    <div class="ms-col-md-12">
+                        <div class="featured-boxes">
+                            <div class="ms-row">
+                                <div class="ms-col-md-12">
+                                    <div class="ms-featured-box ms-featured-box-primary align-left mt-sm">
+                                        <div class="box-content">
+                                            <div class="shopping_cart">
+                                                <h2>[L:ShoppingCart]</h2>
+                                            </div>
+                                            <div class="tablecart">
+                                                <table class="shop_table cart">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="product-thumbnail"> &nbsp; </th>
+                                                            <th class="product-name">[L:Product]</th>
+                                                            <th class="product-price">[L:Price]</th>
+                                                            <th class="product-quantity">[L:Quantity]</th>
+                                                            <th class="product-subtotal">[L:Total]</th>
+                                                            <th class="product-remove">&nbsp;</th>
+                                                            <th class="product-ShippingCharge">[L:Shipping]</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="shoping_cart_@Model.Store.StoreModuleID">
+                                                        @foreach (CartItem c in Model.ShoppingCart.Item)
+                                                        {
+                                                            <tr id="cartrow-@c.CartID" class="cart_table_item">
+
+                                                                <td class="product-thumbnail">
+
+                                                                    <a href="@c.PermLink">
+                                                                        @if (c.ProductImage == null)
+                                                                        {
+                                                                            <img width="100" height="100" class="img-responsive" alt="" src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" title="">
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <img width="100" height="100" class="img-responsive" alt="@c.ProductImage.Alt" src="@c.ProductImage.ImageUrl" title="@c.ProductImage.Title">
+                                                                        }
+                                                                    </a>
+                                                                </td>
+                                                                <td class="product-name">
+                                                                    <a href="@c.PermLink">@c.ProductName</a>
+                                                                    @if (c.Product.AvailablityMessage != null)
+                                                                    {
+                                                                        <p style="color:red">@c.Product.AvailablityMessage</p>
+                                                                    }
+                                                                    <div class="product_description">
+                                                                        @foreach (AttributeInfo xmlinfo in c.AttributeInfo)
+                                                                        {
+                                                                            @(xmlinfo.VariationName + " : " + xmlinfo.VariationOptionName)
+                                                                            <br />
+                                                                        }
+                                                                    </div>
+
+                                                                </td>
+                                                                <td class="product-price">
+                                                                    @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                                    {
+                                                                        <span class="amount" id="price-@c.CartID">@c.FormattedPriceIncludeTax</span><span class="unitofmeasure">&nbsp;@c.Product.UnitOfMeasurment</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="amount" id="price-@c.CartID">@c.FormattedPrice</span><span class="unitofmeasure">&nbsp;@c.Product.UnitOfMeasurment</span>
+                                                                    }
+                                                                    <input type="hidden" class="hiddenAmount" id="hiddenAmount_@c.CartID" value="@c.Product.PriceValue">
+                                                                    <input type="hidden" class="minQuantity" id="minQuantity_@c.CartID" value="@c.Product.OrderMinQty" />
+                                                                    <input type="hidden" class="maxQuantity" id="maxQuantity_@c.CartID" value="@c.Product.OrderMaxQty" />
+                                                                    <input type="hidden" class="CurrentCartid" id="CurrentCartid_@c.CartID" value="@c.CartID" />
+                                                                    @*<input type="hidden" class="hiddenInStockQtyt" id="hiddenInStockQtyt_@c.CartID" value="@c.Product.InStockQty">*@
+                                                                </td>
+                                                                <td class="product-quantity">
+                                                                    <div class="quantity">
+                                                                        <input type="button" class="minus" value="-" onclick="Cart.UpdateShopping(event,'#cartrow-@c.CartID',@c.CartID,0,'minus')">
+                                                                        <input type="text" id="Quantity-@c.CartID" itemquantity="@c.Quantity" class="input-text qty text" title="Qty" value="@c.Quantity" name="quantity_@c.CartID" min="1" step="1" onblur="Cart.UpdateShopping(event,'#cartrow-@c.CartID',@c.CartID,0,'text_change')">
+                                                                        <input type="button" class="plus" value="+" onclick="Cart.UpdateShopping(event,'#cartrow-@c.CartID',@c.CartID,0,'plus')">
+                                                                    </div>
+                                                                </td>
+                                                                <td class="product-subtotal">
+                                                                    @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                                    {
+                                                                        <span class="amount " id="total-@c.CartID">@c.FormattedTotalPriceWithDiscountIncTax</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="amount " id="total-@c.CartID">@c.FormattedTotalPriceWithDiscount</span>
+                                                                    }
+                                                                    @if (Model.Store.Tax.DisplayTaxSuffix)
+                                                                    {
+                                                                        if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                                        {
+                                                                            if ((Model.Store.Tax.DisplayZeroTax && c.TaxOnProduct >= 0) || (!Model.Store.Tax.DisplayZeroTax && c.TaxOnProduct > 0))
+                                                                            {
+                                                                                <div class="disp_tax"><text>[LS:IncludingTax]</text> @(c.TaxPercentage.ToString("0.00"))<text>[LS:Percent] [L:Tax]</text></div>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>[LS:Including_Tax]</span>
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div class="disp_tax"><text>[LS:ExcludingTax]</text> @(c.TaxPercentage.ToString("0.00"))<text>[LS:Percent] [L:Tax]</text></div>
+                                                                        }
+                                                                    }
+
+                                                                    @if (c.HasDiscountAmount)
+                                                                    {
+                                                                        <span style="color:#0099e6;font-size:11px">[L:YouSave] @c.FormattedDiscountAmount</span>
+                                                                    }
+                                                                </td>
+                                                                <td class="product-remove">
+                                                                    <a title="Remove this item" class="remove LSF_@(c.ModuleID)RemoveFromCart@(c.ProductID)" id="removeitems-@c.CartID" onclick="Cart.Delete(@c.CartID)"><i class="fa fa-times"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        <tr>
+                                                            <td class="actions continue_shop" colspan="6">
+                                                                <div class="actions-continue">
+                                                                    <a href="@Model.Store.URL.Homepage" class="ms-btn ms-pull-right Continuebutton">[L:ContinueShopping]</a>
+                                                                </div>
+
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="featured-boxes">
+                            <div class="ms-row">
+                                <div class="ms-col-md-12">
+                                    <div class="ms-featured-box ms-featured-box-primary align-left">
+                                        <div class="box-content">
+                                            <div class="shopping_cart">
+                                                <h2>[L:CartTotals]</h2>
+                                            </div>
+                                            <div class="tablecart">
+                                                <table class="cart-totals">
+                                                    <tbody>
+                                                        @if (Model.ShoppingCart.SubTotalExclTax > 0)
+                                                        {
+                                                            <tr class="cart-subtotal">
+                                                                <th>
+                                                                    <span>[L:CartSubtotal]</span>
+                                                                </th>
+                                                                <td>
+                                                                    @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                                    {
+                                                                        <span class="amount">
+                                                                            <span class="cartsubtotalamount amount">@Model.ShoppingCart.FormattedSubTotalInclTax</span>
+                                                                        </span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="amount">
+                                                                            <span class="cartsubtotalamount amount">@Model.ShoppingCart.FormattedSubTotalExclTax</span>
+                                                                        </span>
+                                                                    }
+                                                                    @if (Model.Store.Tax.DisplayTaxSuffix)
+                                                                    {
+                                                                        if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                                        {
+                                                                            <span>[LS:Including_Tax]</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span>[LS:Excluding_Tax]</span>
+                                                                        }
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.Store.ShoppingCart.ShowDiscountBox)
+                                                        {
+                                                            <tr class="discount">
+                                                                <th>
+                                                                    <span>[L:Discount]</span>
+                                                                </th>
+                                                                <td>
+                                                                    <span class="cartsubtotalamount amount">(@Model.ShoppingCart.FormattedSubtotalDiscount)</span><br />
+                                                                    <a class="discountCoupon ms-cursor" id="discountCouponLink" onclick="Cart.RenderDiscountOrShipping(@Model.Store.StoreModuleID,'Discount')">[L:CalculateDiscount]</a>
+                                                                    <div class="ms-row">
+                                                                        <div class="ms-col-md-12 ms-col-sm-12 ms-col-xs-12">
+                                                                            @if (Model.ShoppingCart.ValidDiscountCoupon != null && Model.ShoppingCart.ValidDiscountCoupon.Count > 0)
+                                                                            {
+
+                                                                                <div class="SuccessCouponCode">
+                                                                                    @foreach (var d in Model.ShoppingCart.ValidDiscountCoupon)
+                                                                                    {
+                                                                                        <div class="ms-alert ms-alert-success">
+                                                                                            @d.Discount.Name
+                                                                                            <a href='#' class='ms-close' data-dismiss='alert' aria-label='close' onclick="RemoveDiscount(@Model.Store.StoreModuleID,@d.Discount.DiscountID)">×</a>
+                                                                                        </div>
+                                                                                    }
+
+                                                                                </div>
+
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.ShoppingCart.ShippingEnable)
+                                                        {
+                                                            <tr class="shipping">
+                                                                <th>
+                                                                    [L:Shipping]
+                                                                </th>
+                                                                <td>
+                                                                    @if (!Model.ShoppingCart.IsFreeShipping)
+                                                                    {
+                                                                        <span id="shippingRate" style="display:none"> </span>
+                                                                        if ((Model.ShoppingCart.ShippingCharge - Model.ShoppingCart.ShippingDiscount) > 0)
+                                                                        {
+                                                                            <span class="cartsubtotalamount amount">@Model.ShoppingCart.FormattedShippingDiscount</span>
+                                                                            if (Model.Store.Tax.DisplayTaxSuffix)
+                                                                            {
+                                                                                if (Model.Store.Tax.IsShippingTaxable)
+                                                                                {
+                                                                                    <span>[LS:Excluding_Tax]</span>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <span>[LS:Including_Tax]</span>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a class="shippingRate ms-cursor" onclick="Cart.RenderDiscountOrShipping(@Model.Store.StoreModuleID,'Shipping')" id="hideShipping">[L:CalculateShipping]</a>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="cartsubtotalamount amount">@Model.ShoppingCart.FormattedShippingDiscount</span>
+                                                                        if (Model.Store.Tax.DisplayTaxSuffix)
+                                                                        {
+                                                                            if (Model.Store.Tax.IsShippingTaxable)
+                                                                            {
+                                                                                <span>[LS:Excluding_Tax]</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>[LS:Including_Tax]</span>
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.Store.Tax.HideTaxInOrderSummary)
+                                                        {
+                                                            if (!Model.Store.Tax.DisplayAllAppliedTaxRates)
+                                                            {
+                                                                if ((Model.Store.Tax.DisplayZeroTax && Model.ShoppingCart.TotalTax >= 0) || (!Model.Store.Tax.DisplayZeroTax && Model.ShoppingCart.TotalTax > 0))
+                                                                {
+                                                                    <tr class="shipping">
+                                                                        <th>
+                                                                            [L:Tax]
+                                                                        </th>
+                                                                        <td>
+                                                                            <span class="amount">@Model.ShoppingCart.FormattedTotalTax</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                if (Model.Store.Tax.IsShippingTaxable && ((Model.Store.Tax.DisplayZeroTax && Model.ShoppingCart.TaxOnShipping >= 0) || (!Model.Store.Tax.DisplayZeroTax && Model.ShoppingCart.TaxOnShipping > 0)))
+                                                                {
+                                                                    <tr class="shippingtax">
+                                                                        <th>
+                                                                            <span>[LS:Tax_Hyphen][LS:TaxOnShipping](@(Model.ShoppingCart.ShippingTaxPercentage.ToString("0.00"))[LS:Percent])</span>
+                                                                        </th>
+                                                                        <td>
+                                                                            @Model.ShoppingCart.FormattedTaxOnShipping
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                                foreach (SelectListItem t in Model.ShoppingCart.Taxies)
+                                                                {
+                                                                    if ((Model.Store.Tax.DisplayZeroTax && decimal.Parse(t.Value) >= 0) || (!Model.Store.Tax.DisplayZeroTax && decimal.Parse(t.Value) > 0))
+                                                                    {
+                                                                        <tr class="shipping">
+                                                                            <th>
+                                                                                [LS:Tax_Hyphen] (@(Convert.ToDecimal(t.Text).ToString("0.00"))[LS:Percent])
+                                                                            </th>
+
+                                                                            @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Excludingtax)
+                                                                            {
+                                                                                <td>
+                                                                                    @Mandeeps.LSF.Managers.PriceManager.FormatPrice(Model.Store, Convert.ToDecimal(t.Value))
+                                                                                </td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td>
+                                                                                    <span>[LS:Dash]</span>
+                                                                                </td>
+                                                                            }
+
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        <tr class="total">
+                                                            <th>
+                                                                <span>[L:OrderTotal]</span>
+                                                            </th>
+                                                            <td>
+                                                                <span><span class="amount" id="order-total">@Model.ShoppingCart.FormattedTotalPrice</span></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="actions continue_shop" colspan="12">
+                                                                <div class="actions-continue">
+
+                                                                    @if (Model.ShoppingCart.SubTotalExclTax >= Model.Store.Order.MinOrderSubTotalAmount)
+                                                                    {
+                                                                        if (Model.Store.Current.UserLoggedIn)
+                                                                        {
+                                                                            <input type="button" class="ms-btn ms-btn chkout_btn proceedchkout LSF_@(Model.Store.StoreModuleID)proceedchkout" onclick="Cart.CheckAvailability('@(Model.Store.Checkout.UseOnePageCheckout ? Model.Store.URL.Checkout : Model.Store.URL.Billingaddress)'); return false;" value="[L:ProceedToCheckout →]" />
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (Model.Store.Checkout.AnonymousCheckoutAllowed)
+                                                                            {
+                                                                                <input type="button" class="ms-btn ms-btn chkout_btn proceedchkout LSF_@(Model.Store.StoreModuleID)proceedchkout" onclick="Cart.CheckAvailability('@(Model.Store.Checkout.ForceGuestCheckout ? Model.Store.URL.Checkout : Model.Store.URL.Guest)')" value="[L:ProceedToCheckout →]">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="button" class="ms-btn ms-btn chkout_btn proceedchkout LSF_@(Model.Store.StoreModuleID)proceedchkout" onclick="Cart.CheckAvailability('@Model.Store.URL.Login')" value="[L:ProceedToCheckout →]" />
+                                                                            }
+                                                                        }
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <p style="color:red">[L:MinimumOrderSubTotal] @Model.ShoppingCart.FormattedMinOrderSubTotalAmount</p>
+                                                                    }
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                @if (IsCrossSells)
+                {
+                    @Include("Site/CrossProduct", @Model)
+                }
+            </div>
+        }
+        else
+        {
+            <div class="ms-container">
+                <div class="ms-featured-box ms-featured-box-primary align-left">
+                    <div class="box-content">
+                        <div class="shopping_cart">
+                            <h2>[L:ShoppingCart]</h2>
+                        </div>
+                        <div class="tablecart">
+                            <h5>
+                                [L:ShoppingCartEmpty]
+                            </h5>
+                            <div class="actions-continue">
+                                <a href="@Model.Store.URL.Homepage" class="ms-btn Continuebutton">[L:ContinueShopping]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <input type="hidden" id="hiddenCurrencySign" value="@Model.Store.Current.Currency.CurrencySign">
+</div>
+

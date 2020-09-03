@@ -1,0 +1,218 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Utilities
+@using Mandeeps.LSF.Data.Entities
+@using Mandeeps.LSF.Entities.Products
+@using Mandeeps.LSF.Entities.Payment
+@inherits TemplateBase<dynamic>
+
+<div id="LSF_@Model.Store.StoreModuleID" class="LSF_@Model.Store.StoreModuleID lsf_aisoft @((((IDictionary<string, Object>)Model).ContainsKey("SelectListItem") == true) && Model.SelectListItem !=null && !string.IsNullOrEmpty(Model.SelectListItem.Text) ? Model.SelectListItem.Text : "")">
+    <div class="payment-method-page">
+        <div class="ms-container">
+            <div class="page checkout-page">
+                <div class="payment-info">
+                    <div class="shopping_cart">
+                        <h2>[L:MyAccount]</h2>
+                    </div>
+                    <div class="ms-col-md-12 tablecart">
+                        <div class="AccountTabs">
+                            <ul class="ms-nav ms-nav-pills">
+                                @if (Model.Orders != null)
+                                {
+                                    <li class="TabMenu3 ms-active"><a data-toggle="ms-pill" onclick="MyAccount.CancelAddress()" href="#menu3">[L:Orders] </a></li>
+                                }
+
+                                @if (Model.Orders != null)
+                                {
+                                    bool DownloadableProducts = false;
+                                    foreach (Order o in Model.Orders)
+                                    {
+                                        if (o.IsDownloadable)
+                                        {
+                                            DownloadableProducts = true;
+                                            break;
+                                        }
+                                    }
+                                    if (DownloadableProducts)
+                                    {
+                                        <li class="TabMenu4"><a data-toggle="ms-pill" onclick="MyAccount.CancelAddress()" href="#menu4">[L:DownloadableProducts]</a></li>
+                                    }
+                                }
+
+                                <li class="TabMenu2"><a data-toggle="ms-pill" onclick="MyAccount.CancelAddress()" href="#menu2">[L:Addresses]</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="account_detail">
+                            <div class="ms-tab-content">
+                                <div id="menu2" class="ms-tab-pane ms-fade">
+                                    @Include("User/Address", @Model)
+                                </div>
+
+                                <div id="menu3" class="ms-tab-pane ms-fade ms-in ms-active">
+                                    @Include("User/Order", @Model)
+                                </div>
+
+                                <div id="menu4" class="ms-tab-pane ms-fade">
+                                    @if (Model.Orders != null)
+                                    {
+                                        <div>
+                                            @{
+                                                var flag = false;
+                                                <div class="ms-table-responsive" id="hideProducts">
+                                                    <table class="ms-table ms-table-striped" id="DownloadableTab">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>[LS:OrderNumbers] [LS:Hash]</th>
+                                                                <th>[L:Date]</th>
+                                                                <th>[L:Product]</th>
+                                                                <th>[L:Download]</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (Order order in Model.Orders)
+                                                            {
+                                                                if (order.OrderStatusID == (int)OrderStatusType.Complete && order.PaymentStatusID == (int)PaymentStatus.Paid)
+                                                                {
+                                                                    foreach (var orderitem in order.Items)
+                                                                    {
+                                                                        if (orderitem.Product != null && orderitem.Product.ProductDigitalDownload != null && orderitem.Product.ProductDigitalDownload.AllowDigitalDownload)
+                                                                        {
+                                                                            flag = true;
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <div>
+                                                                                        <a href="@Model.Store.URL.Order?guid=@order.OrderGUID">
+                                                                                            <span>@order.OrderID</span>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    @DateTimeExtension.ToLocal(order.OrderedOn, Model.Store.General.Timezone).ToShortDateString()
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a href="@orderitem.Product.PermLink">
+                                                                                        <span>@orderitem.Product.Name</span>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td>
+
+                                                                                    @if (orderitem.DigitalDownload != null && orderitem.DigitalDownload.AllowDigitalDownload && orderitem.AllowDigitalDownload)
+                                                                                    {
+                                                                                        //Order Download
+                                                                                        if ((orderitem.DigitalDownload.UnlimitedDownloads) || (!orderitem.DigitalDownload.UnlimitedDownloads && orderitem.DigitalDownloadCount < orderitem.DigitalDownload.MaxDownload))
+                                                                                        {
+
+                                                                                            if (orderitem.DigitalDownload.Downloads.Count > 0 || orderitem.DigitalDownload.VariationDownloads.Count > 0)
+                                                                                            {
+                                                                                                <div>
+                                                                                                    <a href="@Model.Store.Current.ApiURL/digitaldownload/get?q=@Mandeeps.LSF.StoreModule.Controllers.DigitalDownloadController.GenerateLink(Model.Store.StoreModuleID, order.OrderGUID, orderitem.OrderItemID)">
+                                                                                                        <span>[L:Download]</span>
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                if (!flag)
+                                                {
+                                                    <script type="text/javascript">
+                                                        $('#DownloadableTab').hide();
+                                                    </script>
+                                                    <div class="ms-col-sm-12">
+                                                        <h4>[L:NoDownloadable]</h4>
+                                                    </div>
+                                                    flag = true;
+                                                }
+                                                else
+                                                {
+                                                    <script type="text/javascript">
+                                                        $('#DownloadableTab').show();
+                                                    </script>
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                                <div id="newAddress" class="addAddress" style="display:none">
+                                    <div id="divMessage"></div>
+                                    <div class="info ms-text-Right" id="customerNewAddress">
+                                        @if (Model.Store.Current.Customer != null)
+                                        {
+                                            <div class="ms-form-group">
+                                                <div class="checkoutForm">
+                                                    <label>[LS:Company]</label>
+                                                    <input type="text" name="Company1" id="Company1" value="" class="ms-form-control" />
+                                                    <label>[LS:FirstName]<span class="required">*</span></label>
+                                                    <input type="text" name="Firstname1" id="Firstname1" value="@Model.Store.Current.UserInfo.FirstName" class="ms-form-control" required />
+                                                    <label>[LS:LastName]<span class="required">*</span></label>
+                                                    <input type="text" name="Lastname1" id="Lastname1" value="@Model.Store.Current.UserInfo.LastName" class="ms-form-control" required />
+                                                    <label>[LS:Email]<span class="required">*</span></label>
+
+
+                                                    <input type="email" name="Email1" id="Email1" value="@Model.Store.Current.UserInfo.Email" class="ms-form-control" required />
+                                                    <label>[LS:Phone]<span class="required">*</span></label>
+                                                    <input type="text" name="Phone1" id="Phone1" value="" class="ms-form-control" required numeric="numeric">
+                                                    <hr />
+                                                    <label>[LS:Address1]<span class="required">*</span></label>
+                                                    <input type="text" name="Address11" id="Address11" value="" class="ms-form-control formaddress1" required />
+                                                    <input type="text" name="Address21" id="Address21" value="" class="ms-form-control" />
+                                                    <label>[LS:City]<span class="required">*</span></label>
+                                                    <input type="text" name="City1" id="City1" value="" class="ms-form-control" required>
+                                                    <label>[LS:Country]<span class="required">*</span></label>
+                                                    <select name="Country" id="Country" onchange="MyAccount.Change_Country(this.value)" class="ms-form-control" required>
+                                                        <option value="">[LS:SelectCountry]</option>
+                                                        @if (Model.Store.BillingCountry != null && Model.Store.BillingCountry.Count > 0)
+                                                        {
+                                                            foreach (Country country in Model.Store.BillingCountry)
+                                                            {
+                                                                <option enabledVat="@country.ApplyVAT.ToString().ToLower()" value="@country.CountryID">@country.Name</option>
+                                                            }
+                                                        }
+                                                    </select>
+
+                                                    <label>[LS:State]</label>
+                                                    <select id="StateProvince" name="StateProvince" onchange="MyAccount.Change_CountryRegion(this)" class="ms-form-control">
+                                                        <option value="">[LS:SelectState]</option>
+                                                    </select>
+
+                                                    <label>[LS:ZipPostalCode]<span class="required">*</span></label>
+                                                    <input type="text" name="Zip1" id="Zip1" value="" class="ms-form-control" required>
+                                                    <hr />
+                                                    <label class="MyAccount Address VATNumber">[LS:VATNumber]</label>
+                                                    <input class="MyAccount Address VATNumber ms-form-control" type="text" name="VATNumber" id="VATNumber" value="" />
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    <br />
+                                    <div class="submitButton ms-col-md-12">
+                                        <button type="button" id="btnAddAddress" class="ms-btn chkout_btn ms-pull-right proceedchkout" onclick="MyAccount.AddAddress('#newAddress')">
+                                            [LS:Save]
+                                        </button>
+                                        <button type="button" id="btnUpdateAddress" class="ms-btn chkout_btn ms-pull-right proceedchkout" onclick="MyAccount.UpdateAddress('#newAddress')">
+                                            [LS:Update]
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button type="button" class="ms-btn ms-btn-default ms-pull-left" onclick="MyAccount.CancelAddress()">
+                                            [LS:Cancel]
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

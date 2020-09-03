@@ -1,0 +1,23 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+<div id="LSF_StoreInfo" class="lsf_aisoft">
+    <div class="ms-col-md-12 StoreLogo">
+        @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.Logo))
+        {
+            <img id="logo" src="@Model.Store.StoreInfo.Logo" alt="logo">
+        }
+        else
+        {
+            <img id="logo" src="@Model.Store.Theme.ThemePath\DesktopModules\LiveStoreFront\Store\Themes\Default\Resources\Images\default.png" alt="logo">
+        }
+
+    </div>
+    <div class="StoreDetail">
+        <span class="StoreName">@Model.Store.StoreInfo.Name</span>
+        <span class="storeInfo">@Raw(Model.Store.StoreInfo.Address)</span>
+        <span class="storeInfo">@Model.Store.StoreInfo.Email</span>
+        <span class="storeInfo">@Model.Store.StoreInfo.PhoneNumber</span>
+    </div>
+</div>

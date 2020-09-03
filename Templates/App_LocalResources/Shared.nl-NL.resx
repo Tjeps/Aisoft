@@ -1,0 +1,750 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BillingAddress.Text" xml:space="preserve">
+    <value>Billing Detail</value>
+  </data>
+  <data name="CartSubtotal.Text" xml:space="preserve">
+    <value>Subtotal</value>
+  </data>
+  <data name="OrderSuccessMessages.Text" xml:space="preserve">
+    <value>Your order has been successfully processed!</value>
+  </data>
+  <data name="ReOrder.Text" xml:space="preserve">
+    <value>Re-Order</value>
+  </data>
+  <data name="ShippingAddress.Text" xml:space="preserve">
+    <value>Verzendgegevens</value>
+  </data>
+  <data name="ThankYou.Text" xml:space="preserve">
+    <value>Ordered sucessfully.</value>
+  </data>
+  <data name="AddToCart.Text" xml:space="preserve">
+    <value>In winkelmandje</value>
+  </data>
+  <data name="Update.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Address1.Text" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Address2.Text" xml:space="preserve">
+    <value>Address 2</value>
+  </data>
+  <data name="City.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Continue.Text" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="Country.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Fax.Text" xml:space="preserve">
+    <value>Fax Number</value>
+  </data>
+  <data name="FirstName.Text" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="Hash.Text" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="LastName.Text" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="OrderNumber.Text" xml:space="preserve">
+    <value>Invoice </value>
+  </data>
+  <data name="Phone.Text" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="SelectCountry.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="SelectState.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="State.Text" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="ZipPostalCode.Text" xml:space="preserve">
+    <value>Postcode</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Dash.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="AnonymousUserHaveNoPermissionToCheckout.Text" xml:space="preserve">
+    <value>Anonymous user does't have permission to checkout.</value>
+  </data>
+  <data name="CallForPricing.Text" xml:space="preserve">
+    <value>Call for pricing</value>
+  </data>
+  <data name="CallForPricingWithNewLine.Text" xml:space="preserve">
+    <value>\nCall for pricing</value>
+  </data>
+  <data name="Cart.Text" xml:space="preserve">
+    <value>Cart</value>
+  </data>
+  <data name="CouponAppliedSuccessfully.Text" xml:space="preserve">
+    <value>Coupon applied successfully.</value>
+  </data>
+  <data name="CustomerIsNull.Text" xml:space="preserve">
+    <value>Customer is null.</value>
+  </data>
+  <data name="DiscountCannotFound.Text" xml:space="preserve">
+    <value>The promotional code you entered is not valid</value>
+  </data>
+  <data name="DiscountNotEnable.Text" xml:space="preserve">
+    <value>Discount not enable.</value>
+  </data>
+  <data name="EmptyCoupon.Text" xml:space="preserve">
+    <value>Empty coupon code</value>
+  </data>
+  <data name="DiscountError.Text" xml:space="preserve">
+    <value>Discount Error</value>
+  </data>
+  <data name="ExtensionSettingsInvalid.Text" xml:space="preserve">
+    <value>Extension settings invalid.</value>
+  </data>
+  <data name="FileNotUploaded.Text" xml:space="preserve">
+    <value>File/s not uploaded successfully!</value>
+  </data>
+  <data name="ImportedSuccessfully.Text" xml:space="preserve">
+    <value>Imported Successfully.</value>
+  </data>
+  <data name="Address_Update_Error_Message.Text" xml:space="preserve">
+    <value>Invalid address information.</value>
+  </data>
+  <data name="LowStock.Text" xml:space="preserve">
+    <value>Low stock</value>
+  </data>
+  <data name="MinimumOrderSubtotal.Text" xml:space="preserve">
+    <value>Minimum order sub-total amount is  </value>
+  </data>
+  <data name="MinimumOrderTotal.Text" xml:space="preserve">
+    <value>Minimum order total amount is </value>
+  </data>
+  <data name="OrderNotFound.Text" xml:space="preserve">
+    <value>Order not found.</value>
+  </data>
+  <data name="QuantityWentLOutOfStock.Text" xml:space="preserve">
+    <value>Your quantity went out of stock.</value>
+  </data>
+  <data name="QuantityWentLowStock.Text" xml:space="preserve">
+    <value>Your quantity went low stock.</value>
+  </data>
+  <data name="SelectStore.Text" xml:space="preserve">
+    <value>Select Store</value>
+  </data>
+  <data name="ShippingAddressIsRequired.Text" xml:space="preserve">
+    <value>Verzendadres is verplicht</value>
+  </data>
+  <data name="ShippingInformationNotFound.Text" xml:space="preserve">
+    <value>Verzendgegevens niet gevonden</value>
+  </data>
+  <data name="ShippingMethodNotEnabled.Text" xml:space="preserve">
+    <value>Shipping method not enabled.</value>
+  </data>
+  <data name="ShoppingCartIsEmpty.Text" xml:space="preserve">
+    <value>Je winkelmandje is leeg</value>
+  </data>
+  <data name="ShoppingCartObjectNotFound.Text" xml:space="preserve">
+    <value>ShoppingCart object is not found.</value>
+  </data>
+  <data name="SomeProductFromWishlistCouldNotBeMoved .Text" xml:space="preserve">
+    <value>Niet meer beschikbaar</value>
+  </data>
+  <data name="SomeProductsFromWishlist.Text" xml:space="preserve">
+    <value>Niet meer beschikbaar</value>
+  </data>
+  <data name="SomethingWrong.Text" xml:space="preserve">
+    <value>Something went wrong.</value>
+  </data>
+  <data name="OrderPaymentResponse.Text" xml:space="preserve">
+    <value>Payment response is null</value>
+  </data>
+  <data name="StateRegionIDRequired.Text" xml:space="preserve">
+    <value>StateRegionID Required</value>
+  </data>
+  <data name="StoreIsNull.Text" xml:space="preserve">
+    <value>Store is null.</value>
+  </data>
+  <data name="StoreObjectNotFound.Text" xml:space="preserve">
+    <value>Store object is not found.</value>
+  </data>
+  <data name="StorePrimaryCurrencyNotActivated.Text" xml:space="preserve">
+    <value>Store primary currency not activated.</value>
+  </data>
+  <data name="SuccessfullyVoted.Text" xml:space="preserve">
+    <value>Successfully voted.</value>
+  </data>
+  <data name="TheProductHasBeenAddedToYourCart.Text" xml:space="preserve">
+    <value>Dit product is toegevoegd aan</value>
+  </data>
+  <data name="UpdateSuccessfully.Text" xml:space="preserve">
+    <value>Dit product is bijgewerkt in</value>
+  </data>
+  <data name="Widget.Text" xml:space="preserve">
+    <value>Widget</value>
+  </data>
+  <data name="WishList.Text" xml:space="preserve">
+    <value>Wishlist</value>
+  </data>
+  <data name="WrongDiscount.Text" xml:space="preserve">
+    <value>Wrong discount.</value>
+  </data>
+  <data name="YouCanNotVote.Text" xml:space="preserve">
+    <value>You can not vote for your own review.</value>
+  </data>
+  <data name="YourCartIsEmpty.Text" xml:space="preserve">
+    <value>Je winkelmandje is leeg</value>
+  </data>
+  <data name="YouWillSeeTheProductReview.Text" xml:space="preserve">
+    <value>Thanks for submitting a review. It will appear after store administrator approval.</value>
+  </data>
+  <data name="Error.Text" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="EnterCouponCode.Text" xml:space="preserve">
+    <value>Please enter coupon code.</value>
+  </data>
+  <data name="EnterRating.Text" xml:space="preserve">
+    <value>Please enter your rating!</value>
+  </data>
+  <data name="FailedToAddTheProduct.Text" xml:space="preserve">
+    <value>Failed to add the product. Please refresh the page and try one more time.</value>
+  </data>
+  <data name="ProductAdded.Text" xml:space="preserve">
+    <value>Dit product is toegevoegd aan</value>
+  </data>
+  <data name="ProductHasMaximumQuantity.Text" xml:space="preserve">
+    <value>Dit product heeft een maximum aantal van</value>
+  </data>
+  <data name="ProductHasMinimumQuantity.Text" xml:space="preserve">
+    <value>Dit product heeft een minimum aantal van</value>
+  </data>
+  <data name="SelectShippingAddress.Text" xml:space="preserve">
+    <value>Select Shipping Address. </value>
+  </data>
+  <data name="Categories.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="Manufacturers.Text" xml:space="preserve">
+    <value>Manufacturers</value>
+  </data>
+  <data name="Recentlyaddedproducts.Text" xml:space="preserve">
+    <value>Recently added products</value>
+  </data>
+  <data name="Recentlyviewedproducts.Text" xml:space="preserve">
+    <value>Recently viewed products</value>
+  </data>
+  <data name="Topsellingproductsbyamount.Text" xml:space="preserve">
+    <value>Top selling products by amount</value>
+  </data>
+  <data name="Topsellingproductsbycount.Text" xml:space="preserve">
+    <value>Top selling products by count</value>
+  </data>
+  <data name="SortOption.Text" xml:space="preserve">
+    <value>Sort Option</value>
+  </data>
+  <data name="CategoryErrorMessage" xml:space="preserve">
+    <value>Category Empty</value>
+  </data>
+  <data name="ProductNotFound.Text" xml:space="preserve">
+    <value>Product niet gevonden</value>
+  </data>
+  <data name="UpSell.Text" xml:space="preserve">
+    <value>Klanten die dit product bekeken, kochten uiteindelijk</value>
+  </data>
+  <data name="Back.Text" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Excellent.Text" xml:space="preserve">
+    <value>Excellent</value>
+  </data>
+  <data name="Fair.Text" xml:space="preserve">
+    <value>Fair</value>
+  </data>
+  <data name="Good.Text" xml:space="preserve">
+    <value>Good</value>
+  </data>
+  <data name="Poor.Text" xml:space="preserve">
+    <value>Poor</value>
+  </data>
+  <data name="Wishlist_ProductRequired.Text" xml:space="preserve">
+    <value>Select at least one product.</value>
+  </data>
+  <data name="Cart_CountryZipRequired.Text" xml:space="preserve">
+    <value>Country and zip code is required.</value>
+  </data>
+  <data name="ProductComparison.Text" xml:space="preserve">
+    <value>Product Comparison</value>
+  </data>
+  <data name="SymbolStar.Text" xml:space="preserve">
+    <value>*</value>
+  </data>
+  <data name="CreatedOn.Text" xml:space="preserve">
+    <value>Newly Added</value>
+  </data>
+  <data name="FreeShipping.Text" xml:space="preserve">
+    <value>Free Shipping</value>
+  </data>
+  <data name="NameAsc.Text" xml:space="preserve">
+    <value>Name asc</value>
+  </data>
+  <data name="NameDesc.Text" xml:space="preserve">
+    <value>Name desc</value>
+  </data>
+  <data name="New.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Position.Text" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="PriceAsc.Text" xml:space="preserve">
+    <value>Price: Low to High</value>
+  </data>
+  <data name="PriceDesc.Text" xml:space="preserve">
+    <value>Price: High to Low</value>
+  </data>
+  <data name="Sale.Text" xml:space="preserve">
+    <value>Sale</value>
+  </data>
+  <data name="Sortby:.Text" xml:space="preserve">
+    <value>Sort by:</value>
+  </data>
+  <data name="View:.Text" xml:space="preserve">
+    <value>View:</value>
+  </data>
+  <data name="LessThan.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Suggested.Text" xml:space="preserve">
+    <value>Suggested</value>
+  </data>
+  <data name="OutOfFive.Text" xml:space="preserve">
+    <value>out of 5</value>
+  </data>
+  <data name="WasThisReviewHelpful.Text" xml:space="preserve">
+    <value>Was this review helpful?</value>
+  </data>
+  <data name="CallForPrice.Text" xml:space="preserve">
+    <value>Call For Price</value>
+  </data>
+  <data name="ThereIsNoProduct.Text" xml:space="preserve">
+    <value>Oh no! We couldn't find anything. Search again.</value>
+  </data>
+  <data name="SetReviewHelpfulnessError.Text" xml:space="preserve">
+    <value>Only registered customers can set review helpfulness</value>
+  </data>
+  <data name="ErrorWhenCreatingOrder.Text" xml:space="preserve">
+    <value>Order not created, have some error when creating order.</value>
+  </data>
+  <data name="Topratedproducts.Text" xml:space="preserve">
+    <value>Top rated products</value>
+  </data>
+  <data name="Featuredproducts.Text" xml:space="preserve">
+    <value>Featured Products</value>
+  </data>
+  <data name="Bestsellers.Text" xml:space="preserve">
+    <value>Best sellers</value>
+  </data>
+  <data name="EmptySearchBox.Text" xml:space="preserve">
+    <value>You have not entered any search key</value>
+  </data>
+  <data name="BilledTo.Text" xml:space="preserve">
+    <value>Billing Address</value>
+  </data>
+  <data name="ShippedTo.Text" xml:space="preserve">
+    <value>Verzendadres</value>
+  </data>
+  <data name="PaymentMethod.Text" xml:space="preserve">
+    <value>Payment Method</value>
+  </data>
+  <data name="ShippingMethod.Text" xml:space="preserve">
+    <value>Verzendmethode</value>
+  </data>
+  <data name="Manage.Text" xml:space="preserve">
+    <value>Manage</value>
+  </data>
+  <data name="NoState.Text" xml:space="preserve">
+    <value>Other (Non US)</value>
+  </data>
+  <data name="OrderNumbers.Text" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="UpdateAddress.Text" xml:space="preserve">
+    <value>Do you want to update this address?</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Annuleren</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Pageitems.Text" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="YouSaved.Text" xml:space="preserve">
+    <value>Je bespaart:</value>
+  </data>
+  <data name="Admin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Administrator.Text" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="ExcludingTax.Text" xml:space="preserve">
+    <value>Excl</value>
+  </data>
+  <data name="IncludingTax.Text" xml:space="preserve">
+    <value>Incl</value>
+  </data>
+  <data name="Excluding_Tax.Text" xml:space="preserve">
+    <value>Excl Tax</value>
+  </data>
+  <data name="Including_Tax.Text" xml:space="preserve">
+    <value>Incl Tax</value>
+  </data>
+  <data name="Hyphen.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="Percent.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="Bad.Text" xml:space="preserve">
+    <value>Bad</value>
+  </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="ShippingNotRequired.Text" xml:space="preserve">
+    <value>Verzending niet nodig</value>
+  </data>
+  <data name="NotYetShipped.Text" xml:space="preserve">
+    <value>Not yet shipped</value>
+  </data>
+  <data name="PartiallyShipped.Text" xml:space="preserve">
+    <value>Partially shipped</value>
+  </data>
+  <data name="Shipped.Text" xml:space="preserve">
+    <value>Shipped</value>
+  </data>
+  <data name="Delivered.Text" xml:space="preserve">
+    <value>Delivered</value>
+  </data>
+  <data name="Pending.Text" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Authorized.Text" xml:space="preserve">
+    <value>Authorized</value>
+  </data>
+  <data name="Paid.Text" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="PartiallyRefunded.Text" xml:space="preserve">
+    <value>Partially Refunded</value>
+  </data>
+  <data name="Refunded.Text" xml:space="preserve">
+    <value>Refunded</value>
+  </data>
+  <data name="Voided.Text" xml:space="preserve">
+    <value>Voided</value>
+  </data>
+  <data name="Processing.Text" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="Complete.Text" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="Cancelled.Text" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="AddNew.Text" xml:space="preserve">
+    <value>Add New</value>
+  </data>
+  <data name="OrderCompleteContent.Text" xml:space="preserve">
+    <value>Order complete content</value>
+  </data>
+  <data name="OrderCompleteSubject.Text" xml:space="preserve">
+    <value>Order complete subject</value>
+  </data>
+  <data name="OrderPendingContent.Text" xml:space="preserve">
+    <value>Order pending content</value>
+  </data>
+  <data name="OrderPendingSubject.Text" xml:space="preserve">
+    <value>Oreder pending subject</value>
+  </data>
+  <data name="PaymentAuthorizedContent.Text" xml:space="preserve">
+    <value>Payment Authorized Content</value>
+  </data>
+  <data name="PaymentAuthorizedSubject.Text" xml:space="preserve">
+    <value>Payment Authorized Subject</value>
+  </data>
+  <data name="PaymentPaidContent.Text" xml:space="preserve">
+    <value>Payment Paid Content</value>
+  </data>
+  <data name="PaymentPaidSubject.Text" xml:space="preserve">
+    <value>Payment Paid Subject</value>
+  </data>
+  <data name="PaymentPendingContent.Text" xml:space="preserve">
+    <value>Payment Pending Content</value>
+  </data>
+  <data name="PaymentPendingSubject.Text" xml:space="preserve">
+    <value>Payment Pending Subject</value>
+  </data>
+  <data name="OrderCancelledSubject.Text" xml:space="preserve">
+    <value>Order Cancelled Subject</value>
+  </data>
+  <data name="OrderProcessingSubject.Text" xml:space="preserve">
+    <value>Order Processing Subject</value>
+  </data>
+  <data name="PaymentPartially RefundedSubject.Text" xml:space="preserve">
+    <value>Payment Partially Refunded Subject</value>
+  </data>
+  <data name="PaymentRefundedSubject.Text" xml:space="preserve">
+    <value>Payment Refunded Subject</value>
+  </data>
+  <data name="PaymentVoidedSubject.Text" xml:space="preserve">
+    <value>Payment Voided Subject</value>
+  </data>
+  <data name="Shipment Not yetshippedSubject.Text" xml:space="preserve">
+    <value>Shipment Notyetshipped Subject</value>
+  </data>
+  <data name="Shipment Partially shippedSubject.Text" xml:space="preserve">
+    <value>Shipment Partially shipped Subject</value>
+  </data>
+  <data name="ShipmentDeliveredSubject.Text" xml:space="preserve">
+    <value>Shipment Delivered Subject</value>
+  </data>
+  <data name="ShipmentShippedSubject.Text" xml:space="preserve">
+    <value>Shipment Shipped Subject</value>
+  </data>
+  <data name="Grid.Text" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="List.Text" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="Order_UpdateStatus.Text" xml:space="preserve">
+    <value>Order status already </value>
+  </data>
+  <data name="Order_OrderNotFound.Text" xml:space="preserve">
+    <value>Order not found</value>
+  </data>
+  <data name="InvalidAddress.Text" xml:space="preserve">
+    <value>Invalid address</value>
+  </data>
+  <data name="AddressExist.Text" xml:space="preserve">
+    <value>Address already exist.</value>
+  </data>
+  <data name="InvoicePaid.Text" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="InvoicePending.Text" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Company.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="VATNumber.Text" xml:space="preserve">
+    <value>VAT Number</value>
+  </data>
+  <data name="VATNumberShow.Text" xml:space="preserve">
+    <value>VAT# </value>
+  </data>
+  <data name="CheckMessage.Text" xml:space="preserve">
+    <value>Your order will be processed when the check is received and cleared.</value>
+  </data>
+  <data name="OrderStatus.Text" xml:space="preserve">
+    <value>Order Status</value>
+  </data>
+  <data name="EmailTemplateFooter.Text" xml:space="preserve">
+    <value>This email is sent from </value>
+  </data>
+  <data name="CancelButton.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="DeleteButton.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="WireTransferMessage.Text" xml:space="preserve">
+    <value>Your order will be processed when the wire transfer is received.</value>
+  </data>
+  <data name="Required.Text" xml:space="preserve">
+    <value>This field is required.</value>
+  </data>
+  <data name="SelectRule.Text" xml:space="preserve">
+    <value>Select Rule</value>
+  </data>
+  <data name="Unknown.Text" xml:space="preserve">
+    <value>UNKNOWN</value>
+  </data>
+  <data name="Valid.Text" xml:space="preserve">
+    <value>VALID</value>
+  </data>
+  <data name="Download_FileName.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="TaxOnShipping.Text" xml:space="preserve">
+    <value>Verzending</value>
+  </data>
+  <data name="Tax_Hyphen.Text" xml:space="preserve">
+    <value>BTW - </value>
+  </data>
+  <data name="Tax.Text" xml:space="preserve">
+    <value>BTW</value>
+  </data>
+  <data name="SKU.Text" xml:space="preserve">
+    <value>SKU:</value>
+  </data>
+  <data name="GTIN.Text" xml:space="preserve">
+    <value>GTIN:</value>
+  </data>
+  <data name="InvoiceCancelled.Text" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Text_TermsConditions.Text" xml:space="preserve">
+    <value>Please accept terms &amp; conditions before continuing to next step.</value>
+  </data>
+  <data name="Title_TermsConditions.Text" xml:space="preserve">
+    <value>Voorwaarden</value>
+  </data>
+  <data name="EU_VAT_ReverseCharge.Text" xml:space="preserve">
+    <value>Transaction is subject to EU VAT Reverse Charge. Customer VAT </value>
+  </data>
+  <data name="NewAddedProduct.Text" xml:space="preserve">
+    <value>New product</value>
+  </data>
+</root>

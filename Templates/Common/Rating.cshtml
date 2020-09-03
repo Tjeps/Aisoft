@@ -1,0 +1,51 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Utilities
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+<div class="product-review-helpfulness">
+    @foreach (ProductReview Review in Model.Product.Reviews)
+    {
+        <ul class="comments">
+            <li>
+                <div class="comment">
+                    <div class="ms-img-thumbnail image_thumb">
+                        @if (Review.Image != null)
+                        {<img alt="" class="avatar" src="@Review.Image" title="@Review.Headline" data-toggle="ms-tooltip">}
+                    </div>
+                    <div class="comment-block">
+                        <div class="comment-arrow"></div>
+                        <div>
+                            <span class="comment-by">
+                                <strong>@Review.Headline</strong>
+                                <span class="ms-pull-right">
+                                    @if (Review.Rating > 0)
+                                    {
+                                        <span><strong>@Review.Rating</strong> [LS:OutOfFive]</span>
+                                    }
+                                </span>
+                            </span>
+                        </div>
+                        <p class="commentis">@Review.Review  </p>
+                    </div>
+                </div>
+
+                <div class="helpful">
+                    <i>[LS:WasThisReviewHelpful]</i>
+                    <div class="votes">
+                        <a id="@Review.ReviewID" onclick="reviews.Review_Voting(@Review.ReviewID,true,@Review.ModuleID)">&nbsp; [LS:Yes]</a>
+                        <a id="@Review.ReviewID" onclick="reviews.Review_Voting(@Review.ReviewID,false,@Review.ModuleID)">[LS:No]</a>
+                        <span>(</span>
+                        <span id="total-Yes-@Review.ReviewID">@Review.UpVote</span>
+                        <span>/</span>
+                        <span id="total-No-@Review.ReviewID">@Review.DownVote</span>
+                        <span>)</span>
+                    </div>
+                    <div class="dateon createdatetimediv">@DateTimeExtension.ToLocal(Review.CreatedOn, Model.Store.General.Timezone).ToString("MMMM dd, yyyy hh:mm tt")</div>
+                </div>
+                @*<span id="Result-@Review.ReviewID"></span>*@
+            </li>
+        </ul>
+        <hr />
+    }
+</div>
+

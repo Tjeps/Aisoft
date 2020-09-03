@@ -1,0 +1,786 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@using Mandeeps.LSF.Entities.Products
+@inherits TemplateBase<dynamic>
+@{
+    string IsActive = "ms-active";
+    string isrequiredval = "", iscbrequired = "", cartupdatebtn;
+    cartupdatebtn = "[LS:AddToCart]";
+}
+
+@if (Model.Product.ProductID > 0 && Model.Product.IsActiveProduct)
+{
+<div id="LSF_@Model.Store.StoreModuleID" class="LSF_@Model.Store.StoreModuleID lsf_aisoft ms-container">
+    <div class="product_detail">
+        <div class="ms-row lsf_shop">
+            <div class="ms-col-md-5 items_owlcarousel">
+
+                <div class="Product_detail_image">
+                    @{ int tempId = 0;}
+                    @if (Model.Product.Variations != null && Model.Product.Variations.Count > 0)
+                        {
+                            foreach (var pv in Model.Product.Variations)
+                            {
+                                tempId = 0;
+                                if (pv.Options.Count > 0)
+                                {
+                                    foreach (var op in pv.Options)
+                                    {
+                                        if (tempId == 0)
+                                        {
+                                            tempId = op.ProductVariationOptionID;
+                                        }
+
+                                        if (op.VariationOptionImages.Count > 0)
+                                        {
+                                            if (Model.Product.ProductManufacturer != null && Model.Product.ProductManufacturer.ManufaturerImage != null && Model.Product.ProductManufacturer.ManufaturerImage.Count > 0)
+                                            {
+                    <div class="big-manufacture-images">
+                        <img class="manufactureLogo" src="@Model.Product.ProductManufacturer.ManufaturerImage[0].ImageUrl" />
+                        <div id="Carousel_@op.ProductVariationOptionID" style="@(tempId != op.ProductVariationOptionID ? "display:none;" : "")" class="owl-carousel big-mimages big-images" data-plugin-options="{'dots': false, 'items': 1, 'mouseDrag': false, 'touchDrag': false}">
+                            @foreach (var ig in op.VariationOptionImages)
+                                                        {
+                                                            if (Model.Store.General.EnableZoomer)
+                                                            {
+                            <img class="ms-img-responsive zoomimg" src="@(ig.ImageUrl)" alt="@(ig.Alt)" title="@(ig.Title)" />
+                                                            }
+                                                            else
+                                                            {
+                            <img class="ms-img-responsive zoomimage" src="@(ig.ImageUrl)" alt="@(ig.Alt)" title="@(ig.Title)" />
+                                                            }
+
+                                                        }
+                        </div>
+                    </div>
+                                            }
+                                            else
+                                            {
+                    <div id="Carousel_@op.ProductVariationOptionID" style="@(tempId != op.ProductVariationOptionID ? "display:none;" : "")" class="owl-carousel big-manunfacture-images" data-plugin-options="{'dots': false, 'items': 1, 'mouseDrag': false, 'touchDrag': false}">
+                        @foreach (var ig in op.VariationOptionImages)
+                                                    {
+                                                        if (Model.Store.General.EnableZoomer)
+                                                        {
+                        <img class="ms-img-responsive zoomimg" src="@(ig.ImageUrl)" alt="@(ig.Alt)" title="@(ig.Title)" />
+                                                        }
+                                                        else
+                                                        {
+                        <img class="ms-img-responsive zoomimage" src="@(ig.ImageUrl)" alt="@(ig.Alt)" title="@(ig.Title)" />
+                                                        }
+
+                                                    }
+                    </div>
+                                            }
+                    <div id="Carousel_thumb_@op.ProductVariationOptionID" style="@(tempId != op.ProductVariationOptionID ? "display:none;" : "")" class="owl-carousel thumbs show-nav-hover" data-plugin-options="{'dots': false, 'items': 4,'responsiveRefreshRate': 100, 'nav': true, 'navText': ['',''], 'mouseDrag': false}">
+                        @foreach (var ig in op.VariationOptionImages)
+                                                {
+                        <div class="thumb_item">
+                            <img class="ms-img-responsive" src="@(ig.ImageUrl)" alt="@(ig.Alt)" title="@(ig.Title)" />
+                        </div>
+                                                }
+                    </div>
+
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    <span class="new_sale">
+                        @if (Model.Product.IsNewProduct)
+                            {
+                        <a href="@Model.Product.PermLink">
+                            <span class="onsale new_product">[LS:New]</span>
+                        </a>
+                            }
+                        @if (Model.Product.IsOnSale)
+                            {
+                        <a href="@Model.Product.PermLink">
+                            <span class="onsale">[LS:Sale]</span>
+                        </a>
+                            }
+                    </span>
+
+
+                    @if (Model.Product.ProductImages.Count > 1)
+                        {
+                    if (Model.Product.ProductManufacturer != null && Model.Product.ProductManufacturer.ManufaturerImage != null && Model.Product.ProductManufacturer.ManufaturerImage.Count > 0)
+                            {
+                    <div class="big-manufacture-images">
+                        <img class="manufactureLogo" src="@Model.Product.ProductManufacturer.ManufaturerImage[0].ImageUrl" />
+                        <div id="Carousel_Default" class="owl-carousel big-mimages big-images" data-plugin-options="{'dots': false, 'items': 1, 'mouseDrag': false, 'touchDrag': false}">
+                            @foreach (Image pimg in Model.Product.ProductImages)
+                                        {
+                                            if (Model.Store.General.EnableZoomer)
+                                            {
+                            <img class="ms-img-responsive zoomimg" src="@(pimg.ImageUrl)" alt="@(pimg.Alt)" title="@(pimg.Title)" />
+                                            }
+                                            else
+                                            {
+                            <img class="ms-img-responsive zoomimage" src="@(pimg.ImageUrl)" alt="@(pimg.Alt)" title="@(pimg.Title)" />
+                                            }
+                                        }
+                        </div>
+                    </div>
+                            }
+                            else
+                            {
+                    <div id="Carousel_Default" class="owl-carousel big-images" data-plugin-options="{'dots': false, 'items': 1, 'mouseDrag': false, 'touchDrag': false}">
+                        @foreach (Image pimg in Model.Product.ProductImages)
+                                    {
+                                        if (Model.Store.General.EnableZoomer)
+                                        {
+                        <img class="ms-img-responsive zoomimg" src="@(pimg.ImageUrl)" alt="@(pimg.Alt)" title="@(pimg.Title)" />
+                                        }
+                                        else
+                                        {
+                        <img class="ms-img-responsive zoomimage" src="@(pimg.ImageUrl)" alt="@(pimg.Alt)" title="@(pimg.Title)" />
+                                        }
+                                    }
+                    </div>
+                            }
+                    <div class="owl-carousel thumbs show-nav-hover" id="Carousel_Default_thumb" data-plugin-options="{'dots': false, 'items': 4,'responsiveRefreshRate': 100, 'nav': true,'navText': ['',''], 'mouseDrag': false}">
+                        @foreach (Image pimg in Model.Product.ProductImages)
+                                {
+                        <div class="thumb_item">
+                            <img class="ms-img-responsive" src="@(pimg.ImageUrl)" alt="@(pimg.Alt)" title="@(pimg.Title)" />
+                        </div>
+                                }
+                    </div>
+                        }
+                        else if (Model.Product.ProductImages.Count == 1)
+                        {
+
+                            foreach (Image pimg in Model.Product.ProductImages)
+                            {
+
+                    if (Model.Product.ProductManufacturer != null && Model.Product.ProductManufacturer.ManufaturerImage != null && Model.Product.ProductManufacturer.ManufaturerImage.Count > 0)
+                                {
+                    <div id="single_man_image" class="singlemanufacuterimage">
+                        <img class="manufactureLogo" src="@Model.Product.ProductManufacturer.ManufaturerImage[0].ImageUrl" />
+                        @if (Model.Store.General.EnableZoomer)
+                                        {
+                        <img class="ms-img-responsive zoomimg" src="@(pimg.ImageUrl)" alt="@(pimg.Alt)" title="@(pimg.Title)" />
+                                        }
+                                        else
+                                        {
+                        <img class="ms-img-responsive zoomimage" src="@(pimg.ImageUrl)" alt="@(pimg.Alt)" title="@(pimg.Title)" />
+                                        }
+                    </div>
+                                }
+                                else
+                                {
+                    <div id="single_image" class="singleimage">
+                        @if (Model.Store.General.EnableZoomer)
+                                        {
+                        <img class="ms-img-responsive zoomimg" src="@(pimg.ImageUrl)" alt="@(pimg.Alt)" title="@(pimg.Title)" />
+                                        }
+                                        else
+                                        {
+                        <img class="ms-img-responsive zoomimage" src="@(pimg.ImageUrl)" alt="@(pimg.Alt)" title="@(pimg.Title)" />
+                                        }
+                    </div>
+                                }
+                            }
+                        }
+                        else
+                        {
+                    <div id="single_image">
+                        <img class="ms-img-responsive" alt="" src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" title="">
+                    </div>
+                        }
+
+
+                    <!--Proudct Vairation Combination Images-->
+                    <div id="Carousel_ProdctVariationCombination_Images" style="display:none;" class="owl-carousel big-images" data-plugin-options="{'dots': false, 'items': 1, 'mouseDrag': false, 'touchDrag': false}">
+                        <img class="ms-img-responsive zoomimage" src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" alt="Proudct Vairation Combination" />
+                    </div>
+                    <div id="Carousel_ProdctVariationCombination_Images_thumb" style="display:none;" class="owl-carousel thumbs show-nav-hover" data-plugin-options="{'dots': false, 'items': 4,'responsiveRefreshRate': 100, 'nav': true,'navText': ['',''], 'mouseDrag': false}">
+                        <div class="thumb_item">
+                            <img class="ms-img-responsive" src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="ms-col-md-7">
+                @if (Model.Store.Current.HasEditPermission)
+                    {
+                <span class="product_edit_icon">
+                    <a class="fas fa-pencil-alt" onclick="Edit_product.ProductEdit(@Model.Product.ProductID)"></a>
+                </span>
+                    }
+                <div class="summary entry-summary">
+                    <h1 class="mb-none margin_bottom">
+                        @Model.Product.Name
+                    </h1>
+                    <hr />
+                    @if (Model.Product.AllowRating && Model.Product.AllowReviews)
+                        {
+                    <span id="customerRating" class="rating" data-rating="@Model.Product.Ratings" data-plugin-options="{'score': @Model.Product.Ratings, 'hints': ['[LS:Bad]', '[LS:Poor]', '[LS:Fair]', '[LS:Good]', '[LS:Excellent]'], 'path': '@Model.Store.Theme.ThemePath/Resources/Images/', 'readOnly': true}"></span>
+                        }
+
+                    @if (Model.Product.AllowReviews)
+                        {
+                    <div class="review_num">
+                        <a onclick="reviews.Customer_reviews(@Model.Store.StoreModuleID,'#star1'); return false;">
+                            <span class="count" id="product_reviews" itemprop="ratingCount" href="#productReviews">@Model.Product.Reviews.Count</span>
+                            <span class="customerReview">
+                                @if (Model.Product.Reviews.Count > 1)
+                                        {
+                                <span>[L:CustomerReviews]</span>
+                                        }
+                                        else
+                                        {
+                                <span>[L:CustomerReview]</span>
+                                        }
+                            </span>
+                            <input type="hidden" class="hfcustomerReviews" value=[L:CustomerReviews] />
+                            <input type="hidden" class="hfcustomerReview" value=[L:CustomerReview] />
+                        </a>
+
+
+                        &nbsp; | &nbsp; <a onclick="reviews.add_review(); return false;"> [L:Addreview]</a>
+                    </div>
+                        }
+
+                    <div class="clear"></div>
+                    @if ((InventoryMethods)@Model.Product.InventoryMethodID != InventoryMethods.None && Model.Product.ShowStockAvailability != null && Model.Product.ShowStockAvailability)
+                        {
+                    <div class="stock_availability margin_bottom">
+                        <span class="LSF_@(@Model.Store.StoreModuleID)StockAvailabilityTypes_Calculated">
+                            @if (Model.Product.ShowStockQty != null && Model.Product.ShowStockQty)
+                                    {
+                                        if (Model.Product.StockAvailabilityID == (int)StockAvailabilityTypes.Calculated)
+                                        {
+                                            if (Model.Product.InStockQty != null && Model.Product.InStockQty > 0)
+                                            {
+                            <p>
+                                [L:ProductAvailabiltyWithQty]
+                                <span>
+                                    @(Model.Product.InStockQty)
+                                </span>
+                            </p>
+                                            }
+                                            else
+                                            {
+                            <p>[L:ProudctOutStock]</p>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Model.Product.StockAvailabilityID == (int)StockAvailabilityTypes.Calculated)
+                                        {
+                            <p>[L:ProductAvailabilty]</p>
+                                        }
+                                    }
+                        </span>
+
+                        <span class="LSF_@(@Model.Store.StoreModuleID)StockAvailabilityTypes_InStock">
+                            @if (Model.Product.ShowStockQty != null && Model.Product.ShowStockQty)
+                                    {
+                                        if (Model.Product.StockAvailabilityID == (int)StockAvailabilityTypes.InStock)
+                                        {
+                            <p> [L:ProductInStockWithQty] <span class="LSF_@(@Model.Store.StoreModuleID)InStockQty">@(Model.Product.InStockQty)</span></p>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Model.Product.StockAvailabilityID == (int)StockAvailabilityTypes.InStock)
+                                        {
+                            <p>[L:ProductInStock]</p>
+                                        }
+                                    }
+                        </span>
+
+                        <span class="LSF_@(@Model.Store.StoreModuleID)StockAvailabilityTypes_OutOfStock">
+                            @if (Model.Product.ShowStockQty != null && Model.Product.ShowStockQty)
+                                    {
+                                        if (Model.Product.StockAvailabilityID == (int)StockAvailabilityTypes.OutOfStock)
+                                        {
+                            <p> [L:ProudctOutStockWithQty] <span>@(Model.Product.OutStockQty) </span></p>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Model.Product.StockAvailabilityID == (int)StockAvailabilityTypes.OutOfStock)
+                                        {
+                            <p>[L:ProudctOutStock]</p>
+                                        }
+                                    }
+                        </span>
+                    </div>
+                        }
+                    <div class="summary margin_bottom">@Model.Product.Summary</div>
+                    <div class="productvariation" id="lsf-product-details">
+
+                        @if (Model.Product.Variations != null && Model.Product.Variations.Count > 0)
+                            {
+                        <div class="ms-form-group" id="product_variation" onchange="variation.PriceOnChangeAttribute(@Model.Store.StoreModuleID,@Model.Product.ProductID,'#lsf-product-details')">
+                            @foreach (ProductVariation v in Model.Product.Variations)
+                                    {
+
+                            <label>
+                                @if (!string.IsNullOrEmpty(v.Label))
+                                            {
+                                @v.Label
+                                            }
+                                            else
+                                            {
+                                @v.Name
+                                            }
+                                @if (v.Required)
+                                            {
+                                <span>*</span>
+                                                isrequiredval = "required";
+                                                iscbrequired = "true";
+                                            }
+                                            else
+                                            {
+                                                isrequiredval = "";
+                                                iscbrequired = "";
+                                            }
+                            </label>
+                                        if ((ControlType)@v.ControlTypeID == ControlType.Dropdownlist && v.Options.Count > 0)
+                                        {
+                            <div class="margin_bottom">
+                                <select name="product_attribute_@v.ProductVariationID" id="product_attribute_@v.ProductVariationID" @isrequiredval onselect="total_product_cost(@v.ProductVariationID,'.LSF_@Model.Store.StoreModuleID')">
+                                    @foreach (ProductVariationOption o in @v.Options)
+                                                    {
+                                    <option value="@o.ProductVariationOptionID" selected="@o.PreSelected">@o.Name</option>
+
+                                                    }
+                                </select>
+                            </div>
+                                        }
+                                        if ((ControlType)@v.ControlTypeID == ControlType.Radionbuttonlist && v.Options.Count > 0)
+                                        {
+                            <div class="ms-form-group Radiobutton margin_bottom">
+                                <div id="product_radiobutton_group">
+                                    @foreach (ProductVariationOption o in v.Options)
+                                                    {
+                                    <input id="product_attribute_@(v.ProductVariationID + " _" + o.ProductVariationOptionID)" type="radio" name="product_attribute_@v.ProductVariationID" checked="@o.PreSelected" value="@o.ProductVariationOptionID" cbrequired="@iscbrequired">
+                                    <label for="product_attribute_@(v.ProductVariationID + " _" + o.ProductVariationOptionID)">@o.Name </label>
+
+                                                    }
+                                    <label class="errorlabel"></label>
+                                </div>
+                            </div>
+                                        }
+                                        if ((ControlType)@v.ControlTypeID == ControlType.Checkboxes && v.Options.Count > 0)
+                                        {
+                            <div class="ms-form-group Checkbox margin_bottom">
+                                <div id="product_checkbox_group">
+                                    @foreach (ProductVariationOption o in v.Options)
+                                                    {
+                                    <input id="product_attribute_@(v.ProductVariationID + " _" + o.ProductVariationOptionID)" type="checkbox" checked="@o.PreSelected" name="product_attribute_@v.ProductVariationID" value="@o.ProductVariationOptionID" cbrequired="@iscbrequired">
+                                    <label for="product_attribute_@(v.ProductVariationID + " _" + o.ProductVariationOptionID)">@o.Name </label>
+                                                    }
+                                    <label class="errorlabel"></label>
+                                </div>
+                            </div>
+                                        }
+                                        if ((ControlType)@v.ControlTypeID == ControlType.Textbox)
+                                        {
+                            <div class="margin_bottom">
+                                <input name="product_attribute_@v.ProductVariationID" type="text" value="@v.Default" class="textbox" id="product_attribute_@v.ProductVariationID" @isrequiredval>
+                            </div>
+                                        }
+                                        if ((ControlType)@v.ControlTypeID == ControlType.Multilinetextbox)
+                                        {
+                            <div class="margin_bottom">
+                                <textarea rows="7" cols="22" id="product_attribute_@v.ProductVariationID" value="@v.Default" name="product_attribute_@v.ProductVariationID" @isrequiredval></textarea>
+                            </div>
+                                        }
+
+                                    }
+                        </div>
+                            }
+
+                        @if (Model.Store.Catalog.ShowSKU)
+                            {
+                        <div class="Product_info sku margin_bottom">
+                            @if (Model.Product.SKU != null)
+                                    {
+                            <strong><span>[L:SKU] </span></strong>
+                            <span>@Model.Product.SKU</span>
+                                    }
+                        </div>
+                            }
+                        @if (Model.Store.Catalog.ShowGTIN)
+                            {
+                        <div class="Product_info gtin margin_bottom">
+                            @if (Model.Product.GTIN != null)
+                                    {
+                            <strong><span>[L:GTIN] </span></strong>
+                            <span>@Model.Product.GTIN</span>
+                                    }
+                        </div>
+                            }
+                        @if (Model.Product.EnableShipping && Model.Product.IsFreeShipping && Model.Store.Catalog.ShowFreeShippingIcon)
+                            {
+                        <div class="add_info margin_bottom"><span><em class="fa fa-truck" aria-hidden="true"></em>[LS:FreeShipping]</span></div>
+                            }
+
+
+                        @if (Model.Product.ProductDigitalDownload != null && Model.Product.ProductDigitalDownload.HasSample && Model.Product.ProductDigitalDownload.SampleDownloads.Count > 0)
+                            {
+                        <div class="addInfo">
+                            @foreach (Image im in Model.Product.ProductDigitalDownload.SampleDownloads)
+                                    {
+                            <a class="ms-btn download_btn  margin_bottom LSF_@(@Model.Product.ModuleID)download_btn" href="@im.ImageUrl" download>
+                                <em class="fa fa-download"></em>
+                                <span class="file_title">@im.Title</span>
+                            </a>
+                                    }
+                        </div>
+                            }
+
+                        <div class="qtyblk margin_bottom">
+                            @if (!Model.Product.CallforPrice)
+                                {
+                                    if (Model.Product.OrderMinQty > 1)
+                                    {
+                            <div class="minordermsg">
+                                <p>[L:ThisProductHasAMinimumQuantityOf] @Model.Product.OrderMinQty</p>
+                            </div>
+                                    }
+
+                            <div class="quantity margin_bottom">
+
+                                <input type="button" class="minus" value="-" onclick="product_quantity.decrementitem('DefaultPage','.LSF_@Model.Store.StoreModuleID',@Model.Product.ProductID)">
+                                <input type="number" id="Quantity-@Model.Product.ProductID" class="input-text qty text" title="Qty" value="@(Model.Product.MinOrderQty>0?Model.Product.MinOrderQty:0)" name="quantity" step="1" onblur="product_quantity.qtychanged('DefaultPage','.LSF_@Model.Store.StoreModuleID',@Model.Product.ProductID)">
+                                <input type="button" class="plus" value="+" onclick="product_quantity.incrementitem('DefaultPage','.LSF_@Model.Store.StoreModuleID',@Model.Product.ProductID)">
+
+                                <input type="hidden" id="minQuantity-@Model.Product.ProductID" value="@Model.Product.OrderMinQty" />
+                                <input type="hidden" id="maxQuantity-@Model.Product.ProductID" value="@Model.Product.OrderMaxQty" />
+                            </div>
+                                }
+                            @*@if (Model.Cart != null)
+                                {
+                                    <div class="cartid margin_bottom">
+                                        <input data-val="true" id="cartid-@Model.Cart.CartID" name="cartid" type="hidden" value="@Model.Cart.CartID">
+                                    </div>
+                                }*@
+                            @if (Model.Product.CallforPrice)
+                                {
+                            <h4 class="callforprice margin_bottom">[LS:CallForPrice]</h4>
+                                }
+                                else if (Model.Product.CustomPrice)
+                                {
+                            <div class="ms-form-group customprice margin_bottom">
+                                <div><strong>[L:PleaseEnterYourPrice]</strong></div>
+                                <input class="entercustomprice" name="product_attribute_CustomPrice" type="text" value="@(Model.Product.CustomMinAmount==null?decimal.Zero.ToString("#.#"):Model.Product.CustomMinAmount.ToString("#.#"))" class="textbox" id="product_attribute_CustomPrice" required>
+                            </div>
+                                }
+                                else
+                                {
+                            <div class="margin_bottom">
+                                @if (Model.Product.IsOnSale)
+                                        {
+                                            if (Model.Product.SpecialPrice >= 0)
+                                            {
+                                <del>
+                                    <span class="amount">@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? Model.Product.FormattedOldPriceIncludeTax : Model.Product.FormattedPrice)</span>
+                                    <input type="hidden" id="hiddenAmount_@Model.Product.ProductID" value="@Model.Product.PriceValue" />
+                                </del>
+                                <ins>
+                                    <span class="amount" id="Calculated_Price">@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? Model.Product.FormattedSalePriceIncludeTax : Model.Product.FormattedSalePrice)</span><span class="unitofmeasure">&nbsp;@Model.Product.UnitOfMeasurment</span>
+                                </ins>
+                                            }
+                                @*else
+                                    {
+                                        <del>
+                                            <span class="amount">@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? Model.Product.FormattedPriceIncludeTax : Model.Product.FormattedPrice)</span>
+                                            <input type="hidden" id="hiddenAmount_@Model.Product.ProductID" value="@Model.Product.PriceValue" />
+                                        </del>
+                                    }*@
+                                        }
+                                        else
+                                        {
+                                <span class="amount" id="Calculated_Price">@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? Model.Product.FormattedPriceIncludeTax : Model.Product.FormattedPrice)</span><span class="unitofmeasure">&nbsp;@Model.Product.UnitOfMeasurment</span>
+                                        }
+                                &nbsp;
+                                @if (Model.Store.Catalog.DisplayTaxSuffix)
+                                        {
+                                            if (Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                            {
+                                <span class="amount">[LS:Including_Tax]</span>
+                                            }
+                                            else
+                                            {
+                                <span class="amount">[LS:Excluding_Tax]</span>
+                                            }
+                                        }
+                            </div>
+                                }
+                            <div class="qantcart">
+                                @if (!Model.Product.IsDisableBuyButton && !Model.Product.CallforPrice)
+                                    {
+                                <a class="ms-btn addtocart_btn LSF_@(@Model.Product.ModuleID)addtocart_btn margin_bottom" onclick="Cart.addProduct(@Model.Product.ProductID,'#lsf-product-details','@Model.Store.ShoppingCart.DisplayCartAfterAddingProduct.ToString()','@Model.Store.URL.Cart');"><em class="fas fa-shopping-cart"></em> @cartupdatebtn</a>
+                                    }
+                                @if (Model.Store.ShoppingCart.AllowWishlist)
+                                    {
+                                <a class="ms-btn wishlist_btn margin_bottom" onclick="Wishlist.addProduct(@Model.Product.ProductID,'#lsf-product-details','@Model.Store.ShoppingCart.DisplayWishlistAfterAddingProduct.ToString()','@Model.Store.URL.Wishlist');" title="Add to Wishlist"><em class="fas fa-heart"></em> </a>
+                                    }
+                                @if (Model.Store.Catalog.EnableCompareProducts)
+                                    {
+                                <a class="ms-btn compare_btn margin_bottom" onclick="Compare.Add(@Model.Product.ProductID,'@Model.Store.URL.Compare')" title="Add to Compare"><i class="fas fa-signal"></i></a>
+                                    }
+
+                                <div class="share_btn_code margin_bottom">
+                                    @Raw(Model.Store.Catalog.ShareButtonCode)
+                                </div>
+                            </div>
+                        </div>
+                        @if (Model.Product.ProductGroupAndTiers.Count > 0)
+                            {
+                        <div id="group_and_tiers">
+                            <table class="ms-table ms-table-bordered ms-table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>[L:Quantity]</td>
+                                        <td>[L:Price]</td>
+                                    </tr>
+                                    @foreach (ProductGroupAndTier G in Model.Product.ProductGroupAndTiers)
+                                            {
+                                    <tr>
+                                        <td>@G.Quantity +</td>
+                                        <td>@G.FormattedPrice</td>
+                                    </tr>
+                                            }
+                                </tbody>
+                            </table>
+                        </div>
+                            }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        @if (Model.Product.Description != null || Model.Product.Specifications.Count > 0 || Model.Product.AllowReviews || Model.Product.EnableShipping && (Model.Product.Length > 0 || Model.Product.Width > 0 || Model.Product.Height > 0 || Model.Product.Weight > 0 || Model.Product.AdditionalShippingCharge > 0))
+            {
+        <div class="ms-row lsf_shop" id="review_navigate">
+            <div class="ms-col-md-12">
+                <div class="tabs tabs-product">
+                    <ul class="ms-nav ms-nav-tabs products-tab">
+                        @if (Model.Product.Description != null)
+                                {
+                        <li class="@IsActive">
+                            <a href="#productDescription" data-toggle="ms-tab">[L:Description]</a>
+                        </li>
+                                    { IsActive = ""; }
+                                }
+                        @if (Model.Product.Specifications.Count > 0)
+                                {
+                        <li class="@IsActive">
+                            <a href="#productSpecification" data-toggle="ms-tab">[L:Specification]</a>
+                        </li>
+                                    { IsActive = ""; }
+                                }
+
+                        @if (Model.Product.EnableShipping && (Model.Product.Length > 0 || Model.Product.Width > 0 || Model.Product.Height > 0 || Model.Product.Weight > 0 || Model.Product.AdditionalShippingCharge > 0))
+                                {
+                        <li class="@IsActive">
+                            <a href="#productInfo" data-toggle="ms-tab">[L:ShippingInformation]</a>
+                        </li>
+                                    { IsActive = ""; }
+                                }
+                        @if (Model.Product.AllowReviews)
+                                {
+                        <li class="@IsActive">
+                            @if (Model.Product.Reviews.Count > 0)
+                                        {
+                            <a href="#productReviews" id="review_tab" data-toggle="ms-tab">[L:WriteaReview] (@Model.Product.Reviews.Count)</a>
+                                        }
+                                        else
+                                        {
+                            <a href="#productReviews" id="review_tab" data-toggle="ms-tab">[L:WriteaReview] </a>
+                                        }
+                        </li>
+                                    { IsActive = ""; }
+                                }
+                    </ul>
+                    @{IsActive = "ms-active"; }
+                    <div class="ms-tab-content">
+                        @if (Model.Product.Description != null)
+                                {
+                        <div class="ms-tab-pane @IsActive" id="productDescription">
+                            @Raw(Model.Product.Description)
+                        </div>
+                                    { IsActive = ""; }
+                                }
+                        @if (Model.Product.ProductSpecificationInfo.Count > 0)
+                                {
+                        <div class="ms-tab-pane @IsActive" id="productSpecification">
+                            <table class="table table-striped" id="productSpec">
+                                @foreach (ProductSpecificationInfo v in Model.Product.ProductSpecificationInfo)
+                                            {
+                                <tr>
+                                    <th>
+                                        @v.Name
+                                    </th>
+                                    <td>
+                                        @Raw(v.Value)
+                                    </td>
+                                </tr>
+                                            }
+                            </table>
+                        </div>
+                                    { IsActive = ""; }
+                                }
+                        @if (Model.Product.EnableShipping && (Model.Product.Length > 0 || Model.Product.Width > 0 || Model.Product.Height > 0 || Model.Product.Weight > 0 || Model.Product.AdditionalShippingCharge > 0))
+                                {
+                        <div class="ms-tab-pane @IsActive" id="productInfo">
+                            <table class="table table-striped">
+                                @if (Model.Product.Length > 0)
+                                            {
+                                <tr>
+                                    <th>
+                                        [L:Length]
+                                    </th>
+                                    <td>
+                                        @Model.Product.Length inch(es)
+                                    </td>
+                                </tr>
+                                            }
+                                @if (Model.Product.Width > 0)
+                                            {
+                                <tr>
+                                    <th>
+                                        [L:Width]
+                                    </th>
+                                    <td>
+                                        @Model.Product.Width inch(es)
+                                    </td>
+                                </tr>
+                                            }
+                                @if (Model.Product.Height > 0)
+                                            {
+                                <tr>
+                                    <th>
+                                        [L:Height]
+                                    </th>
+                                    <td>
+                                        @Model.Product.Height inch(es)
+                                    </td>
+                                </tr>
+                                            }
+                                @if (Model.Product.Weight > 0)
+                                            {
+                                <tr>
+                                    <th>
+                                        [L:Weight]
+                                    </th>
+                                    <td>
+                                        @Model.Product.Weight lb(s)
+                                    </td>
+                                </tr>
+                                            }
+                                @if (Model.Product.AdditionalShippingCharge > 0 && Model.Product.IsFreeShipping != true && Model.Product.CallforPrice != true)
+                                            {
+                                <tr>
+                                    <th>
+                                        [L:AdditionalShippingCharges]
+                                    </th>
+                                    <td>
+                                        @Model.Product.FormattedAdditionalShippingCharge
+                                    </td>
+                                </tr>
+                                            }
+                            </table>
+                        </div>
+                                    { IsActive = ""; }
+                                }
+                        @if (Model.Product.AllowReviews)
+                                {
+                        <div class="ms-tab-pane @IsActive" id="productReviews">
+                            <div class="lsf-review" id="lsf_product_review">
+                                @Include("Common/Rating", Model)
+                            </div>
+                            <span id="product_review_result"></span>
+                            <div id="submitReview">
+                                <h4 class="heading-primary">[L:AddAReview]</h4>
+                                @if (Model.Store.Current.UserInfo.UserID > -1 || Model.Store.Catalog.AllowAnonymousUsersToWriteProductReviews == true)
+                                            {
+                                <div class="ms-row">
+                                    <div class="ms-col-md-12">
+                                        <h4 class="reviewHead">[L:Addareview]</h4>
+                                        <div class="ms-row">
+                                            <div class="ms-form-group">
+                                                <div class="ms-col-md-6">
+                                                    <label>[L:YourName] <span class="required">*</span></label>
+                                                    <input type="text" value="@Model.Store.Current.UserInfo.DisplayName" onkeypress="return reviews.AutoPressEnter(event);" data-msg-required="Please enter your name." maxlength="100" class="ms-form-control writereview" name="name" id="name" required />
+                                                </div>
+                                                <div class="ms-col-md-6">
+                                                    <label>[L:YourEmailAddress] <span class="required">*</span></label>
+                                                    <input type="email" value="@Model.Store.Current.UserInfo.Email" onkeypress="return reviews.AutoPressEnter(event);" data-msg-required="Please enter your email address" data-msg-email="Please enter a valid email address." maxlength="100" class="ms-form-control" name="email" id="email" emailrequired="emailrequired" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ms-row">
+                                            <div class="ms-form-group">
+                                                <div class="ms-col-md-12">
+                                                    <label>[L:Review] <span class="required">*</span></label>
+                                                    <textarea maxlength="5000" data-msg-required="Please enter your message." rows="10" class="ms-form-control writereview" name="message" id="message" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if (Model.Product.AllowRating)
+                                                        {
+                                        <div class="ms-row">
+                                            <div class="ms-form-group">
+                                                <div class="ms-col-md-12">
+                                                    <label>[L:Rating] <span class="required">*</span></label>
+                                                    <div title="Rated 5.00 out of 5" id="star1">
+                                                        <span class="rating" data-rating="@Model.Product.Ratings" data-validate="true" data-plugin-options="{'hints': ['[LS:Bad]', '[LS:Poor]', '[LS:Fair]', '[LS:Good]', '[LS:Excellent]'], 'path': '@Model.Store.Theme.ThemePath/Resources/Images/'}"></span>
+                                                        @*<label class="error errormessage">Please enter your rating.</label>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                                        }
+                                        <div class="ms-row">
+                                            <div class="ms-col-md-12">
+                                                <button onclick="reviews.Save_Review(@Model.Product.ProductID,'#submitReview',@Model.Store.StoreModuleID);return false;" id="review_save" class="ms-btn addtocart_btn review_save">[L:SubmitReview]</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                            }
+                                            else
+                                            {
+                                <span>[L:OnlyRegisteredUsersCanWriteReviews]</span>
+                                            }
+                            </div>
+                        </div>
+                                    { IsActive = ""; }
+                                }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+            }
+    </div>
+    <div class="clear"></div>
+    @if (Model.Product.UpSells.Count > 0)
+        {
+    @Include("Site/UpSellsProduct", @Model)
+        }
+    <div class="clear"></div>
+    @if (Model.Product.RelatedProducts.Count > 0)
+        {
+    @Include("Site/RelatedProduct", @Model)
+        }
+</div>
+
+
+}
+else
+{
+<script>
+                                        window.location.href = '@Model.Store.URL.Homepage';
+</script>
+}

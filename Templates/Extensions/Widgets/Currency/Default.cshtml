@@ -1,0 +1,46 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+@if (Model != null && Model.Store.Currency != null && Model.Store.Currency.ExchangeCurrencies.Count > 1)
+{
+    if (Model.SelectedWidget.DisplayMode != null && Model.SelectedWidget.DisplayMode == "vertical")
+    {
+        <div class="LSF_@Model.Store.StoreModuleID lsf_aisoft">
+            <div class="Curreny-widget space-bottom">
+                <select style="background-color:#fff" onchange="ChangeCurrency(this)" id="LSF_Currency_@Model.Store.StoreModuleID">
+                    @foreach (Currency c in Model.Store.Currency.ExchangeCurrencies)
+                        {
+                            if (Model.Store.Current.Currency != null && Model.Store.Current.Currency.CurrencyID == c.CurrencyID)
+                            {
+                        <option selected value="@c.CurrencyID">@c.Name</option>
+                            }
+                            else
+                            {
+                        <option value="@c.CurrencyID">@c.Name</option>
+                            }
+                        }
+                </select>
+            </div>
+        </div>
+    }
+    else {
+        <div class="LSF_@Model.Store.StoreModuleID lsf_aisoft mwidget">
+            <div class="Curreny-widget-small">
+                <select onchange="ChangeCurrency(this)" id="LSF_Currency_@Model.Store.StoreModuleID">
+                    @foreach (Currency c in Model.Store.Currency.ExchangeCurrencies)
+                    {
+                        if (Model.Store.Current.Currency != null && Model.Store.Current.Currency.CurrencyID == c.CurrencyID)
+                        {
+                            <option selected value="@c.CurrencyID">@c.ISOCode</option>
+                        }
+                        else
+                        {
+                            <option value="@c.CurrencyID">@c.ISOCode</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    }
+}

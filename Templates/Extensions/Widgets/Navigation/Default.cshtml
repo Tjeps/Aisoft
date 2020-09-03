@@ -1,0 +1,35 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+<div class="LSF_@Model.Store.StoreModuleID lsf_aisoft mwidget-search">
+    <div class="navbar-header">
+        <button type="button" class="btn-responsive-nav hamburgericon" data-toggle="collapse" data-target="#myNavbar">
+            <i class="fa fa-bars"></i>
+        </button>
+    </div>
+    <div class="header-nav-main collapse" id="myNavbar" aria-expanded="false">
+        @if (Model != null && Model.Categories != null && Model.Categories.Count > 0)
+        {
+            <ul class="category-list">
+                @foreach (var item in Model.Categories)
+                {
+                    if (item.Children.Count > 0)
+                    {
+                        <li class="@(item.IsSelected ? "ms-active" : null) ms-dropdown">
+                            <span class="nav-icon"><em class="fa fa-caret-down"></em></span>
+                            <a href="@item.PermLink" class="ms-dropdown-toggle" rel="ajaxload">@item.Name<em class="fa fa-caret-down"></em></a>
+                            @Include("Common/NavigationList", @item.Children)
+                        </li>
+                    }
+                    else
+                    {
+                        @:<li class="@(item.IsSelected ? "ms-active" : null)">
+                            <a rel="ajaxload" href="@item.PermLink">@item.Name</a>
+                    }
+                }
+        </ul>
+        }
+    </div>
+</div>
+
+

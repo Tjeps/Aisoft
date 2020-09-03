@@ -1,0 +1,33 @@
+﻿@using RazorEngine.Templating
+@using  Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+@if (Model != null && Model.Count > 0)
+{
+    <ul class="ms-nav-pills ms-nav-stacked widget_sidebar">
+        @foreach (var item in Model)
+        {
+            if (item.Name != "Prices")
+            {
+                <li class="">
+                    <a rel="ajaxload" href="@item.QueryStringValue"><span class="AttributeName"> @item.Name </span><span class="AttributeCount">(@item.ProductCount)</span></a>
+                </li>
+            }
+            else
+            {
+                <li class="">
+                    @if (item.MinPrice == item.MaxPrice)
+                    {
+                        <p> [LS:LessThan] - @item.FormattedMaxPrice</p>
+                    }
+                    else
+                    {
+                        <p> @item.FormattedMinPrice - @item.FormattedMaxPrice </p>
+                    }
+                </li>
+            }
+
+        }
+    </ul>
+}
+

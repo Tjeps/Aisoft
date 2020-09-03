@@ -1,0 +1,16 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+
+@if (Model != null && Model.Count > 0)
+{
+    <ul class="ms-nav-pills ms-nav-stacked widget_sidebar">
+    @foreach (var item in Model)
+        {
+        <li class="@(item.IsSelected ? "ms-active" : null)">
+            <a rel="ajaxload" href="@item.PermLink">@item.Name</a>
+        </li>
+        }
+    </ul>
+}

@@ -1,0 +1,75 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@using Mandeeps.LSF.Entities.Payment;
+@using Mandeeps.LSF.Entities.Extensions.Payment;
+@inherits TemplateBase<dynamic>
+<div id="LSF_@Model.Store.StoreModuleID" class="LSF_@Model.Store.StoreModuleID lsf_aisoft">
+    <div class="lsf_complete">
+        <div class="ms-container">
+            <div class="ms-row">
+                <div class="ms-col-md-12">
+                    <div class="ms-panel ms-panel-default">
+                        <div class="ms-panel-body">
+                            <div class="complete_checkout">
+                                <div class="Thanks_message">
+                                    @if (Model.Order != null)
+                                    {
+                                        if (Model.Order.PaymentStatusID == 30 || Model.Order.PaymentStatusID == 20)//Paid or Authorized
+                                        {
+                                            <h2>[L:ThankYou]</h2>
+                                            <hr />
+                                            <h4>[L:OrderSuccessMessages]</h4>
+                                            <div class="Order_number_info">
+                                                <strong>[LS:OrderNumbers] [LS:Hash]@Model.Order.OrderID</strong>
+                                                <br />
+                                                <div class="OrderDetailbtn">
+                                                    <a class="ms-btn shop_btn" href="@Model.Store.URL.Homepage">[L:Continue]</a>
+                                                    <a class="ms-btn continue_btn LSF_@(@Model.Store.StoreModuleID)MeasureTransaction" href="@Model.Store.URL.Order?guid=@Model.Order.OrderGUID">[L:OrderDetails]</a>
+                                                </div>
+                                            </div>
+
+
+                                        }
+                                        else
+                                        {
+                                            <h2>[L:OrderPendingPayment]</h2>
+                                            <hr />
+                                            <div class="Order_number_info">
+                                                <strong>[LS:OrderNumber][LS:Hash] @Model.Order.OrderID</strong>
+                                                <br />
+                                                <div class="OrderDetailbtn">
+                                                    <a class="ms-btn continue_btn" href="@Model.Store.URL.Order?guid=@Model.Order.OrderGUID">[L:OrderDetails]</a>
+                                                    @if (Model.Order.PaymentStatusID == (int)PaymentStatus.Pending && Model.Order.PaymentExtensionMethod != null && Model.Order.PaymentExtensionMethod.PaymentProcessorType == PaymentProcessorTypes.Redirect)
+                                                    {
+                                                        //show the Retry Payment or Pay Order Payment Button When PaymentExtension is Paypal ExpressCheckout and PaymentProcessorType == PaymentProcessorTypes.Redirect
+                                                        if (Model.Order.PaymentExtension.ToLower() == "7f0b014c-99cb-41ee-886f-debf4a06ed0c")
+                                                        {
+                                                            <a class="ms-btn shop_btn" onclick="Order.Payment(@Model.Store.StoreModuleID,'@Model.Order.OrderGUID')">
+                                                                <em class="fa fa-money"></em> [L:PayOrderPayment]
+                                                            </a>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <h2>[L:OrderErrorMessages]</h2>
+                                        <div class="Order_number_info">
+                                            <div class="OrderDetailbtn">
+                                                <a class="ms-btn shop_btn" href="@Model.Store.URL.Homepage">[L:Continue]</a>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

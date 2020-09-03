@@ -1,0 +1,391 @@
+﻿@media print {
+
+    ul {
+        list-style: none;
+        padding: 10px;
+    }
+
+    .table_detail {
+        margin-top: 10px;
+    }
+
+    .order_table {
+        border: 1px solid #ddd;
+        width: 100%;
+    }
+
+    .ms-row {
+        display: -webkit-box;
+    }
+
+    .ms-col-md-12 {
+        width: 100%;
+    }
+
+    .ms-col-md-6 {
+        width: 50%;
+    }
+
+    .ms-col-md-8 {
+        width: 66.66666667%;
+    }
+
+    .ms-col-md-4 {
+        width: 33.33333333%;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .ordertitle {
+        padding: 0;
+    }
+
+    .invoice_btn {
+        text-align: center;
+    }
+
+    ul.order_info {
+        text-align: center;
+    }
+
+
+    .invoice_title h2, .invoice_title h3 {
+        display: inline-block;
+    }
+
+    .table > tbody > tr > .no-line {
+        border-top: none;
+    }
+
+    .table > thead > tr > .no-line {
+        border-bottom: none;
+    }
+
+    .table > tbody > tr > .thick-line {
+        border-top: 2px solid;
+    }
+
+    .order_information {
+        margin: 0;
+    }
+
+    .StoreLogo span {
+        display: block;
+    }
+
+    .lsf_aisoft .order_table th {
+        background-color: rgb(246, 246, 246);
+        white-space: nowrap;
+        font-weight: normal;
+        border-width: 1px 1px 0px;
+        border-style: solid;
+        border-color: rgb(221, 221, 221);
+        padding: 10px;
+    }
+
+    .order_table td {
+        min-width: 50px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparent #ddd #ddd;
+        background-color: #fff;
+        padding: 10px;
+        color: #444;
+        text-align: left;
+    }
+
+    table.layout {
+        border: 0;
+        border-spacing: 0;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        font-family: 'geinspira';
+        font-size: 18px;
+        font-weight: normal;
+        color: #000;
+        margin-top: 50px;
+    }
+
+        table.layout td {
+            padding: 4px;
+            border-spacing: 0;
+            border: 0;
+            vertical-align: top;
+            text-align: left;
+        }
+
+    .los li {
+        display: inline;
+        margin-right: 30px;
+        margin-left: -20px;
+    }
+
+    table.layout td.caption-v h3 {
+        color: #005CB9;
+        float: left;
+        width: 165px;
+        margin-right: 12px;
+        font-size: 22px;
+        font-family: 'geinspira';
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+    }
+
+    .test_name {
+        font-weight: bold;
+        color: #005CB9;
+        font-size: 28px;
+    }
+
+    .heading_one {
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .heading_one,
+    .description,
+    .copyright,
+    .questions,
+    .pages {
+        font-family: 'geinspira';
+    }
+
+    .description {
+        margin-bottom: 50px;
+        color: black;
+        font-size: 12px;
+    }
+
+    .copyright {
+        text-align: left;
+        font-size: 11px;
+    }
+
+    .date {
+        display: block;
+        margin-top: 5px;
+        font-size: 13px;
+    }
+
+    .questions {
+        text-align: left;
+        font-size: 23px;
+        margin-bottom: 10px;
+    }
+
+    .pages {
+        text-align: right;
+        font-size: 12px;
+    }
+
+    .logo {
+        float: right;
+    }
+
+    .main {
+        padding-top: 55px;
+    }
+
+    p {
+        font-size: 20px;
+    }
+
+    .pics img {
+        width: 275px;
+        height: 175px;
+        margin-bottom: 15px;
+    }
+
+    .StoreLogo {
+        text-align: left;
+        margin-top: 15px;
+    }
+
+    #logo {
+        margin-bottom: 20px;
+        height: 70px;
+    }
+
+
+    .ms-col-md-4.order_info.StoreDetail {
+        text-align: right;
+        font-size: 20px;
+    }
+
+    .invoice_title {
+        font-size: 25px;
+        margin-bottom: 15px;
+    }
+
+
+    .invoice_title {
+        font-size: 25px;
+        margin-top: 15px;
+    }
+
+    .addressdetail {
+        font-size: 16px;
+    }
+
+    .table_detail {
+        margin-top: 10px;
+    }
+
+    .Paymentmethod {
+        margin-top: 15px;
+    }
+
+    .ms-col-md-4.order_info.StoreDetail span {
+        display: block;
+    }
+
+    .StoreName {
+        font-size: 25px;
+    }
+
+    .storeInfo {
+        font-size: 14px;
+        display: block;
+    }
+
+    .tvalue {
+        text-align: right;
+    }
+
+    .order_table {
+        border: 1px solid #ddd;
+    }
+
+        .order_table td .skudetail {
+            font-size: 10px;
+            margin: 0;
+        }
+
+
+        .order_table th {
+            border-width: 1px 1px 0;
+            border-style: solid;
+            border-color: #ddd;
+            background-color: #f6f6f6;
+            padding: 10px;
+            white-space: nowrap;
+            font-weight: normal;
+        }
+
+        .order_table td {
+            min-width: 50px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: transparent #ddd #ddd;
+            background-color: #fff;
+            padding: 10px;
+            color: #494949;
+            text-align: left;
+        }
+
+    .cart_box_info {
+        text-align: left;
+        margin-top: 10px;
+    }
+
+        .cart_box_info .cart-totals tr {
+            font-size: 16px;
+            border-bottom: 1px solid #eee;
+            color: #494949;
+        }
+
+            .cart_box_info .cart-totals tr:last-child {
+                border-bottom: 0;
+            }
+
+            .cart_box_info .cart-totals tr td {
+                padding: 6px 0;
+            }
+
+    .order-info .cart_box_info h2 {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 10px;
+    }
+
+    .Paymentmethod {
+        margin-top: 15px;
+    }
+
+    .billing_detail_info,
+    .shipping_detail_info {
+        background-color: #f9f9f9 !important;
+        max-width: 100%;
+        color: #444 !important;
+        font-size: 16px;
+        min-height: 200px;
+    }
+
+    .vat_msg .title {
+        padding: 7px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        color: #777 !important;
+        background-color: #000 !important;
+        color-adjust: exact !important;
+    }
+
+    .billing_detail_info .title,
+    .shipping_detail_info .title {
+        background: #494949 !important;
+        color: #fff !important;
+        padding: 5px;
+    }
+
+    .methodBox {
+        min-height: 100px !important;
+    }
+
+    .order_table th:first-child,
+    .order_table td:first-child {
+        min-width: 220px;
+    }
+
+    .StoreDetail {
+        text-align: right;
+        font-size: 20px;
+    }
+
+    .StoreName {
+        font-size: 25px;
+    }
+
+    .storeInfo {
+        font-size: 16px;
+        display: block;
+    }
+
+    ul.billing-info,
+    ul.shipping-info {
+        list-style: none;
+        text-align: left;
+        padding: 10px;
+    }
+
+        ul.billing-info li.title,
+        ul.shipping-info li.title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+    .invoicedetail {
+        text-align: right;
+        display: block;
+        font-size: 14px;
+    }
+
+    .order_information span {
+        display: block;
+        font-size: 15px;
+    }
+}

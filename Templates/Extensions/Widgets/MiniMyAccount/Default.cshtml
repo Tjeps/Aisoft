@@ -1,0 +1,49 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+@{
+    int qty = 0;
+}
+@if (Model.SelectedWidget.DisplayMode == "vertical")
+{
+    <div id="lsf_minimyaccount_widget" class="LSF_@Model.Store.StoreModuleID lsf_aisoft">
+        <div class="lsf_account space-bottom">
+            @if (Model.Store.Current.UserLoggedIn || Model.Store.Checkout.AnonymousCheckoutAllowed)
+            {
+                <a class="account-button" href="@Model.Store.URL.MyAccount"><em class="fas fa-user"></em><span> [L:MyAccount]</span></a>
+            }
+            else
+            {
+                <a class="account-button" href="@Model.Store.URL.Login"><em class="fas fa-user"></em><span> [L:MyAccount]</span></a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    if (Model.Store.Current.UserLoggedIn || Model.Store.Checkout.AnonymousCheckoutAllowed)
+    {
+        <a id="lsf_minimyaccount_widget" href="@Model.Store.URL.MyAccount" class="LSF_@Model.Store.StoreModuleID lsf_aisoft fixwidth mwidget mborder">
+
+            <div class="lsf_minimyaccount_small miniWidget">
+                @if (!Model.WidgetSetting.ShowLabel)
+                {
+                    <div class="account-button"><i class="fas fa-user"></i></div>
+                }
+                else
+                {
+                    <div class="account-button"><i class="fas fa-user"></i><span> [L:MyAccount]</span></div>
+                }
+
+            </div>
+        </a>
+    }
+    else
+    {
+        <a id="lsf_minimyaccount_widget" href="@Model.Store.URL.Login" class="LSF_@Model.Store.StoreModuleID lsf_aisoft fixwidth mwidget mborder">
+            <div class="lsf_minimyaccount_small miniWidget">
+                <div class="account-button"><i class="fas fa-user"></i></div>
+            </div>
+        </a>
+    }
+}

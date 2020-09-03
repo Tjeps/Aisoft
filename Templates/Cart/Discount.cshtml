@@ -1,0 +1,35 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+<div class="lsf_aisoft ms-modal ms-fade" id="LSFModal" role="dialog" aria-hidden="true">
+    <div class="ms-modal-dialog ms-modal-sm">
+        <div class="ms-modal-content">
+            <div class="ms-modal-header">
+                <button type="button" class="ms-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="ms-modal-title" id="defaultModalLabel">[L:DiscountCode]</h4>
+            </div>
+            <div class="ms-modal-body">
+                <div class="ms-featured-box ms-featured-box-primary align-left">
+
+                    <div class="modal-box-content modal_cart_box">
+
+                        <div class="coupon-box">
+                            <div id="divMessages">
+                            </div>
+                            <p>[L:EnterYourCouponCodeIfYouHaveOne]</p>
+                            <div class="discount_coupon">
+                                <input type="text" class="coupon-code ms-form-control" onkeypress="Cart.ApplybyEnterKey(event, $(this))" id="couponCode" autofocus>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>            
+                <div class="ms-modal-footer">
+                    <div class="coupon">
+                        <input type="button" value="[L:ApplyCoupon]" onclick="Cart.ApplyCoupon()" class="ms-btn ms-btn-default discount-btn">
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>

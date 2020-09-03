@@ -1,0 +1,133 @@
+﻿@using RazorEngine.Templating
+@using  Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+@if ((((IDictionary<string, Object>)Model).ContainsKey("Store") == true) && Model.Store != null)
+{
+    int NumberOfRelatedProduct = Model.Store.ShoppingCart.NumberOfRelatedProduct;
+    List<int> RelatedProduct = new List<int>();
+
+<div id="RelatedProduct" class="cross_products space-bottom">
+    <div class="cross_product_title">
+        <h3>[L:RelatedProduct]</h3>
+    </div>    
+    <div class="ms-col-md-12 product_gallery">
+        <div class="owl-carousel show-nav-title" data-plugin-options="{'nav': true, 'dots': false,'navText': ['',''], 'loop' : false}">
+            @foreach (Product p in Model.Product.RelatedProducts)
+            {                
+                if (!RelatedProduct.Contains(p.ProductID) && RelatedProduct.Count < NumberOfRelatedProduct)
+                {
+                    RelatedProduct.Add(p.ProductID);
+                    <div class="item">
+                        <div class="product_item ms-img-responsive">
+                            <span class="new_sale">
+                                @if (p.IsNewProduct)
+                                {
+                                    <a href="@p.PermLink">
+                                        <span class="onsale new_product">[L:New]</span>
+                                    </a>
+                                }
+                                @if (p.IsOnSale)
+                                {
+                                    <a href="@p.PermLink">
+                                        <span class="onsale">[LS:Sale]</span>
+                                    </a>
+                                }
+                                </span>
+                                @if (p.EnableShipping && p.IsFreeShipping && Model.Store.Catalog.ShowFreeShippingIcon)
+                                {
+                                    <a href="@p.PermLink">
+                                        <span class="onfreeshipping">[LS:FreeShipping]</span>
+                                    </a>
+                                }
+                                <a href="@p.PermLink" class="Product_image_link">
+                                    @*<div class="view_detail"><span> View+Details</span></div>*@
+                                    @if (p.ProductImages.FirstOrDefault() == null)
+                                    {
+                                        <img src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" class="ms-img-responsive product_item_image" />
+                                    }
+                                    else {
+                                        <img src="@p.ProductImages.FirstOrDefault().ImageUrl" class="ms-img-responsive product_item_image" alt="@(p.ProductImages.FirstOrDefault().Alt)" title="@(p.ProductImages.FirstOrDefault().Title)" />
+                                    }
+                                </a>
+                                <a href="@p.PermLink" class="product_name_heading"><h3>@p.Name</h3></a>
+                                <div class="fancy">
+                                    @if (p.AllowRating && p.AllowReviews)
+                                    {
+                                        <span class="rating" data-plugin-options="{'score': @p.Ratings, 'hints': ['[LS:VeryBad]', '[LS:Poor]', '[LS:Fair]', '[LS:Good]', '[LS:Excellent]'], 'path': '@Model.Store.Theme.ThemePath/Resources/Images/', 'readOnly': true}"></span>
+                                    }
+                                </div>
+                                @if (p.CallforPrice)
+                                {
+                                    <h4 class="callforprice">[LS:CallForPrice]</h4>
+                                }
+                                else 
+                                {
+                                    if (p.IsOnSale)
+                                    {
+                                        if (p.SpecialPrice >= 0)
+                                        {
+                                           <span><del>@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? p.FormattedOldPriceIncludeTax : p.FormattedPrice)</del></span><span class="unitofmeasure">&nbsp;@p.UnitOfMeasurment</span>                                                   
+                                           <span class="amount"><ins>@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? p.FormattedSalePriceIncludeTax : p.FormattedSalePrice)</ins></span><span class="unitofmeasure">&nbsp;@p.UnitOfMeasurment</span>
+                                        }
+                                    }
+                                    else 
+                                    {
+                                       <span class="amount"><ins>@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? p.FormattedPriceIncludeTax : p.FormattedPrice)</ins></span><span class="unitofmeasure">&nbsp;@p.UnitOfMeasurment</span>
+                                    }
+                                }
+                            @if (Model.Store.Catalog.DisplayTaxSuffix)
+                            {
+                                if (Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                {
+                                    <span><ins>[LS:Including_Tax]</ins></span>
+                                }
+                                else
+                                {
+                                    <span><ins>[LS:Excluding_Tax]</ins></span>
+                                }
+                            }
+                            
+                                <div class="clear"></div>
+                                @if (!p.DisableBuyButton)
+                                {
+                                    if (!Model.Store.Catalog.EnableCompareProducts)
+                                    {
+                                        <a onclick="Cart.add(@p.ProductID,@p.Variations.Count,'@p.PermLink','@Model.Store.ShoppingCart.DisplayCartAfterAddingProduct.ToString()','@Model.Store.URL.Cart',0,@p.MinOrderQty)" class="ms-btn addtocart_link" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" title="Add To Cart"><em class="fa fa-shopping-cart"></em>[LS:AddToCart]</a>
+                                        if (Model.Store.ShoppingCart.AllowWishlist)
+                                        {
+                                        <a onclick="Wishlist.add(@p.ProductID,@p.Variations.Count,'@p.PermLink','@Model.Store.ShoppingCart.DisplayWishlistAfterAddingProduct.ToString()','@Model.Store.URL.Wishlist',1,@p.MinOrderQty)" class="ms-btn wishlist_btn" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" title="Add to Wishlist"><i class="fas fa-heart"></i></a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="button_group">
+                                            @if (Model.Store.ShoppingCart.AllowWishlist)
+                                            {
+                                            <a onclick="Wishlist.add(@p.ProductID,@p.Variations.Count,'@p.PermLink','@Model.Store.ShoppingCart.DisplayWishlistAfterAddingProduct.ToString()','@Model.Store.URL.Wishlist',1,@p.MinOrderQty)" class="ms-btn wishlist_link" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" title="Add to Wishlist"><i class="fas fa-heart"></i></a>
+                                            }
+                                            <a onclick="Cart.add(@p.ProductID,@p.Variations.Count,'@p.PermLink','@Model.Store.ShoppingCart.DisplayCartAfterAddingProduct.ToString()','@Model.Store.URL.Cart',0,@p.MinOrderQty)" class="ms-btn addtocart_link" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" title="Add To Cart"><em class="fa fa-shopping-cart"></em>[LS:AddToCart]</a>
+                                            <a class="ms-btn compare_link" onclick="Compare.Add(@p.ProductID,'@Model.Store.URL.Compare')" title="Add to Compare"><i class="fa fa-signal"></i></a>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    if (Model.Store.ShoppingCart.AllowWishlist)
+                                    {
+                                    <a onclick="Wishlist.add(@p.ProductID,@p.Variations.Count,'@p.PermLink','@Model.Store.ShoppingCart.DisplayWishlistAfterAddingProduct.ToString()','@Model.Store.URL.Wishlist',1,@p.MinOrderQty)" class="ms-btn wishlist_btn btn_margin" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" title="Add to Wishlist"><i class="fas fa-heart"></i></a>
+                                    }
+                                    if (Model.Store.Catalog.EnableCompareProducts)
+                                    {
+                                        <a class="ms-btn compare_btn btn_margin" onclick="Compare.Add(@p.ProductID,'@Model.Store.URL.Compare')" title="Add to Compare"><i class="fa fa-signal"></i></a>
+                                    }
+                                }
+</div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+}
+

@@ -1,0 +1,1160 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Utilities
+@using Mandeeps.LSF.Data.Entities
+@using Mandeeps.LSF.Entities.Payment
+@using Mandeeps.LSF.Entities.VATValidation
+@using Mandeeps.LSF.Entities
+@inherits TemplateBase<dynamic>
+<div id="LSF_OrderedItem" class="lsf_aisoft" style="display:block">
+    @if (Model.Order != null)
+    {
+    <div class="ms-container">
+        <hr class="tophr" />
+        @if (Model.Store.StoreInfo != null)
+            {
+        <div class="ms-row prow Infostore">
+            <div class="ms-col-md-6 p-6 StoreLogo">
+                @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.Logo))
+                        {
+                <img id="logo" src="@Model.Store.StoreInfo.Logo" alt="logo">
+                        }
+
+            </div>
+            <div class="ms-col-md-6 p-6 StoreDetail">
+                @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.Name))
+                        {
+                <span class="StoreName">@Model.Store.StoreInfo.Name</span>
+                        }
+                @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.Address))
+                        {
+                <span class="storeInfo">@Raw(Model.Store.StoreInfo.Address)</span>
+                        }
+                @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.Email))
+                        {
+                <span class="storeInfo">[L:Email] @Model.Store.StoreInfo.Email</span>
+                        }
+                @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.PhoneNumber))
+                        {
+                <span class="storeInfo">[L:Phone] @Model.Store.StoreInfo.PhoneNumber</span>
+                        }
+                @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.VatNumber))
+                        {
+                <span class="storeInfo">@Model.Store.StoreInfo.VatNumber</span>
+                        }
+            </div>
+
+        </div>
+            }
+        <hr />
+        <div class="ms-row prow order_information">
+            <div class="ms-col-md-12 p-12 ordertitle">
+                <h3 class="invoicetitle">
+                    [LS:OrderNumber]
+                    @if (Model.Order.OrderID != null)
+                        {
+                    <span class="ms-pull-right orderNumber">[LS:Hash]@Model.Order.OrderID</span>
+                        }
+                </h3>
+
+            </div>
+        </div>
+        <div class="ms-row prow">
+            <div class="ms-col-md-6 p-6 StoreLogo">
+                @if (Model.Order.PaymentStatusID == 30)
+                    {
+                <span class="uppercase">[LS:InvoicePaid]</span>
+                    }
+                    else if (Model.Order.OrderStatusID == 4)
+                    {
+                <span class="uppercase">[LS:InvoiceCancelled]</span>
+                    }
+                    else
+                    {
+                <span class="uppercase">[LS:InvoicePending]</span>
+                    }
+            </div>
+            <div class="ms-col-md-6 p-6 order_info StoreDetail">
+
+                @if (Model.Order.OrderedOn != null)
+                    {
+                <span class="orderdate">@DateTimeExtension.ToLocal(Model.Order.OrderedOn, Model.Store.General.Timezone).ToString("MMMM dd, yyyy hh:mm tt")</span>
+                    }
+            </div>
+        </div>
+        <br>
+        <div class="ms-row prow addressdetail">
+            <div class="ms-col-md-6 p-6">
+                <div class="billing_detail_info">
+                    <div class="title">
+                        [LS:BilledTo]
+                    </div>
+                    @if (Model.Order.BillingAddress != null && Model.Order.BillingAddress.AddressID > 0)
+                        {
+                    <ul class="billing-info">
+
+                        @if (Model.Order.BillingAddress.Company != null)
+                                {
+                        <li class="company">
+                            @Model.Order.BillingAddress.Company
+                        </li>
+                                }
+                        @if (Model.Order.BillingAddress.Firstname != null && Model.Order.BillingAddress.Lastname != null)
+                                {
+                        <li class="name">
+                            @Model.Order.BillingAddress.Firstname   @Model.Order.BillingAddress.Lastname
+                        </li>
+                                }
+                        @if (Model.Order.BillingAddress.Address1 != null)
+                                {
+                        <li class="address1">
+                            <span>@Model.Order.BillingAddress.Address1</span>
+                        </li>
+                                }
+                        @if (Model.Order.BillingAddress.Address2 != null)
+                                {
+                        <li class="address2">
+                            <span>@Model.Order.BillingAddress.Address2</span>
+                        </li>
+                                }
+
+                        @if (Model.Order.BillingAddress.City != null)
+                                {
+                        <li>
+                            <span>
+                                @Model.Order.BillingAddress.City,
+                                @if (Model.Order.BillingAddress.StateRegion != null && !String.IsNullOrEmpty(Model.Order.BillingAddress.StateRegion.Name))
+                                            {
+                                                if (!string.IsNullOrEmpty(Model.Order.BillingAddress.StateRegion.Abbreviation))
+                                                {
+                                @Model.Order.BillingAddress.StateRegion.Abbreviation
+                                                }
+                                                else
+                                                {
+                                @Model.Order.BillingAddress.StateRegion.Name
+                                                }
+                                            }
+
+                                @if (Model.Order.BillingAddress.ZipPostalCode != null)
+                                            {
+                                @Model.Order.BillingAddress.ZipPostalCode
+                                            }
+                            </span>
+
+                        </li>
+
+                        <li>
+                            @if (Model.Order.BillingAddress.Country != null)
+                                        {
+                            <span>@Model.Order.BillingAddress.Country.Name</span>
+                                        }
+                        </li>
+                                }
+
+                        @if (Model.Order.BillingAddress.Email != null)
+                                {
+                        <li class="email">
+                            [L:Email] @Model.Order.BillingAddress.Email
+                        </li>
+                                }
+                        @if (Model.Order.BillingAddress.Phone != null)
+                                {
+                        <li class="phone">
+                            [L:Phone] @Model.Order.BillingAddress.Phone
+                        </li>
+                                }
+
+                        @if (!string.IsNullOrEmpty(Model.Order.BillingAddress.VATNumber) && !string.IsNullOrEmpty(Model.Order.BillingAddress.VATResponse))
+                                {
+                        <li class="vat">
+                            [L:VAT] # @Model.Order.BillingAddress.VATNumber
+                        </li>
+                                }
+
+
+
+                    </ul>
+                        }
+                </div>
+            </div>
+            @if (Model.Order.ShippingAddress != null && Model.Order.ShippingAddress.AddressID > 0)
+                {
+            <div class="ms-col-md-6 p-6">
+                <div class="shipping_detail_info">
+                    <div class="title">
+                        [LS:ShippedTo]
+                    </div>
+
+                    <ul class="shipping-info">
+
+                        @if (Model.Order.ShippingAddress.Company != null)
+                                {
+                        <li class="company">
+                            @Model.Order.ShippingAddress.Company
+                        </li>
+                                }
+                        @if (Model.Order.ShippingAddress.Firstname != null && Model.Order.ShippingAddress.Lastname != null)
+                                {
+                        <li class="name">
+                            @Model.Order.ShippingAddress.Firstname   @Model.Order.BillingAddress.Lastname
+                        </li>
+                                }
+                        @if (Model.Order.ShippingAddress.Address1 != null)
+                                {
+                        <li class="address1">
+                            <span>@Model.Order.ShippingAddress.Address1</span>
+                        </li>
+                                }
+                        @if (Model.Order.ShippingAddress.Address2 != null)
+                                {
+                        <li class="address2">
+                            <span>@Model.Order.ShippingAddress.Address2</span>
+                        </li>
+                                }
+                        @if (Model.Order.ShippingAddress.City != null)
+                                {
+                        <li class="city-state-zip">
+                            <span>
+                                @Model.Order.ShippingAddress.City,
+                                @if (Model.Order.ShippingAddress.StateRegion != null && Model.Order.ShippingAddress.StateRegion.Name != null)
+                                            {
+
+
+                                                if (!string.IsNullOrEmpty(Model.Order.ShippingAddress.StateRegion.Abbreviation))
+                                                {
+                                @Model.Order.ShippingAddress.StateRegion.Abbreviation
+                                                }
+                                                else
+                                                {
+                                @Model.Order.ShippingAddress.StateRegion.Name
+                                                }
+                                            }
+                                @if (Model.Order.ShippingAddress.ZipPostalCode != null)
+                                            {
+                                @Model.Order.ShippingAddress.ZipPostalCode
+                                            }
+                            </span>
+                        </li>
+
+                        <li>
+                            @if (Model.Order.ShippingAddress.Country != null && Model.Order.ShippingAddress.Country.Name != null)
+                                        {
+                            <span>@Model.Order.ShippingAddress.Country.Name</span>
+                                        }
+                        </li>
+                                }
+                        @if (Model.Order.ShippingAddress.Email != null)
+                                {
+                        <li class="email">
+                            [L:Email] @Model.Order.ShippingAddress.Email
+                        </li>
+                                }
+                        @if (Model.Order.ShippingAddress.Phone != null)
+                                {
+                        <li class="phone">
+                            [L:Phone] @Model.Order.ShippingAddress.Phone
+                        </li>
+                                }
+
+                        @if (!string.IsNullOrEmpty(Model.Order.ShippingAddress.VATNumber) && !string.IsNullOrEmpty(Model.Order.ShippingAddress.VATResponse))
+                                {
+                        <li class="vat">
+                            [L:VAT] # @Model.Order.ShippingAddress.VATNumber
+                        </li>
+                                }
+
+                    </ul>
+
+                </div>
+            </div>
+                }
+                else
+                {
+            <div class="ms-col-md-6 p-6">
+                <div class="billing_detail_info">
+                    <div class="title">
+                        [LS:PaymentMethod]
+                    </div>
+                    <ul class="billing-info">
+                        @if (Model.Order.PaymentMethod != null)
+                                {
+                        <li>
+                            <span class="paymentdisplayname">@Model.Order.PaymentMethod</span>
+                            @if (Model.Order != null && Model.Order.PaymentStatusID == (int)PaymentStatus.Paid && Model.Order.CaptureTransID != null)
+                                        {
+                            <span class="ms-pull-right transaction">
+                                @Model.Order.CaptureTransID
+                            </span>
+                                        }
+                                        else if (Model.Order != null && Model.Order.PaymentStatusID == (int)PaymentStatus.Authorized && Model.Order.AuthTransID != null)
+                                        {
+                            <span class="ms-pull-right transaction">
+                                @Model.Order.AuthTransID
+                            </span>
+                                        }
+                                        else if (!string.IsNullOrEmpty(Model.Order.PaymentRefNum))
+                                        {
+                            <span class="ms-pull-right transaction">
+                                @Model.Order.PaymentRefNum
+                            </span>
+                                        }
+                        </li>
+                                }
+                        @if (Model.Order.PaymentStatus != null)
+                                {
+                        <li class="uppercase">
+                            @Model.Order.PaymentStatus
+                        </li>
+                                }
+
+
+                        @if (Model.Order.CardLastFour != null)
+                                {
+                        <li class="uppercase">
+                            <span>xxxx-xxx-xxxx-</span><span>@Model.Order.CardLastFour</span>
+                        </li>
+                                }
+
+                        @if (Model.Order.PaidOn != null && Model.Order.PaymentStatusID == (int)PaymentStatus.Paid)
+                                {
+                        <li class="orderdate">@DateTimeExtension.ToLocal(Model.Order.PaidOn, Model.Store.General.Timezone).ToString("MMMM dd, yyyy hh:mm tt")</li>
+                                }
+
+                        @if (Model.Order.AuthorizedOn != null && Model.Order.PaymentStatusID == (int)PaymentStatus.Authorized)
+                                {
+                        <li class="orderdate">@DateTimeExtension.ToLocal(Model.Order.AuthorizedOn, Model.Store.General.Timezone).ToString("MMMM dd, yyyy hh:mm tt")</li>
+                                }
+
+                        @if (Model.Order.PaymentExtension == "faf84e05-7c40-451d-956e-449f7f0bf29f" && Model.Order.PaymentStatusID == (int)PaymentStatus.Pending)
+                                {
+                        <li>
+                            <span>[L:PurchaseOrderTimeMessage]@Model.Store.StoreInfo.Email</span>
+                        </li>
+                                }
+                        @if (Model.Order.PaymentExtension == "bff298e2-81ec-4e79-bad2-1f2d60076a9f" && Model.Order.PaymentStatusID == (int)PaymentStatus.Pending)
+                                {
+                        <li class="">
+                            <span>[LS:CheckMessage]</span>
+                        </li>
+                                }
+                        @if (Model.Order.PaymentExtension == "acea155a-9c3d-4c04-8889-dc4337c789cf" && Model.Order.PaymentStatusID == (int)PaymentStatus.Pending)
+                                {
+                        <li class="">
+                            <span>[LS:WireTransferMessage]</span>
+                        </li>
+                                }
+                    </ul>
+                </div>
+            </div>
+                }
+        </div>
+        @if (Model.Order.ShippingAddress != null && Model.Order.ShippingAddress.AddressID > 0)
+            {
+        <div class="ms-row prow">
+            <div class="ms-col-md-6 p-6">
+                <div class="billing_detail_info methodBox">
+                    <div class="title">
+                        [LS:PaymentMethod]
+                    </div>
+                    <ul class="billing-info">
+                        @if (Model.Order.PaymentMethod != null)
+                                {
+                        <li>
+                            <span class="paymentdisplayname">@Model.Order.PaymentMethod</span>
+                            @if (Model.Order != null && Model.Order.PaymentStatusID == (int)PaymentStatus.Paid && Model.Order.CaptureTransID != null)
+                                        {
+                            <span class="ms-pull-right transaction">
+                                @Model.Order.CaptureTransID
+                            </span>
+                                        }
+                            @if (Model.Order != null && Model.Order.PaymentStatusID == (int)PaymentStatus.Authorized && Model.Order.AuthTransID != null)
+                                        {
+                            <span class="ms-pull-right transaction">
+                                @Model.Order.AuthTransID
+                            </span>
+                                        }
+                        </li>
+                                }
+                        @if (Model.Order.PaymentStatus != null)
+                                {
+                        <li class="uppercase">
+                            @Model.Order.PaymentStatus
+                        </li>
+                                }
+
+
+                        @if (Model.Order.CardLastFour != null)
+                                {
+                        <li class="uppercase">
+                            <span>xxxx-xxx-xxxx-</span><span>@Model.Order.CardLastFour</span>
+                        </li>
+                                }
+
+                        @if (Model.Order.PaidOn != null && Model.Order.PaymentStatusID == (int)PaymentStatus.Paid)
+                                {
+                        <li class="orderdate">@DateTimeExtension.ToLocal(Model.Order.OrderedOn, Model.Store.General.Timezone).ToString("MMMM dd, yyyy hh:mm tt")</li>
+                                }
+
+                        @if (Model.Order.AuthorizedOn != null && Model.Order.PaymentStatusID == (int)PaymentStatus.Authorized)
+                                {
+                        <li class="orderdate">@DateTimeExtension.ToLocal(Model.Order.AuthorizedOn, Model.Store.General.Timezone).ToString("MMMM dd, yyyy hh:mm tt")</li>
+                                }
+
+                        @if (Model.Order.PaymentExtension == "faf84e05-7c40-451d-956e-449f7f0bf29f" && Model.Order.PaymentStatusID == (int)PaymentStatus.Pending)
+                                {
+                        <li>
+                            <span>[L:PurchaseOrderTimeMessage]@Model.Store.StoreInfo.Email</span>
+                        </li>
+                                }
+                        @if (Model.Order.PaymentExtension == "bff298e2-81ec-4e79-bad2-1f2d60076a9f" && Model.Order.PaymentStatusID == (int)PaymentStatus.Pending)
+                                {
+                        <li class="">
+                            <span>[LS:CheckMessage]</span>
+                        </li>
+                                }
+                        @if (Model.Order.PaymentExtension == "acea155a-9c3d-4c04-8889-dc4337c789cf" && Model.Order.PaymentStatusID == (int)PaymentStatus.Pending)
+                                {
+                        <li class="">
+                            <span>[LS:WireTransferMessage]</span>
+                        </li>
+                                }
+                    </ul>
+                </div>
+            </div>
+            <div class="ms-col-md-6 p-6">
+                <div class="shipping_detail_info methodBox">
+                    <div class="title">
+                        [LS:ShippingMethod]
+                    </div>
+                    <ul class="shipping-info">
+                        @if (Model.Order.ShippingMethod != null)
+                                {
+                        <li>
+                            @Model.Order.ShippingMethod
+                        </li>
+                                    if (Model.Order.Shipments != null && Model.Order.Shipments.Count > 0)
+                                    {
+                                        foreach (var s in Model.Order.Shipments)
+                                        {
+                        <li>
+
+                            @if (!string.IsNullOrEmpty(s.TrackingUrl))
+                                                        {
+                            <span class="trackinglink">[LS:ShippingTracking]<a href="@s.TrackingUrl" style="display:inline-block!important;" target="_blank">#@s.TrackingNumber </a></span>
+                                                        }
+                                                        else
+                                                        {
+                            <span>[LS:ShippingTracking] #@s.TrackingNumber</span>
+                                                    }
+                        </li>
+                                        }
+                                    }
+                                }
+                    </ul>
+                </div>
+            </div>
+        </div>
+            }
+
+        @if (!string.IsNullOrEmpty(Model.Order.BillingAddress.VATNumber) && !string.IsNullOrEmpty(Model.Order.BillingAddress.VATResponse) && Model.Order.ShowMessage_SubjectToEU_VAT(Model.Store))
+            {
+        <div class="shipping_detail_info" style="min-height:auto!important;">
+            <div class="title" style="padding: 7px;margin-bottom: 20px;border-radius: 4px;color: #777!important;background-color: #eee !important;">
+                [LS:EU_VAT_ReverseCharge] # @Model.Order.BillingAddress.VATNumber
+            </div>
+        </div>
+            }
+
+        <hr />
+        <div class="ms-row prow">
+            <div class="ms-col-md-12 p-12 table_detail">
+                <div class="ms-table ms-table-responsive order_table_info">
+                    <table class="ms-table order_table">
+                        <thead>
+                            <tr>
+                                <th class="sku">
+                                    [L:Item]
+                                </th>
+                                <th class="sku">
+                                    [L:Price]
+                                </th>
+                                <th class="sku">
+                                    [L:Quantity]
+                                </th>
+                                <th class="sku">
+                                    [L:Total]
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var oi in Model.Order.Items)
+                                {
+                                    if (oi.Product != null)
+                                    {
+                            <tr>
+                                <td class="productspecs" valign="top">
+                                    @oi.Product.Name <br />
+                                    <p class="skudetail">[L:SKU]  @oi.Product.SKU</p>
+                                    @if (oi.OrderItemAttribute != null)
+                                                {
+                                                    foreach (var v in oi.OrderItemAttribute)
+                                                    {
+                                                        if (v != null && v.AttributeTypeID == 1)
+                                                        {
+                                    <p>@v.Label [LS:Dash]  @v.Value</p>
+                                                        }
+                                                    }
+                                                }
+                                </td>
+
+                                <td valign="top">
+                                    @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                {
+                                    <span class="amount" style="white-space:nowrap">@oi.FormattedUnitPriceInclingTax</span>
+                                                }
+                                                else
+                                                {
+                                    <span class="amount" style="white-space:nowrap">@oi.FormattedUnitPriceExclTax</span>
+                                                }
+                                </td>
+
+                                <td valign="top">@oi.Quantity</td>
+
+                                <td valign="top">
+                                    @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                {
+                                    <span class="amount" style="white-space:nowrap">@oi.FormattedTotalPriceIncludingTax</span>
+                                                }
+                                                else
+                                                {
+                                    <span class="amount" style="white-space:nowrap"> @oi.FormattedTotalPriceExclTax</span>
+                                                }
+                                    @if (Model.Store.Tax.DisplayTaxSuffix)
+                                                {
+                                                    if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                    {
+                                                        if ((Model.Store.Tax.DisplayZeroTax && oi.TaxOnProduct >= 0) || (!Model.Store.Tax.DisplayZeroTax && oi.TaxOnProduct > 0))
+                                                        {
+                                    <div class="disp_tax">[LS:IncludingTax] @(oi.TaxPercentage.ToString("0.00")) [LS:Percent] [LS:Tax]</div>
+                                                        }
+                                                        else
+                                                        {
+                                    <span>[LS:Including_Tax]</span>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                    <div class="disp_tax">[LS:ExcludingTax] @(oi.TaxPercentage.ToString("0.00")) [LS:Percent] [LS:Tax]</div>
+                                                    }
+                                                }
+                                    @if (oi.HasDiscountAmount)
+                                                {
+                                    <span style="color:#0099e6;font-size:11px">[LS:YouSaved] @oi.FormattedDiscountAmountExclTax</span>
+                                                }
+                                </td>
+                            </tr>
+                                    }
+                                }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="ms-row prow">
+            <div class="ms-col-md-12 p-12">
+                <div class="cart_box_info">
+                    <h2 class="summarytitle">[L:CartTotals]</h2>
+                    <table class="ms-table ms-table-responsive cart-totals" style="width: 100%">
+                        <tbody>
+                            <tr class="cart-subtotal">
+                                <td valign="top">
+                                    <span>[L:SubTotal]</span>
+                                </td>
+                                <td class="tvalue" valign="top">
+                                    <span>
+                                        @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                            {
+                                        <span class="amount" id="cart-total">@Model.Order.FormattedSubtotalIncludingTax</span>
+                                            }
+                                            else
+                                            {
+                                        <span class="amount" id="cart-total">@Model.Order.FormattedSubtotal</span>
+                                            }
+
+                                        @if (Model.Store.Tax.DisplayTaxSuffix)
+                                            {
+                                                if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                {
+                                        <span>[LS:Including_Tax]</span>
+                                                }
+                                                else
+                                                {
+                                        <span>[LS:Excluding_Tax]</span>
+                                                }
+                                            }
+                                    </span>
+                                </td>
+                            </tr>
+                            @if (Model.Order.OrderTotalDiscount > 0)
+                                {
+                            <tr class="discount" valign="top">
+                                <td>
+                                    [L:Discount]
+                                </td>
+                                <td class="tvalue">
+                                    <span class="amount">(@Model.Order.FormattedOrderDiscount)</span>
+                                </td>
+                            </tr>
+                                }
+                            @if (Model.Order.OrderShipping > 0)
+                                {
+                            <tr class="shipping">
+                                <td valign="top">
+                                    [L:Shipping]
+                                </td>
+                                <td class="tvalue" valign="top">
+                                    <span style="white-space:nowrap;">
+                                        <span class="amount" id="shipping_method">@Model.Order.FormattedShippingCharge</span>
+                                        @if (Model.Store.Tax.DisplayTaxSuffix)
+                                                {
+                                                    if (Model.Store.Tax.IsShippingTaxable)
+                                                    {
+                                        <span>[LS:Excluding_Tax]</span>
+                                                    }
+                                                    else
+                                                    {
+                                        <span>[LS:Including_Tax]</span>
+                                                    }
+                                                }
+                                    </span>
+                                </td>
+                            </tr>
+                                }
+                            @if (Model.Store.Tax.HideTaxInOrderSummary)
+                                {
+                                    if (!Model.Store.Tax.DisplayAllAppliedTaxRates)
+                                    {
+                                        if ((Model.Store.Tax.DisplayZeroTax && Model.Order.OrderTax >= 0) || !Model.Store.Tax.DisplayZeroTax && Model.Order.OrderTax > 0)
+                                        {
+                            <tr class="shipping">
+                                <td valign="top">
+                                    [L:Tax]
+                                </td>
+                                <td class="tvalue" valign="top">
+                                    <span class="amount">@Model.Order.FormattedTax</span>
+                                </td>
+                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Model.Store.Tax.IsShippingTaxable && ((Model.Store.Tax.DisplayZeroTax && Model.Order.ShippingTax >= 0) || (!Model.Store.Tax.DisplayZeroTax && Model.Order.ShippingTax > 0)))
+                                        {
+                            <tr class="shippingtax">
+                                <td valign="top">
+                                    <span>[LS:Tax_Hyphen][LS:TaxOnShipping] (@(Model.Order.ShippingTaxScheduleRate != null ? Model.Order.ShippingTaxScheduleRate.ToString("0.00") : decimal.Zero.ToString("0.00"))[LS:Percent])</span>
+                                </td>
+                                <td class="tvalue" valign="top">
+                                    @Model.Order.FormattedShippingTax
+                                </td>
+                            </tr>
+                                        }
+
+                                        foreach (SelectListItem t in Model.Order.Taxies)
+                                        {
+                                            if ((Model.Store.Tax.DisplayZeroTax && decimal.Parse(t.Value) >= 0) || (!Model.Store.Tax.DisplayZeroTax && decimal.Parse(t.Value) > 0))
+
+                                            {
+                            <tr class="shipping">
+                                <td valign="top">
+                                    [LS:Tax_Hyphen] (@(Convert.ToDecimal(t.Text).ToString("0.00"))[LS:Percent])
+                                </td>
+                                <td class="tvalue" valign="top">
+                                    @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Excludingtax)
+                                                        {
+                                    @Mandeeps.LSF.Managers.PriceManager.FormatPrice(Model.Store, Convert.ToDecimal(t.Value))
+                                                        }
+                                                        else
+                                                        {
+                                    <span>[LS:Dash] </span>
+                                                        }
+                                </td>
+                            </tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            <tr class="total">
+                                <td valign="top">
+                                    <span>[L:Total]</span>
+                                </td>
+                                <td class="tvalue" valign="top">
+                                    <strong><span class="amount" id="order-total">@Model.Order.FormattedGrandTotalPrice</span></strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+<style>
+    @@media print {
+
+        body * {
+            display: none;
+        }
+
+        body {
+            margin-left: 0 !important;
+        }
+
+        #PrintInvoice {
+            display: block !important;
+        }
+
+        #LSF_OrderedItem, #LSF_OrderedItem * {
+            display: block !important;
+        }
+
+        ul {
+            list-style: none;
+            padding: 10px;
+        }
+
+        #LSF_OrderedItem table {
+            display: table !important;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        #LSF_OrderedItem tbody {
+            display: table-row-group !important;
+        }
+
+        #LSF_OrderedItem thead {
+            display: table-header-group !important;
+        }
+
+        #LSF_OrderedItem tr {
+            display: table-row !important;
+        }
+
+        #LSF_OrderedItem td, #LSF_OrderedItem th {
+            width: auto !important;
+            display: table-cell !important;
+        }
+
+        #PrintInvoice .Infostore {
+            margin-top: 10px;
+        }
+
+
+        .table_detail {
+            margin-top: 10px;
+        }
+
+        .order_table {
+            border: 1px solid #ddd;
+            width: 100%;
+        }
+
+        #PrintInvoice .tophr {
+            display: none !important;
+        }
+
+        .order_table td p {
+            margin-bottom: 0;
+        }
+
+        .invoice_btn,
+        .shopping_cart {
+            display: none;
+        }
+
+        .ms-container {
+            padding: 0;
+            margin: 0;
+            background-color: transparent;
+            width: 100%;
+        }
+
+        .ms-row {
+            display: inline-block;
+        }
+
+        .ms-col-md-12 {
+            width: 100%;
+        }
+
+        .ms-col-md-6 {
+            width: 50%;
+            float: left;
+        }
+
+        .ms-col-md-8 {
+            width: 66.66666667%;
+            float: left;
+        }
+
+        .ms-col-md-4 {
+            width: 33.33333333%;
+            float: left;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .invoice_btn {
+            text-align: center;
+        }
+
+        ul.order_info {
+            text-align: center;
+        }
+
+
+        .invoice_title h2, .invoice_title h3 {
+            display: inline-block;
+        }
+
+        .order_information {
+            margin: 0;
+        }
+
+        .StoreLogo span {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+            .StoreLogo span.uppercase {
+                margin-top: 0px;
+            }
+
+        .uppercase {
+            text-transform: uppercase;
+        }
+
+        .cart_box_info h2 {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+            text-align: left;
+            color: #808080;
+            margin: 0;
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        .lsf_aisoft .order_table th {
+            background-color: rgb(246, 246, 246);
+            white-space: nowrap;
+            font-weight: normal;
+            border-width: 1px 1px 0px;
+            border-style: solid;
+            border-color: rgb(221, 221, 221);
+            padding: 10px;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        .order_table td {
+            min-width: 50px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: transparent #ddd #ddd;
+            background-color: #fff;
+            padding: 10px;
+            color: #444;
+            text-align: left;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+
+        .StoreLogo {
+            text-align: left;
+        }
+
+        #logo {
+            margin-bottom: 20px;
+            height: 70px;
+        }
+
+        .invoicetitle {
+            margin: 0;
+        }
+
+
+        .ms-col-md-4.order_info.StoreDetail {
+            text-align: right;
+            font-size: 20px;
+        }
+
+        .paymentdisplayname {
+            font-weight: bold;
+        }
+
+
+        .invoice_title {
+            font-size: 25px;
+            margin-bottom: 15px;
+        }
+
+        .order_information h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+
+        .orderdate {
+            font-size: 12px;
+            color: #757575;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+
+        .invoice_title {
+            font-size: 25px;
+            margin-top: 15px;
+        }
+
+        .addressdetail {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .table_detail {
+            margin-top: 10px;
+        }
+
+        .Paymentmethod {
+            margin-top: 15px;
+        }
+
+        .StoreDetail span {
+            display: block;
+        }
+
+        .StoreName {
+            font-size: 25px;
+        }
+
+        .storeInfo {
+            white-space: pre-line;
+            font-size: 14px;
+            display: block;
+            color: #808080;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        .tvalue {
+            text-align: right;
+        }
+
+        .order_table {
+            border: 1px solid #ddd;
+        }
+
+            .order_table td .skudetail {
+                font-size: 10px;
+                margin: 0;
+            }
+
+            .order_table td.productspecs p {
+                font-size: 12px;
+                line-height: 16px;
+            }
+
+        #PrintInvoice td p.skudetail {
+            display: block !important;
+        }
+
+        .ordertitle {
+            text-transform: uppercase;
+            padding: 0;
+            margin-bottom: 5px !important;
+        }
+
+        .order_table th {
+            border-width: 1px 1px 0;
+            border-style: solid;
+            border-color: #ddd;
+            background-color: #f6f6f6 !important;
+            padding: 10px;
+            white-space: nowrap;
+            font-weight: normal;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        .order_table td {
+            min-width: 50px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: transparent #ddd #ddd;
+            background-color: #fff;
+            padding: 10px;
+            color: #494949;
+            text-align: left;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        .cart_box_info {
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .summarytitle {
+            color: #808080 !important;
+            margin: 0;
+            font-size: 16px !important;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        .transaction {
+            word-break: break-word !important;
+        }
+
+        .cart_box_info .cart-totals tr {
+            font-size: 16px;
+            border-bottom: 1px solid #eee;
+            color: #494949;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+            .cart_box_info .cart-totals tr:last-child {
+                border-bottom: 0;
+            }
+
+            .cart_box_info .cart-totals tr td {
+                padding: 6px 0;
+            }
+
+        .order-info .cart_box_info h2 {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .Paymentmethod {
+            margin-top: 15px;
+        }
+
+        .billing_detail_info,
+        .shipping_detail_info {
+            background-color: #f9f9f9 !important;
+            max-width: 100%;
+            color: #757575 !important;
+            font-size: 16px;
+            font-weight: normal;
+            min-height: 218px;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        .vat_msg .title {
+            padding: 7px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #777 !important;
+            background-color: #000 !important;
+            color-adjust: exact !important;
+        }
+
+        .billing_detail_info .title,
+        .shipping_detail_info .title {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            background: #808080 !important;
+            color: white !important;
+            padding: 5px 10px;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+        }
+
+        .methodBox {
+            min-height: 122px !important;
+        }
+
+        .tophr {
+            display: none;
+        }
+
+
+        .order_table th:first-child,
+        .order_table td:first-child {
+            min-width: 220px;
+        }
+
+        .StoreDetail {
+            text-align: right;
+            font-size: 20px;
+        }
+
+        .StoreName {
+            font-size: 25px;
+        }
+
+        .storeInfo {
+            font-size: 16px;
+            display: block;
+        }
+
+        ul.billing-info,
+        ul.shipping-info {
+            list-style: none;
+            text-align: left;
+            padding: 10px;
+            color: #757575 !important;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+        }
+
+            ul.billing-info li.title,
+            ul.shipping-info li.title {
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+        .invoicedetail {
+            text-align: right;
+            display: block;
+            font-size: 14px;
+        }
+
+
+        .order_information .ordertitle .barcodeDiv {
+            width: 100% !important;
+        }
+
+            .order_information .ordertitle .barcodeDiv > object {
+                float: right;
+                margin-bottom: 10px;
+            }
+
+        @@page {
+            size: auto;
+            margin: 0mm 5mm;
+        }
+    }
+</style>

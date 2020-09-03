@@ -1,0 +1,135 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+<div id="LSF_@Model.Store.StoreModuleID" class="LSF_@Model.Store.StoreModuleID lsf_aisoft compare">
+    <div id="LSF_DefaultCompare" class="compare_page">
+        @if (Model.Store.Catalog.EnableCompareProducts)
+        {
+            if (Model.Products.Count > 0)
+            {
+                <div class="shopping_cart">
+                    <h2>[L:CompareProducts]</h2>
+                </div>
+                <div class="tablecart compare_table">
+                    <button type="button" onclick="Compare.ClearList()" class="ms-btn ms-btn-default ms-pull-right">[L:ClearLists]</button>
+                    <div class="clear"></div>
+                    <hr />
+                    <div class="ms-table-responsive">
+                        <table class="ms-table ms-table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th scope="row"></th>
+                                    @foreach (Product p in Model.Products)
+                                    {
+                                    <td class="clearcompare"><a id="remove_compare-@p.ProductID" onclick="Compare.Remove(@p.ProductID,'@Model.Store.URL.Compare');return false;" data-loading-text="Remove"><em class="fas fa-times"></em></a></td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    @foreach (Product p in Model.Products)
+                                    {
+                                        <td>
+                                            <div class="compareImg">
+                                                @if (p.ProductImages.FirstOrDefault() == null)
+                                                {
+                                                    <img src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="@p.ProductImages.FirstOrDefault().ImageUrl" alt="@(p.ProductImages.FirstOrDefault().Alt)" />
+                                                }
+                                            </div>
+                                        </td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <th scope="row">[L:Name]</th>
+                                    @foreach (Product p in Model.Products)
+                                    {
+                                        <td>
+                                            <a href="@p.PermLink">@p.Name</a>
+                                        </td>
+                                    }
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">[L:Price]</th>
+                                    @foreach (Product p in Model.Products)
+                                    {
+                                        <td>                                            
+                                            @if (p.IsOnSale && p.SpecialPrice >= 0)
+                                            {
+                                               <label>@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? p.FormattedSalePriceIncludeTax : p.FormattedSalePrice)</label>
+                                            }
+                                            else
+                                            {
+                                               <label>@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? p.FormattedPriceIncludeTax : p.FormattedPrice)</label>
+                                            }                                          
+                                            @if (Model.Store.Catalog.DisplayTaxSuffix)
+                                            {
+                                                if (Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                {
+                                                    <span>[LS:Including_Tax]</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>[LS:Excluding_Tax]</span>
+                                                }
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <th scope="row">[L:Description]</th>
+                                    @foreach (Product p in Model.Products)
+                                    {
+                                        <td>
+                                            @Raw(p.Description)
+                                        </td>
+                                    }
+                                </tr>
+
+                                @foreach (EntityAttribute Attribute in Model.Attributes)
+                                {
+                                    <tr>
+                                        <th>
+                                            <label>@Attribute.Name</label>
+                                        </th>
+                                        @foreach (Product p in Model.Products)
+                                        {
+                                            <td>
+                                                @foreach (ProductSpecification ps in p.Specifications.Where(ps => ps.AttributeID == Attribute.AttributeID).ToList())
+                                                {                                                  
+                                                    @Raw(ps.AttributeValue)                                                   
+                                                    <br />
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="shopping_cart">
+                    <h2>[L:CompareProducts]</h2>
+                </div>
+                <div class="tablecart compare_table">
+                    <h5>[L:YouHaveNoItemToCompare]</h5>
+                </div>
+            }
+        }
+        else {
+            <div class="shopping_cart">
+                <h2>[L:CompareProducts]</h2>
+            </div>
+            <div class="tablecart compare_table">
+                <h5>[L:YouHaveNoPermissionForCompareProduct] </h5>
+            </div>
+        }
+    </div>
+</div>

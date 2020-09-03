@@ -1,0 +1,34 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+    @if (Model.SelectedWidget.DisplayMode == "vertical")
+    {
+        <div id="LSF_Search_Widget_@Model.Widget.ModuleID" class="lsf_widget LSF_@Model.Store.StoreModuleID lsf_aisoft">
+                @*<h2><em class="fas fa-search"></em> [L:Search] </h2>*@
+                @*<input id="Search" name="Search" type="text" placeholder="search" />
+                    <a class="ms-btn ms-btn-default ms-store-search" href="#">Search</a>*@
+                <div class="searchbtn">
+                    <input id="Search" type="text" placeholder="Search..." onkeypress="return search.searchKeyPress(event);">
+                        <button id="button_search" class="ms-btn ms-btn-primary" type="button" onclick="search.search_widget('LSF_Search_Widget_@Model.Widget.ModuleID','@Model.Store.URL.Search')">
+                            <em class="fas fa-search"></em>
+                        </button>
+                </div>
+        </div>
+    }
+    else {
+        <div id="LSF_Search_Widget_@Model.Widget.ModuleID" class="lsf_widget LSF_@Model.Store.StoreModuleID lsf_aisoft mwidget mborder fixwidth">
+            <div class="small_search search-icon miniWidget Widgettab">
+                <a id="searchbutton">
+                    <em class="fas fa-search"></em>
+                </a>
+                <div class="searchbtn searchBar Widgetbox">
+                    <input id="Search" class="" type="text" placeholder="Search..." onkeypress="return search.searchKeyPress(event)" autofocus="autofocus">
+                    <span class="">
+                        <button id="button_search" class="ms-btn ms-btn-primary" type="button" onclick="search.search_widget('LSF_Search_Widget_@Model.Widget.ModuleID','@Model.Store.URL.Search')">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    }

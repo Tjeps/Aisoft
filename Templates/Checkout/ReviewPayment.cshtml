@@ -1,0 +1,306 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@using Mandeeps.LSF.Entities
+@inherits TemplateBase<dynamic>
+@{
+    double total = 0.00;
+}
+
+<div class="ms-container lsf_shop">
+    @if (Model != null && (((IDictionary<string, Object>)Model).ContainsKey("ShoppingCart") == true) && Model.ShoppingCart != null && Model.ShoppingCart.Item.Count != 0)
+    {
+        <div class="ms-row">
+            <div class="ms-col-md-12">
+                <table class="shop_table cart">
+                    <thead>
+                        <tr>
+                            <th class="product-thumbnail">
+                                &nbsp;
+                            </th>
+                            <th class="product-name">
+                                [L:Product]
+                            </th>
+                            <th class="product-price">
+                                [L:Price]
+                            </th>
+                            <th class="product-quantity">
+                                [L:Quantity]
+                            </th>
+                            <th class="product-subtotal">
+                                [L:Total]
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="shoping_cart">
+                        @foreach (CartItem c in Model.ShoppingCart.Item)
+                        {
+                            //total += (double)(c.ProductPrice * c.Quantity);
+                            total += (double)(c.Product.PriceValue * c.Quantity);
+                            <tr class="cart_table_item">
+                                <td class="product-thumbnail">
+                                    <a href="@c.PermLink">
+                                        @if (c.ProductImage != null)
+                                        {
+                                            <img width="100" height="100" class="img-responsive" alt="@c.ProductImage.Alt" src="@c.ProductImage.ImageUrl" title="@c.ProductImage.Title">
+                                        }
+                                        else
+                                        {
+                                            <img width="100" height="100" class="img-responsive" alt="" src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" title="">
+                                        }
+                                    </a>
+                                </td>
+                                <td class="product-name">
+                                    <a href="@c.PermLink">@c.ProductName</a><br />
+                                    @foreach (AttributeInfo xmlinfo in c.AttributeInfo)
+                                    {
+                                        <strong><span>@xmlinfo.VariationName:</span></strong> @xmlinfo.VariationOptionName
+                                        <br />
+                                    }
+                                    @if (c.Product.AvailablityMessage != null)
+                                    {
+                                        <p style="color:red">@c.Product.AvailablityMessage</p>
+                                    }
+                                </td>
+                                <td class="product-price">
+                                    @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                    {
+                                        <span class="titlehead">[L:Price]:</span><span class="amount">@c.FormattedPriceIncludeTax</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="titlehead">[L:Price]:</span><span class="amount">@c.FormattedPrice</span>
+                                    }
+                                </td>
+                                <td class="product-quantity">
+                                    <span class="titlehead">[L:Qty]:</span><span class="quantity">
+                                        @c.Quantity
+                                    </span>
+                                </td>
+                                <td class="product-subtotal">
+                                    @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                    {
+                                        <span class="titlehead">[L:Total]:</span><span class="amount">@c.FormattedTotalPriceWithDiscountIncTax</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="titlehead">[L:Total]:</span><span class="amount">@c.FormattedTotalPriceWithDiscount</span>
+                                    }
+                                    @if (Model.Store.Tax.DisplayTaxSuffix)
+                                    {
+                                        if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                        {
+                                            if ((Model.Store.Tax.DisplayZeroTax && c.TaxOnProduct >= 0) || (!Model.Store.Tax.DisplayZeroTax && c.TaxOnProduct > 0))
+                                            {
+                                                <div class="disp_tax"> <text>[LS:IncludingTax]</text> @(c.TaxPercentage.ToString("0.00"))<text>[LS:Percent] [L:Tax]</text></div>
+                                            }
+                                            else
+                                            {
+                                                <span>[LS:Including_Tax]</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="disp_tax"> <text>[LS:ExcludingTax]</text> @(c.TaxPercentage.ToString("0.00"))<text>[LS:Percent] [L:Tax]</text></div>
+                                        }
+                                    }
+                                    @if (c.HasDiscountAmount)
+                                    {
+                                        <span style="color:#0099e6;font-size:11px">[L:YouSave] @c.FormattedDiscountAmount</span>
+                                    }
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr style="visibility:hidden;" />
+    }
+    @if (Model != null && Model.ShoppingCart != null)
+    {
+        <div class="ms-row">
+            <div class="ms-col-sm-12">
+                <h4 class="heading-primary ms-text-uppercase mb-md">[L:CartTotals]</h4>
+
+                <table id="CartTotal_@Model.Store.StoreModuleID" class="cart-totals">
+                    <tbody>
+                        <tr class="cart-subtotal">
+                            <th>
+                                [L:CartSubtotal]
+                            </th>
+                            <td>
+                                @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                {
+                                    <span class="amount" id="cart-total">
+                                        @Model.ShoppingCart.FormattedSubTotalInclTax
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="amount" id="cart-total">@Model.ShoppingCart.FormattedSubTotalExclTax</span>
+                                }
+
+                                @if (Model.Store.Tax.DisplayTaxSuffix)
+                                {
+                                    if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                    {
+                                        <span>[L:Including_Tax]</span>
+                                    }
+                                    else
+                                    {
+                                        <span>[L:Excluding_Tax]</span>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        @if (Model.Store.ShoppingCart.ShowDiscountBox)
+                        {
+                            <tr class="discount">
+                                <th>
+                                    [L:Discount]
+                                </th>
+                                <td>
+                                    <span class="amount">(@Model.ShoppingCart.FormattedSubtotalDiscount)</span>
+                                </td>
+                            </tr>
+                        }
+                        @if (Model.ShoppingCart.ShippingEnable)
+                        {
+                            <tr class="shipping">
+                                <th>
+                                    [L:Shipping]
+                                </th>
+                                <td>
+                                    <span class="ShippingCharge">@Model.ShoppingCart.FormattedShippingCharge</span>
+                                    @if (Model.Store.Tax.DisplayTaxSuffix)
+                                    {
+                                        if (Model.Store.Tax.IsShippingTaxable)
+                                        {
+                                            <span>[L:Excluding_Tax]</span>
+                                        }
+                                        else
+                                        {
+                                            <span>[L:Including_Tax]</span>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        @if (Model.ShoppingCart.PaymentGatewayCharge > 0)
+                        {
+                            <tr class="shipping">
+                                <th>
+                                    [L:PaymentGateway]
+                                </th>
+                                <td>
+                                    <span class="ShippingCharge">@Model.ShoppingCart.FormattedPaymentGatewayCharge</span>
+                                </td>
+                            </tr>
+                        }
+
+                        @if (Model.Store.Tax.HideTaxInOrderSummary)
+                        {
+                            if (!Model.Store.Tax.DisplayAllAppliedTaxRates)
+                            {
+                                if ((Model.Store.Tax.DisplayZeroTax && Model.ShoppingCart.TotalTax >= 0) || (!Model.Store.Tax.DisplayZeroTax && Model.ShoppingCart.TotalTax > 0))
+                                {
+                                    <tr class="shipping">
+                                        <th>
+                                            [L:Tax]
+                                        </th>
+                                        <td>
+                                            <span class="amount">@Model.ShoppingCart.FormattedTotalTax</span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                if (Model.Store.Tax.IsShippingTaxable && ((Model.Store.Tax.DisplayZeroTax && Model.ShoppingCart.TaxOnShipping >= 0) || (!Model.Store.Tax.DisplayZeroTax && Model.ShoppingCart.TaxOnShipping > 0)))
+                                {
+                                    <tr class="shippingtax">
+                                        <th>
+                                            <span>[LS:Tax_Hyphen][LS:TaxOnShipping](@(Model.ShoppingCart.ShippingTaxPercentage.ToString("0.00"))[LS:Percent])</span>
+                                        </th>
+                                        <td>
+                                            @Model.ShoppingCart.FormattedTaxOnShipping
+                                        </td>
+                                    </tr>
+                                }
+                                foreach (SelectListItem t in Model.ShoppingCart.Taxies)
+                                {
+                                    if ((Model.Store.Tax.DisplayZeroTax && decimal.Parse(t.Value) >= 0) || (!Model.Store.Tax.DisplayZeroTax && decimal.Parse(t.Value) > 0))
+                                    {
+                                        <tr class="shipping">
+                                            <th>
+                                                [LS:Tax_Hyphen] (@(Convert.ToDecimal(t.Text).ToString("0.00"))[LS:Percent])
+                                            </th>
+
+                                            @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Excludingtax)
+                                            {
+                                                <td>
+                                                    @Mandeeps.LSF.Managers.PriceManager.FormatPrice(Model.Store, Convert.ToDecimal(t.Value))
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    <span>[LS:Dash]</span>
+                                                </td>
+                                            }
+
+                                        </tr>
+                                    }
+                                }
+                            }
+                        }
+
+                        <tr>
+                            <th>
+                                [L:OrderTotal]
+                            </th>
+                            <td>
+                                <strong class="order-total"><span class="order-sum">@Model.ShoppingCart.FormattedTotalPrice</span></strong>
+                                <input type="hidden" value="@Model.ShoppingCart.FormattedTotalPrice" id="OrderTotal" name="OrderTotal">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="border-bottom: none;">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="ms-row">
+            <hr style="visibility:hidden;" />
+            <div class="ms-col-sm-12">
+                <h4 class="heading-primary ms-text-uppercase mb-md">[L:HeadingPayment]</h4>
+            </div>
+        </div>
+        <!--PaymentInfo-->
+        <div id="PaymentInformation_@Model.Store.StoreModuleID">
+            <div class="payment-info">
+            </div>
+        </div>
+        <div class="ErrorMessages_@Model.Store.StoreModuleID">
+        </div>
+        <!--PaymentInfo END-->
+        <div class="ms-row">
+            <hr />
+            <div class="ms-col-md-12" style="text-align:right;margin-bottom: 10px;">
+                @if (Model.Store.ShoppingCart.DisplayTermsCondition)
+                {
+                    <input type="checkbox" id="checktermcondition" name="checktermcondition" style="vertical-align:text-top;margin-right:5px;" /><span>[L:TermsAndConditions]</span>
+                }
+            </div>
+            <br />
+            <div class="ms-col-md-12">
+                <input type="button" id="orderplacebtn" value="[L:PlaceOrder]" name="proceed" onclick="ConfirmOrder.Save('#PaymentInformation_@Model.Store.StoreModuleID','@Model.Store.ShoppingCart.DisplayTermsCondition.ToString()')" class="ms-btn chkout_btn place_order ms-pull-right LSF_@(@Model.Store.StoreModuleID)ConfirmOrderSave">
+            </div>
+        </div>
+    }
+
+</div>

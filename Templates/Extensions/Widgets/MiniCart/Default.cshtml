@@ -1,0 +1,353 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+
+@if ((((IDictionary<string, Object>)Model).ContainsKey("ShoppingCart") == true) && Model.ShoppingCart != null)
+{
+    if (Model.SelectedWidget != null && Model.SelectedWidget.DisplayMode != null && Model.SelectedWidget.DisplayMode == "vertical")
+    {
+
+        <div class="LSF_@Model.Store.StoreModuleID Widget_@Model.WidgetSetting.WidgetModuleID minicart lsf_aisoft" id="lsf_minicart_widget">
+
+            @{
+                double total = 0.00;
+                int qty = 0;
+                int i = 1;
+                int mini_cart_item = Model.WidgetSetting.MiniShopingCartProductNumber;
+
+            }
+
+            <div class="cart-widget space-bottom Widgettab">
+                @foreach (CartItem Item in Model.ShoppingCart.Item)
+                {
+                    qty = qty + Item.Quantity;
+                    //total += Item.Quantity * @Item.ProductPrice;
+                    //total += Item.Quantity * Convert.ToDouble(@Item.Product.PriceValue);
+                }
+
+                <div class="cart-title">
+                    <a class="cart-button" href="@Model.Store.URL.Cart"><em class="fas fa-shopping-cart"></em> <span>[LS:Cart]</span><span> (@qty)</span></a>
+                </div>
+
+                @if (Model.WidgetSetting.ShowMiniShopingCart)
+                {
+                    <div id="Shopping-cart-wt" class="Shopping-cart-widget Widgetbox">
+                        @if (Model.ShoppingCart.Item.Count > 0)
+                        {
+                            if (Model.ShoppingCart.Item.Count == 1)
+                            {
+                                <h5>[L:CartTitle] <a href="@Model.Store.URL.Cart"><b>@qty [L:Item]</b></a> [L:CartQuantity]</h5>
+                            }
+                            else
+                            {
+                                <h5>[L:CartTitles] <a href="@Model.Store.URL.Cart"><b>@qty [L:Items]</b></a> [L:CartQuantity]</h5>
+                            }
+                            <div class="cart-items-list">
+
+                                @foreach (CartItem Item in Model.ShoppingCart.Item)
+                                {
+                                    if (mini_cart_item >= i)
+                                    {
+                                        <hr>
+                                        <div class="ms-col-md-12  cart-items">
+                                            <div class="cart-image ms-col-md-3">
+                                                @if (Item.ProductImage != null)
+                                                {
+                                                    <img class="ms-img-responsive" alt="@Item.ProductImage.Alt" src="@Item.ProductImage.ImageUrl" title="@Item.ProductImage.Title">
+                                                }
+                                                else
+                                                {
+                                                    <img alt="" class="ms-img-responsive" src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" title="">
+                                                }
+                                            </div>
+                                            <div class="cart-product ms-col-md-9">
+                                                <a href="@Item.PermLink"><h4>@Item.ProductName</h4></a>
+                                                <div class="product-remove">
+                                                    <a title="Remove this item" class="remove LSF_@(Item.ModuleID)RemoveFromCart@(Item.ProductID)" id="removeitems-@Item.CartID" onclick="Cart.Delete(@Item.CartID);"><i class="fa fa-times"></i></a>
+                                                </div>
+                                                <span>
+                                                    @foreach (AttributeInfo xmlinfo in Item.AttributeInfo)
+                                                    {
+
+                                                        @(xmlinfo.VariationName + " : " + xmlinfo.VariationOptionName)<br />
+                                                    }
+                                                </span>
+                                                <div class="product_amount">
+                                                    <span>
+                                                        [L:UnitPrice]
+                                                        @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                        {
+                                                            <span class="amount " id="total-@Item.CartID">@Item.FormattedPriceIncludeTax</span><span class="unitofmeasure">&nbsp;@Item.Product.UnitOfMeasurment</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="amount " id="total-@Item.CartID">@Item.FormattedPrice</span><span class="unitofmeasure">&nbsp;@Item.Product.UnitOfMeasurment</span>
+                                                        }
+                                                    </span>
+                                                    @if (Model.Store.Tax.DisplayTaxSuffix)
+                                                    {
+                                                        if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                        {
+                                                            <span>[LS:Including_Tax]</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>[LS:Excluding_Tax]</span>
+                                                        }
+                                                    }
+                                                    <br />
+                                                    <span>[L:Quantity] @Item.Quantity</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                    i++;
+                                }
+                            </div>
+                            <hr>
+                            <p class="sub-total">
+                                [L:SubTotal]<strong>
+                                    <span id="Subtotal">
+                                        @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                        {
+                                            <span class="amount">
+                                                <span class="cartsubtotalamount amount">@Model.ShoppingCart.FormattedSubTotalInclTax</span>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="amount">
+                                                <span class="cartsubtotalamount amount">@Model.ShoppingCart.FormattedSubTotalExclTax</span>
+                                            </span>
+                                        }
+                                        @if (Model.Store.Tax.DisplayTaxSuffix)
+                                        {
+                                            if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                            {
+                                                <span>[LS:Including_Tax]</span>
+                                            }
+                                            else
+                                            {
+                                                <span>[LS:Excluding_Tax]</span>
+                                            }
+                                        }
+                                    </span>
+                                </strong>
+                            </p>
+                            <div class="cart-actions">
+                                <a href="@Model.Store.URL.Cart" class="ms-btn viewcart">[L:Gotocart]</a>
+                                @if (Model.Store.Current.UserLoggedIn)
+                                {
+                                    <a class="ms-btn addtocart_btn chkout_btn" href='@Model.Store.URL.Checkout'>[L:Checkout]</a>
+                                }
+                                else
+                                {
+                                    if (Model.Store.Checkout.AnonymousCheckoutAllowed)
+                                    {
+                                        <a class="ms-btn ms-btn chkout_btn proceedchkout" href='@(Model.Store.Checkout.ForceGuestCheckout ? Model.Store.URL.Checkout : Model.Store.URL.Guest)'>[L:Checkout]</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="ms-btn ms-btn chkout_btn proceedchkout" href='@Model.Store.URL.Login'>[L:Checkout]</a>
+                                    }
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                [L:NoItemInCart]
+                            </div>
+                        }
+
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+
+
+    else
+    {
+
+
+        <div class="LSF_@Model.Store.StoreModuleID Widget_@Model.WidgetSetting.WidgetModuleID minicart lsf_aisoft mwidget mborder fixwidth" id="lsf_minicart_widget">
+
+            @{
+                double total = 0.00;
+                int qty = 0;
+                int i = 1;
+                int mini_cart_item = Model.WidgetSetting.MiniShopingCartProductNumber;
+
+            }
+            <div class="cart-widget miniWidget Widgettab">
+                @foreach (CartItem Item in Model.ShoppingCart.Item)
+                {
+                    qty = qty + Item.Quantity;
+                    //total += Item.Quantity * @Item.ProductPrice;
+                    //total += Item.Quantity * Convert.ToDouble(@Item.Product.PriceValue);
+                }
+                @if (Model.WidgetSetting != null && !Model.WidgetSetting.ShowLabel)
+                {
+                    <div class="small-cart-widget">
+                        <a class="cart-button" href="@Model.Store.URL.Cart"><em class="fas fa-shopping-cart"></em></a>
+                        @if (qty > 0)
+                        {
+                            <sup class="productCount"><span class="ms-badge badge_bg">@qty</span></sup>
+                        }
+                    </div>
+
+                }
+                else
+                {
+                    <div class="small-cart-widget">
+                        <a class="cart-button" href="@Model.Store.URL.Cart"><em class="fas fa-shopping-cart"></em> <span>[LS:Cart]</span></a>
+                        @if (qty > 0)
+                        {
+                            <sup class="productCount"><span class="ms-badge badge_bg">@qty</span></sup>
+                        }
+                    </div>
+
+                }
+                @if (Model.WidgetSetting.ShowMiniShopingCart)
+                {
+                    <div id="Shopping-cart-wt" class="Shopping-cart-widget Widgetbox">
+                        @if (Model.ShoppingCart.Item.Count > 0)
+                        {
+                            if (Model.ShoppingCart.Item.Count == 1)
+                            {
+                                <h5>[L:CartTitle] <a href="@Model.Store.URL.Cart"><b>@qty [L:Item]</b></a> [L:CartQuantity]</h5>
+                            }
+                            else if (Model.ShoppingCart.Item.Count > 1)
+                            {
+                                <h5>[L:CartTitles] <a href="@Model.Store.URL.Cart"><b>@qty [L:Items]</b></a> [L:CartQuantity]</h5>
+                            }
+                            <div class="cart-items-list">
+
+                                @foreach (CartItem Item in Model.ShoppingCart.Item)
+                                {
+                                    if (mini_cart_item >= i)
+                                    {
+                                        <hr>
+                                        <div class="ms-col-md-12 cart-items">
+                                            <div class="cart-image ms-col-md-3">
+                                                @if (Item.ProductImage != null)
+                                                {
+                                                    <img class="ms-img-responsive" alt="@Item.ProductImage.Alt" src="@Item.ProductImage.ImageUrl" title="@Item.ProductImage.Title">
+                                                }
+                                                else
+                                                {
+                                                    <img alt="" class="ms-img-responsive" src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" title="">
+                                                }
+                                            </div>
+                                            <div class="cart-product ms-col-md-9">
+                                                <a href="@Item.PermLink"><h4>@Item.ProductName</h4></a>
+                                                <div class="product-remove">
+                                                    <a title="Remove this item" class="remove" id="removeitems-@Item.CartID" onclick="Cart.Delete(@Item.CartID);"><i class="fa fa-times"></i></a>
+                                                </div>
+                                                <span>
+                                                    @foreach (AttributeInfo xmlinfo in Item.AttributeInfo)
+                                                    {
+
+                                                        @(xmlinfo.VariationName + " : " + xmlinfo.VariationOptionName)<br />
+                                                    }
+                                                </span>
+                                                <div class="product_amount">
+                                                    @*<span>[L:UnitPrice] @Item.Product.FormattedPrice</span><br />*@
+                                                    <span>
+                                                        [L:UnitPrice] @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                        {
+                                                            <span class="amount " id="total-@Item.CartID">@Item.FormattedPriceIncludeTax</span><span class="unitofmeasure">&nbsp;@Item.Product.UnitOfMeasurment</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="amount " id="total-@Item.CartID">@Item.FormattedPrice</span><span class="unitofmeasure">&nbsp;@Item.Product.UnitOfMeasurment</span>
+                                                        }
+                                                    </span>
+                                                    @if (Model.Store.Tax.DisplayTaxSuffix)
+                                                    {
+                                                        if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                        {
+                                                            <span>[LS:Including_Tax]</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>[LS:Excluding_Tax]</span>
+                                                        }
+                                                    }
+                                                    <br />
+                                                    <span>[L:Quantity] @Item.Quantity</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                    i++;
+                                }
+                            </div>
+                            <hr>
+                            <p class="sub-total">
+                                [L:SubTotal]<span id="Subtotal">
+                                    @if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                    {
+                                        <span class="amount">
+                                            <span class="cartsubtotalamount amount">@Model.ShoppingCart.FormattedSubTotalInclTax</span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="amount">
+                                            <span class="cartsubtotalamount amount">@Model.ShoppingCart.FormattedSubTotalExclTax</span>
+                                        </span>
+                                    }
+                                    @if (Model.Store.Tax.DisplayTaxSuffix)
+                                    {
+                                        if (Model.Store.Tax.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                        {
+                                            <span>[LS:Including_Tax]</span>
+                                        }
+                                        else
+                                        {
+                                            <span>[LS:Excluding_Tax]</span>
+                                        }
+                                    }
+                                </span>
+                            </p>
+
+                            <div class="cart-actions">
+                                <a href="@Model.Store.URL.Cart" class="ms-btn viewcart">[L:Gotocart]</a>
+
+                                @if (Model.Store.Current.UserLoggedIn)
+                                {
+                                    <a class="ms-btn addtocart_btn chkout_btn" href='@Model.Store.URL.Checkout'>[L:Checkout]</a>
+                                }
+                                else
+                                {
+                                    if (Model.Store.Checkout.AnonymousCheckoutAllowed)
+                                    {
+                                        <a class="ms-btn ms-btn chkout_btn proceedchkout" href='@(Model.Store.Checkout.ForceGuestCheckout ? Model.Store.URL.Checkout : Model.Store.URL.Guest)'>[L:Checkout]</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="ms-btn ms-btn chkout_btn proceedchkout" href='@Model.Store.URL.Login'>[L:Checkout]</a>
+                                    }
+
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                [L:NoItemInCart]
+                            </div>
+                        }
+
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}

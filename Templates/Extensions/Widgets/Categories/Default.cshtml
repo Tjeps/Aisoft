@@ -1,0 +1,16 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+@if (Model.Categories != null && @Model.Categories.Count > 0)
+{
+    <div  class="lsf_widget LSF_@Model.Store.StoreModuleID lsf_aisoft">
+        <div class="widget-navigation space-bottom widget_categories">
+            <h3>[LS:Categories] <span class="category-icon"><em class="fa fa-caret-right"></em></span></h3>
+            @Include("Common/List", @Model.Categories)
+        </div>
+    </div>
+}
+
+
+

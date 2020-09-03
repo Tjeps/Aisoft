@@ -1,0 +1,148 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+<div id="LSF_@Model.Store.StoreModuleID" class="lsf_default_wishlist LSF_@Model.Store.StoreModuleID lsf_aisoft @((((IDictionary<string, Object>)Model).ContainsKey("SelectListItem") == true) && Model.SelectListItem !=null && !string.IsNullOrEmpty(Model.SelectListItem.Text) ? Model.SelectListItem.Text : "")">
+    <div class="lsf_cart">
+        @if (Model.ShoppingCart != null && Model.ShoppingCart.Item.Count >= 1)
+        {
+            <div class="ms-container lsf_shop">
+                <div class="ms-row">
+                    <div class="ms-col-md-12">
+                        <div class="featured-boxes">
+                            <div class="ms-row">
+                                <div class="ms-col-md-12">
+                                    <div class="ms-featured-box ms-featured-box-primary align-left mt-sm">
+                                        <div class="box-content">
+                                            <div class="shopping_cart">
+                                                <h2>[L:WishList]</h2>
+                                            </div>
+                                            <div class="tablecart">
+                                                <table class="shop_table cart">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="product-addtocart">
+                                                            </th>
+                                                            <th class="product-thumbnail">
+                                                                &nbsp;
+                                                            </th>
+                                                            <th class="product-name">
+                                                                [L:Product]
+                                                            </th>
+                                                            <th class="product-price">
+                                                                [L:Price]
+                                                            </th>
+                                                            @*<th class="product-quantity">
+                                                                    [L:Quantity]
+                                                                </th>*@
+                                                            <th class="product-remove">
+                                                                &nbsp;
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="shoping_wishlist">
+                                                        @foreach (CartItem c in Model.ShoppingCart.Item)
+                                                        {
+                                                            <tr class="cart_table_item" id="wishlistRow_@c.CartID">
+                                                                <td class="product-addtocart">
+                                                                    <form>
+                                                                        <input type="checkbox" name="CartId" value="@c.CartID">
+                                                                    </form>
+                                                                </td>
+                                                                <td class="product-thumbnail">
+                                                                    <a href="@c.PermLink">
+                                                                        @if (c.ProductImage == null)
+                                                                        {
+                                                                            <img width="100" height="100" class="img-responsive" alt="" src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" title="">
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <img width="100" height="100" class="img-responsive" alt="@c.ProductImage.Alt" src="@c.ProductImage.ImageUrl" title="@c.ProductImage.Title">
+
+                                                                        }
+                                                                    </a>
+                                                                </td>
+                                                                <td class="product-name">
+                                                                    <a href="@c.PermLink">@c.ProductName</a>
+                                                                    @foreach (AttributeInfo xmlinfo in c.AttributeInfo)
+                                                                    {
+                                                                        <br />
+                                                                        @(xmlinfo.VariationName + " : " + xmlinfo.VariationOptionName)
+                                                                    }
+                                                                </td>
+                                                                <td class="product-price">
+                                                                    <span class="amount" id="price-@c.CartID">@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? c.FormattedPriceIncludeTax : c.FormattedPrice)</span>
+                                                                    @if (Model.Store.Catalog.DisplayTaxSuffix)
+                                                                    {
+                                                                        if (Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                                        {
+                                                                            <span>[LS:Including_Tax]</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span>[LS:Excluding_Tax]</span>
+                                                                        }
+                                                                    }
+                                                                </td>
+                                                                @*<td class="product-quantity">
+                                                                        <div class="cart">
+                                                                            <div class="quantity">
+                                                                                <input type="text" itemquantity="@c.Quantity" id="Quantity-@c.CartID" class="input-text qty text" title="Qty" value="1" name="quantity_@c.CartID" min="1" step="1" onblur="product_quantity.qtychanged('WishlistPage','.LSF_@Model.Store.StoreModuleID',@c.CartID)">
+                                                                                <input type="hidden" id="minQuantity-@c.CartID" value="1" />
+                                                                                <input type="hidden" id="maxQuantity-@c.CartID" value="1" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>*@
+                                                                <td class="product-remove">
+                                                                    <a title="Remove this item" class="remove" id="removewishlist-@c.CartID" onclick="Wishlist.Delete(@c.CartID)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        <tr>
+                                                            <td class="actions continue_shop" colspan="12">
+                                                                <div class="ms-pull-right actions-continue">
+                                                                    @if (Model.Store.ShoppingCart.AllowWishlist)
+                                                                    {
+                                                                        <input type="button" value="[L:AddToCart]" onclick="Wishlist.AddCart('#shoping_wishlist','@Model.Store.URL.Cart')" name="add_to_cart" class="ms-btn ms-btn-lg chkout_btn proceedchkout ms-pull-right" />
+                                                                    }
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ms-container">
+                <div class="ms-featured-box ms-featured-box-primary align-left">
+                    <div class="box-content">
+                        <div class="shopping_cart">
+                            <h2>[L:WishList]</h2>
+                        </div>
+                        <div class="tablecart">
+                            <h5>
+                                [L:EmptyWishList]
+                            </h5>
+                            <div class="actions-continue">
+                                <a href="@Model.Store.URL.Homepage" class="ms-btn Continuebutton">[L:ContinueShopping]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>

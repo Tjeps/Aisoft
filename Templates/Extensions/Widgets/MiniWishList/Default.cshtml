@@ -1,0 +1,48 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+@if ((((IDictionary<string, Object>)Model).ContainsKey("ShoppingCart") == true) && Model.ShoppingCart != null)
+{
+    int qty = 0;
+    if (Model.SelectedWidget.DisplayMode == "vertical")
+    {
+        <div id="lsf_miniwishlist_widget" class="LSF_@Model.Store.StoreModuleID Widget_@Model.WidgetSetting.WidgetModuleID miniwishlist lsf_aisoft">
+            <div class="lsf_wishlist space-bottom">
+                @foreach (CartItem Item in Model.ShoppingCart.Item)
+                {
+                    qty = qty + Item.Quantity;
+                }
+                <a class="cart-button" href="@Model.Store.URL.Wishlist"><i class="fas fa-heart"></i> [LS:WishList] (@qty)</a>
+            </div>
+        </div>
+    }
+    else {
+        <a id="lsf_miniwishlist_widget" href="@Model.Store.URL.Wishlist" class="LSF_@Model.Store.StoreModuleID Widget_@Model.WidgetSetting.WidgetModuleID miniwishlist lsf_aisoft mwidget mborder fixwidth">
+            <div class="lsf_wishlist_small miniWidget">
+                @foreach (CartItem Item in Model.ShoppingCart.Item)
+                {
+                    qty = qty + Item.Quantity;
+                }
+
+                @if (!Model.WidgetSetting.ShowLabel)
+                {
+                    <div class="cart-button"><i class="fas fa-heart"></i></div>
+                    if (qty > 0)
+                    {
+                        <sup class="productCount"><span class="ms-badge badge_bg">@qty</span></sup>
+                    }
+                }
+                else
+                {
+                    <div class="cart-button"><i class="fas fa-heart"></i><span> [LS:WishList]</span></div>
+                    if (qty > 0)
+                    {
+                        <sup class="productCount"><span class="ms-badge badge_bg">@qty</span></sup>
+                    }
+
+                }
+            </div>
+        </a>
+    }
+}

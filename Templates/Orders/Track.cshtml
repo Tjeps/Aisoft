@@ -1,0 +1,40 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+<div id="LSF_@Model.Store.StoreModuleID" class="LSF_@Model.Store.StoreModuleID lsf_aisoft">
+    <div class="lsf_complete">
+        <div class="ms-container">
+            <div class="ms-featured-box ms-featured-box-primary align-left">
+                <div class="box-content">
+                    <div class="trackOrder">
+                        <div class="shopping_cart">
+                            <h2>[L:OrderStatus]</h2>
+                        </div>
+                        <div class="tablecart">
+                            @if (Model.Store.StoreModuleID != null)
+                            {
+                                <div>
+                                    <div id="ErrorMessage" class="ms-alert ms-alert-danger" style="display:none">
+                                    </div>
+                                </div>
+                                <div class="ms-form-group">
+                                    <h4>[L:TrackOrder]</h4>
+                                    <label>[LS:LastName]</label>
+                                    <input type="text" name="" id="lastName" value="" placeholder="Last Name" class="ms-form-control" required>
+                                    <label>[LS:OrderNumber][LS:Hash]</label>
+                                    <input type="text" name="" id="trackOrder" value="" placeholder="Enter Order Number" class="ms-form-control" required>
+                                    <hr />
+                                    <button type="button" id="btnSearch" class="ms-btn chkout_btn ms-pull-right" onclick="Track.TrackingOrderUrl('@Model.Store.URL.Order','@Model.Store.StoreModuleID')">
+                                        <em class="ms-glyphicon ms-glyphicon-search"></em> [L:Track]
+                                    </button>
+                                    <div class="clearfix"></div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

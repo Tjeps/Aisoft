@@ -1,0 +1,31 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+@if (Model != null && Model.Pager.Render)
+{
+    <ul class="ms-pagination ms-pull-right">
+        @if (Model.Pager.HasPrevPage)
+        {
+            <li><a rel="ajaxload" href="@Model.Pager.PrevPageURL"><em class="fa fa-chevron-left"></em></a></li>
+        }
+        @foreach (var item in Model.Pager.PageLinks)
+        {
+            if (item.IsActive)
+            {
+                <li class="ms-active">
+                    @item.Name
+                </li>
+            }
+            else
+            {
+                <li><a rel="ajaxload" href="@item.Link">@item.Name</a></li>
+            }
+        }
+
+        @if (Model.Pager.HasNextPage)
+        {
+            <li><a rel="ajaxload" href="@Model.Pager.NextPageURL"><em class="fa fa-chevron-right"></em></a></li>
+        }
+    </ul>
+}

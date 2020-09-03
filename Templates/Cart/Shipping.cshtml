@@ -1,0 +1,74 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+<div class="lsf_aisoft ms-modal ms-fade" id="LSFModal" role="dialog" aria-hidden="true">
+    <div class="ms-modal-dialog">
+        <div class="ms-modal-content">
+            <div class="ms-modal-header">
+                <button type="button" class="ms-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="ms-modal-title" id="defaultModalLabel">[L:CalculateShipping]</h4>
+            </div>
+            <div class="ms-modal-body">
+                <div class="ms-featured-box ms-featured-box-primary align-left">
+                    <div class="modal-box-content modal_cart_box" id="shippingSearchDiv">
+                        <div class="ms-container">
+                            <div class="ms-row" id="calculate_shipping">
+                                <div class="ms-form-group shipping-form">
+                                    <div class="ms-col-md-12">
+                                        <div id="ShippingErrorMessages">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>[L:DestinationToShippingEstimate]</p>
+                            <div class="ms-form-group">
+                                <div class="ms-row">
+                                    <div class="ms-col-md-12 modal_countries">
+                                        <label>[L:Country]<span class="required">*</span></label>
+                                        <select name="ShippingCountry" id="ShippingCountry" onchange="Cart.Change_Country(this.value)" class="ms-form-control">
+                                            <option value="">[L:SelectCountry]</option>
+                                            @foreach (Country country in Model.Countries)
+                                            {
+                                                <option value="@country.CountryID">@country.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ms-row">
+									<div class="ms-col-md-6">
+										<label>[L:State]</label>
+										<select id="ShippingStateProvince" class="ms-form-control">
+											<option value="">[L:SelectState]</option>
+										</select>
+									</div>
+                                    <div class="ms-col-md-6">
+                                        <label>[L:ZipCode]<span class="required">*</span></label>
+                                        <input type="text" id="shippingZipCode" name="shippingZipCode" value="" class="ms-form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-content cart_box" id="shippingResultDiv" style="display:none">
+                        <div class="ms-container">
+                            <div class="ms-row">
+                            <div class="ms-form-group">
+                                <div class="ms-col-md-12">
+                                    <div id="SearchedShippingMethods">
+
+                                    </div>
+                                </div>
+                             </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ms-modal-footer">
+                <input type="submit" id="btnSearch" onclick='Cart.BindShipping();' value="[L:Calculate]" class="ms-btn ms-btn-default discount-btn" data-loading-text="[L:Loading]">
+                <input type="button" value="[L:Close]" class="ms-btn-default ms-btn ms-pull-right btnBack" onclick='Cart.BackToSearch();'>
+            </div>
+        </div>
+    </div>
+</div>

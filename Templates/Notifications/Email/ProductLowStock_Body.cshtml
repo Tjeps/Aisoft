@@ -1,0 +1,604 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Utilities
+@using Mandeeps.LSF.Data.Entities
+@using Mandeeps.LSF.Entities.Payment
+@using Mandeeps.LSF.Entities
+@inherits TemplateBase<dynamic>
+
+@if (Model.CartItem.Product != null)
+{
+    <head>
+        <style type="text/css">
+            @@media only screen and (max-width: 660px) {
+                table[class=w0], td[class=w0] {
+                    width: 0 !important;
+                    max-width: 0px !important;
+                }
+
+                table[class=w10], td[class=w10] {
+                    width: 10px !important;
+                    max-width: 10px !important;
+                }
+
+                table[class=w15], td[class=w15] {
+                    width: 5px !important;
+                    max-width: 5px !important;
+                }
+
+                table[class=w30], td[class=w30] {
+                    width: 10px !important;
+                    max-width: 10px !important;
+                }
+
+                table[class=w60], td[class=w60] {
+                    width: 10px !important;
+                    max-width: 10px !important;
+                }
+
+                table[class=w125], td[class=w125] {
+                    width: 80px !important;
+                    max-width: 80px !important;
+                }
+
+                table[class=w130], td[class=w130] {
+                    width: 55px !important;
+                    max-width: 55px !important;
+                }
+
+                table[class=w140], td[class=w140] {
+                    width: 90px !important;
+                    max-width: 90px !important;
+                }
+
+                table[class=w160], td[class=w160] {
+                    width: 180px !important;
+                    max-width: 180px !important;
+                }
+
+                table[class=w170], td[class=w170] {
+                    width: 100px !important;
+                    max-width: 100px !important;
+                }
+
+                table[class=w180], td[class=w180] {
+                    width: 80px !important;
+                    max-width: 80px !important;
+                }
+
+                table[class=w195], td[class=w195] {
+                    width: 80px !important;
+                    max-width: 80px !important;
+                }
+
+                table[class=w220], td[class=w220] {
+                    width: 80px !important;
+                    max-width: 80px !important;
+                }
+
+                table[class=w240], td[class=w240] {
+                    width: 180px !important;
+                    max-width: 180px !important;
+                }
+
+                table[class=w255], td[class=w255] {
+                    width: 185px !important;
+                    max-width: 185px !important;
+                }
+
+                table[class=w275], td[class=w275] {
+                    width: 135px !important;
+                    max-width: 135px !important;
+                }
+
+                table[class=w280], td[class=w280] {
+                    width: 135px !important;
+                    max-width: 135px !important;
+                }
+
+                table[class=w300], td[class=w300] {
+                    width: 140px !important;
+                    max-width: 140px !important;
+                }
+
+                table[class=w325], td[class=w325] {
+                    width: 95px !important;
+                    max-width: 95px !important;
+                }
+
+                table[class=w360], td[class=w360] {
+                    width: 140px !important;
+                    max-width: 140px !important;
+                }
+
+                table[class=w410], td[class=w410] {
+                    width: 180px !important;
+                    max-width: 180px !important;
+                }
+
+                table[class=w470], td[class=w470] {
+                    width: 200px !important;
+                    max-width: 200px !important;
+                }
+
+                table[class=w580], td[class=w580] {
+                    width: 280px !important;
+                    max-width: 280px !important;
+                }
+
+                table[class=w640], td[class=w640] {
+                    width: 300px !important;
+                    max-width: 300px !important;
+                }
+
+                table[class*=hide], td[class*=hide], img[class*=hide], p[class*=hide], span[class*=hide] {
+                    display: none !important;
+                }
+
+                table[class=h0], td[class=h0] {
+                    height: 0 !important;
+                }
+
+                p[class=footer-content-left] {
+                    text-align: center !important;
+                }
+
+                .essential_box .EF_Box {
+                    background: #33bbff;
+                }
+
+                .essential_box .ES_Box {
+                    background: #006699;
+                }
+
+                .essential_box .ET_Box {
+                    background: #ffvar getsrc = $img.attr('src').replace('18051_', '').substr(33;
+                }
+
+                .essential_box .ER_Box {
+                    background: #ff8000;
+                }
+
+                #outlook a {
+                    pvar getsrc = $img.attr('src').replace('18051_', '').substr(ding: 0;
+                }
+
+                body {
+                    width: 100% !important;
+                }
+
+                .Revar {
+                    width: 100%;
+                }
+
+                .ExternalClass {
+                    width: 100%;
+                    display: block !important;
+                }
+
+                body {
+                    background-color: #dedede;
+                    margin: 0;
+                    pvar getsrc = $img.attr('src').replace('18051_', '').substr(ding: 0;
+                }
+
+                img {
+                    outline: none;
+                    text-decoration: none;
+                    display: block;
+                }
+
+                br, strong br, b br, em br, i br {
+                    line-height: 100%;
+                }
+
+                h1, h2, h3, h4, h5, h6 {
+                    line-height: 100% !important;
+                    -webkit-font-smoothing: antialiased;
+                }
+
+                    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+                        color: blue !important;
+                    }
+
+                        h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
+                            color: red !important;
+                        }
+
+                        h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
+                            color: purple !important;
+                        }
+
+                table td, table tr {
+                    border-collapse: collapse;
+                }
+
+                .yshortcuts, .yshortcuts a, .yshortcuts a:link, .yshortcuts a:visited, .yshortcuts a:hover, .yshortcuts a span {
+                    color: black;
+                    text-decoration: none !important;
+                    border-bottom: none !important;
+                    background: none !important;
+                }
+
+                code {
+                    white-space: normal;
+                    word-break: break-word;
+                }
+
+                #background-table {
+                    background-color: #dedede;
+                }
+
+                #top-bar {
+                    border-rvar getsrc = $img.attr('src').replace('18051_', '').substr(ius: 6px 6px 0px 0px;
+                    -moz-border-rvar getsrc = $img.attr('src').replace('18051_', '').substr(ius: 6px 6px 0px 0px;
+                    -webkit-border-rvar getsrc = $img.attr('src').replace('18051_', '').substr(ius: 6px 6px 0px 0px;
+                    -webkit-font-smoothing: antialiased;
+                    background-color: #c7c7c7;
+                    color: #ededed;
+                }
+
+                    #top-bar a {
+                        font-weight: bold;
+                        color: #ffffff;
+                        text-decoration: none;
+                    }
+
+                #footer {
+                    border-rvar getsrc = $img.attr('src').replace('18051_', '').substr(ius: 0px 0px 6px 6px;
+                    -moz-border-rvar getsrc = $img.attr('src').replace('18051_', '').substr(ius: 0px 0px 6px 6px;
+                    -webkit-border-rvar getsrc = $img.attr('src').replace('18051_', '').substr(ius: 0px 0px 6px 6px;
+                    -webkit-font-smoothing: antialiased;
+                }
+            }
+
+            body, td {
+                font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif;
+            }
+
+            .header-content {
+                font-size: 12px;
+                color: #ededed;
+            }
+
+                .header-content a {
+                    font-weight: bold;
+                    color: #ffffff;
+                    text-decoration: none;
+                }
+
+            #headline p {
+                color: #444444;
+                font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif;
+                font-size: 36px;
+                text-align: center;
+                margin-top: 0px;
+                margin-bottom: 30px;
+            }
+
+                #headline p a {
+                    color: #444444;
+                    text-decoration: none;
+                }
+
+            .article-title {
+                font-size: 18px;
+                line-height: 24px;
+                color: #b0b0b0;
+                font-weight: bold;
+                margin-top: 0px;
+                margin-bottom: 18px;
+                font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif;
+            }
+
+                .article-title a {
+                    color: #b0b0b0;
+                    text-decoration: none;
+                }
+
+                .article-title.with-meta {
+                    margin-bottom: 0;
+                }
+
+            .article-meta {
+                font-size: 13px;
+                line-height: 20px;
+                color: #ccc;
+                font-weight: bold;
+                margin-top: 0;
+            }
+
+            .article-content {
+                font-size: 13px;
+                line-height: 18px;
+                color: #444444;
+                margin-top: 0px;
+                margin-bottom: 18px;
+                font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif;
+            }
+
+                .article-content a {
+                    color: #2f82de;
+                    font-weight: bold;
+                    text-decoration: none;
+                }
+
+                .article-content img {
+                    max-width: 100%;
+                }
+
+                .article-content ol, .article-content ul {
+                    margin-top: 0px;
+                    margin-bottom: 18px;
+                    margin-left: 19px;
+                    padding: 0;
+                }
+
+                .article-content li {
+                    font-size: 13px;
+                    line-height: 18px;
+                    color: #444444;
+                }
+
+                    .article-content li a {
+                        color: #2f82de;
+                        text-decoration: underline;
+                    }
+
+                .article-content p {
+                    margin-bottom: 15px;
+                }
+
+            .footer-content-left {
+                font-size: 12px;
+                line-height: 15px;
+                color: #ededed;
+                margin-top: 0px;
+                margin-bottom: 15px;
+            }
+
+                .footer-content-left a {
+                    color: #ffffff;
+                    font-weight: bold;
+                    text-decoration: none;
+                }
+
+            .footer-content-right {
+                font-size: 11px;
+                line-height: 16px;
+                color: #ededed;
+                margin-top: 0px;
+                margin-bottom: 15px;
+            }
+
+                .footer-content-right a {
+                    color: #ffffff;
+                    font-weight: bold;
+                    text-decoration: none;
+                }
+
+            #footer {
+                background-color: #c7c7c7;
+                color: #ededed;
+            }
+
+                #footer a {
+                    color: #ffffff;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+
+            #permission-reminder {
+                white-space: normal;
+            }
+
+            #street-address {
+                color: #b0b0b0;
+                white-space: normal;
+            }
+        </style>
+    </head>
+    <meta content="noindex,nofollow" name="robots" />
+    <meta content="DIXIT test" property="og:title" />
+    <table bgcolor="#dedede" border="0" cellpadding="0" cellspacing="0" id="background-table" style="width: 100%;">
+        <colgroup>
+            <col />
+        </colgroup>
+        <tbody>
+            <tr style="border-collapse: collapse;">
+                <td align="center" bgcolor="#dedede" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;">
+                    <table border="0" cellpadding="0" cellspacing="0" class="w640" style="margin: 0px 10px; width: auto;">
+                        <colgroup>
+                            <col />
+                        </colgroup>
+                        <tbody>
+                            <tr style="border-collapse: collapse;">
+                                <td class="w640" height="20" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="640"> </td>
+                            </tr>
+                            <tr style="border-collapse: collapse;">
+                                <td class="w640" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="640">
+                                    <table bgcolor="#2780cb" border="0" cellpadding="8" cellspacing="0" id="top-bar" style="border-radius: 6px 6px 0px 0px; color: #ededed; width:100%;">
+                                        <tbody>
+                                            <tr style="border-collapse: collapse;">
+                                                <td align="left" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" valign="middle">
+                                                    <div class="header-content" style="font-size: 12px; color: #ededed;font-family:Arial,Helvetica,Geneva,sans-serif;">
+                                                        [L:LowStockTitle]
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr style="border-collapse: collapse;">
+                                <td align="center" bgcolor="#ffffff" class="w640" id="header" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="640">
+                                    <p> </p>
+                                </td>
+                            </tr>
+                            <tr id="simple-content-row" style="border-collapse: collapse;">
+                                <td bgcolor="#ffffff" class="w640" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;width:auto;" width="640">
+                                    <table border="0" cellpadding="0" cellspacing="0" class="w640" style="width: 100%;">
+                                        <colgroup>
+                                            <col />
+                                            <col />
+                                            <col />
+                                        </colgroup>
+                                        <tbody>
+                                            <tr style="border-collapse: collapse;">
+                                                <td class="w30" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="30"> </td>
+                                                <td class="w580" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="580">
+                                                    <table border="0" cellpadding="0" cellspacing="0" class="w580" style="width:100%;">
+                                                        <colgroup>
+                                                            <col />
+                                                        </colgroup>
+                                                        <tbody>
+                                                            <tr style="border-collapse: collapse;">
+                                                                <td class="w580" style="font-size: 13px; line-height: 18px; color: #444444; margin-top: 0px; margin-bottom: 18px; border-collapse: collapse; font-family:Arial,Helvetica,Geneva,sans-serif; text-align: left;" width="580">
+
+                                                                    <table border="0" cellpadding="0" cellspacing="0" class="templateColumns" style="color: #444;width:100%;padding:0 5px;">
+                                                                        <tbody>
+                                                                            @if (Model.Store.StoreInfo != null)
+                                                                            {
+                                                                                <tr>
+                                                                                    <td align="center" class="templateColumnContainer" valign="top" width="50%">
+                                                                                        <table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td>
+                                                                                                        <p style="margin: 0;background:#fff;line-height:20px;border-collapse:collapse;">&nbsp;&nbsp;</p>
+                                                                                                        @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.Logo))
+                                                                                                        {
+                                                                                                            <img id="logo" style="max-width:75px;max-height:75px;" src="@Model.Store.Current.AppURL@Model.Store.StoreInfo.Logo" alt="logo">}
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                    <td align="center" class="templateColumnContainer" valign="top" width="50%">
+                                                                                        <table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td style="text-align:right;font-size:11px;font-family:Arial,Helvetica,Geneva,sans-serif;color:#777;">
+                                                                                                        <p style="margin:0;">&nbsp;</p>
+                                                                                                        @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.Name))
+                                                                                                        {
+                                                                                                            <span class="StoreName" style="white-space:pre-line;font-size:16px;font-weight:bold;color:#444;">@Model.Store.StoreInfo.Name</span><br />}
+                                                                                                        @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.Address))
+                                                                                                        {
+                                                                                                            <span class="storeInfo">@Raw(Model.Store.StoreInfo.Address.Replace("\n", "<br />"))</span><br />}
+                                                                                                        @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.Email))
+                                                                                                        {
+                                                                                                            <span class="storeInfo">@Model.Store.StoreInfo.Email</span><br />}
+                                                                                                        @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.PhoneNumber))
+                                                                                                        {
+                                                                                                            <span class="storeInfo">@Model.Store.StoreInfo.PhoneNumber</span><br />}
+                                                                                                        <p style="margin:0;">&nbsp;</p>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <table class="table-responsive cart-totals" cellpadding="0" cellspacing="0" style="width:100%;font-size:13px;border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:0 5px;">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td height="10"></td>
+                                                                                <td height="10"></td>
+                                                                                <td height="10"></td>
+                                                                            </tr>
+                                                                            <tr style="font-size:15px;font-family:Arial,Helvetica,Geneva,sans-serif;">
+                                                                                <td class="tvalue" style="text-align:left;">
+                                                                                    <span class="ms-pull-right">@Model.CartItem.Product.SKU</span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span>@Model.CartItem.Product.Name</span>
+                                                                                </td>
+                                                                                <td style="text-align:right;">
+                                                                                    @if (Model.CartItem.ProductInventory != null && Model.CartItem.ProductInventory.InStockQty != null)
+                                                                                    {
+                                                                                        <span>[L:LowStockMessage]@Model.CartItem.ProductInventory.InStockQty</span>
+                                                                                    }
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td height="10"></td>
+                                                                                <td height="10"></td>
+                                                                                <td height="10"></td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="border-collapse: collapse;">
+                                                                <td class="w580" height="10" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="580"> </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                                <td class="w30" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="30"> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr style="border-collapse: collapse;">
+                                <td bgcolor="#ffffff" class="w640" height="15" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="640"> </td>
+                            </tr>
+                            <tr style="border-collapse: collapse;">
+                                <td class="w640" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="640">
+                                    <table bgcolor="#2780cb" border="0" cellpadding="0" cellspacing="0" class="w640" id="footer" style="border-radius: 0px 0px 6px 6px; color: #ededed; width: 100%;">
+                                        <colgroup>
+                                            <col />
+                                            <col />
+                                            <col />
+                                            <col />
+                                            <col />
+                                        </colgroup>
+                                        <tbody>
+                                            <tr style="border-collapse: collapse;">
+                                                <td class="w30" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="30"> </td>
+                                                <td class="w580 h0" height="30" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="360"> </td>
+                                                <td class="w0" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="60"> </td>
+                                                <td class="w0" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="160"> </td>
+                                                <td class="w30" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="30"> </td>
+                                            </tr>
+                                            <tr style="border-collapse: collapse;">
+                                                <td class="w30" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="30"> </td>
+                                                <td class="w580" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" valign="top" width="360">
+                                                    <p class="footer-content-left" id="permission-reminder" style="font-size: 12px; line-height: 15px; color: #ededed; margin-top: 0px; margin-bottom: 15px; white-space: normal; text-align: left;"> </p>
+
+                                                    <p class="footer-content-left" style="font-size: 12px; line-height: 15px; color: #ededed; margin-top: 0px; margin-bottom: 15px; text-align: left;font-family:Arial,Helvetica,Geneva,sans-serif;">
+                                                        @if (!string.IsNullOrEmpty(Model.Store.StoreInfo.Name))
+                                                        {
+                                                            <span>[LS:EmailTemplateFooter] @Model.Store.StoreInfo.Name</span>}
+                                                    </p>
+                                                </td>
+                                                <td class="hide w0" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="60"> </td>
+                                                <td class="hide w0" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" valign="top" width="160">
+                                                    <p class="footer-content-right" id="street-address" style="font-size: 11px; line-height: 16px; margin-top: 0px; margin-bottom: 15px; color: #b0b0b0; white-space: normal; text-align: right;"> </p>
+                                                </td>
+                                                <td class="w30" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="30"> </td>
+                                            </tr>
+                                            <tr style="border-collapse: collapse;">
+                                                <td class="w30" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="30"> </td>
+                                                <td class="w580 h0" height="15" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="360"> </td>
+                                                <td class="w0" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="60"> </td>
+                                                <td class="w0" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="160"> </td>
+                                                <td class="w30" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="30"> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr style="border-collapse: collapse;">
+                                <td class="w640" height="60" style="font-family:Arial,Helvetica,Geneva,sans-serif; border-collapse: collapse;" width="640"> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

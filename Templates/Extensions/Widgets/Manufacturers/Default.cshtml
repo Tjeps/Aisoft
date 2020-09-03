@@ -1,0 +1,13 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+@if (Model.Manufacturers != null && Model.Manufacturers.Count > 0)
+{
+    <div  class="LSF_@Model.Store.StoreModuleID lsf_aisoft">
+        <div class="widget-navigation space-bottom widget_manufacture">
+            <h3>[LS:Manufacturers] <span class="manufacture-icon"><em class="fa fa-caret-right"></em></span></h3>
+            @Include("Common/Manufacture", @Model.Manufacturers)
+        </div>
+    </div>
+}

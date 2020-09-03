@@ -1,0 +1,10 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Utilities
+@using Mandeeps.LSF.Data.Entities
+@using Mandeeps.LSF.Entities.Payment
+@inherits TemplateBase<dynamic>
+
+@if (Model.Order != null)
+{
+    @Include("Notifications/Common/Email", @Model)
+}

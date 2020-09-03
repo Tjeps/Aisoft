@@ -1,0 +1,60 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@using Mandeeps.LSF.Utilities
+@inherits TemplateBase<dynamic>
+
+@if (Model.Orders != null && Model.Orders.Count > 0)
+{
+    foreach (var order in Model.Orders)
+    {
+        if (order != null)
+        {
+            <div class="billing_address_info orderstatus">
+                <div class="ms-col-sm-12">
+                    @if (order.OrderStatus != null)
+                    {
+                        <span class="name ms-pull-right">@order.OrderStatus</span>
+                    }
+                    <h4>[L:OrderNumber] [L:Hash]@order.OrderID</h4>
+                </div>
+                <div class="Address_info">
+                    <div class="ms-pull-right action_btn">
+                        <a href="@Model.Store.URL.Order?guid=@order.OrderGUID" class="ms-btn ms-btn-default ms-btn-sm">
+                            [L:ViewDetail]
+                        </a>
+                    </div>
+                    <ul class="address-box">
+
+                        @if (order.OrderTotal != null)
+                        {
+                            <li class="email">
+                                <span>@order.FormattedGrandTotalPrice</span>
+                            </li>
+                        }
+
+                        @if (order.OrderedOn != null)
+                        {
+                            <li class="orderTime">
+                                <span class="orderdate">@DateTimeExtension.ToLocal(order.OrderedOn, Model.Store.General.Timezone).ToString("MMMM dd, yyyy hh:mm tt")</span>
+                            </li>
+                        }
+                        @*@if (order.OrderGrandTotal > 0)
+                            {
+                                    <li class="email">
+                                        <span>[L:OrderTotal]</span>
+                                        <span>@order.FormattedGrandTotalPrice</span>
+                                    </li>
+                                }*@
+                    </ul>
+                </div>
+            </div>
+        }
+    }
+
+}
+else
+{
+    <div class="ms-col-sm-12">
+        <h4>[L:NoOrderFound]</h4>
+    </div>
+}

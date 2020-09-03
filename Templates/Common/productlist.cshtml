@@ -1,0 +1,403 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+@if (Model.Products != null && Model.Products.Items.Count > 0)
+{
+<div class="view_page">
+    <div class="clear"></div>
+    @if (Model.Store.Current.Currency != null)
+        {
+    <div class="ms-container">
+        @if (Model.Store.Current.ViewMode == "grid")
+                {
+        <div class="ms-row product_gallery">
+            <div class="ms-col-md-12">
+                @foreach (Product p in Model.Products.Items)
+                            {
+                                int VariationCount = (p.CustomPrice) ? 1 : p.Variations.Count;
+                                var Addclass = (p.Variations.Count != 0 || p.MinOrderQty > 1) ? "LSF_" + p.ModuleID + "Product_image_link_" + p.ProductID : "LSF_" + p.ModuleID + "addtocart_btn_" + p.ProductID;
+
+                <div class="p-sm ms-col-md-4">
+                    <div class="product_item ms-img-responsive">
+                        @if (Model.Store.Current.HasEditPermission)
+                                        {
+                        <span class="product_edit_icon">
+                            <a class="fas fa-pencil-alt" onclick="Edit_product.ProductEdit(@p.ProductID)"></a>
+                        </span>
+                                        }
+                        <span class="new_sale">
+                            @if (p.IsNewProduct)
+                                            {
+                            <a href="@p.PermLink">
+                                <span class="onsale new_product">[LS:New]</span>
+                            </a>
+                                            }
+                            @if (p.IsOnSale)
+                                            {
+                            <a href="@p.PermLink">
+                                <span class="onsale">[LS:Sale]</span>
+                            </a>
+                                            }
+                        </span>
+
+                        @if (p.EnableShipping && p.IsFreeShipping && Model.Store.Catalog.ShowFreeShippingIcon)
+                                        {
+                        <a href="@p.PermLink">
+                            <span class="onfreeshipping">[LS:FreeShipping]</span>
+                        </a>
+                                        }
+                        @foreach (ProductSpecificationInfo v in p.ProductSpecificationInfo)
+                                        {
+
+                                            if (v.Name == "Levertijd")
+                                            {
+                        <a href="@p.PermLink">
+                            <span class="onspecification"> @v.Name </span>
+                        </a>
+                                            }
+                                        }
+
+                        @if (p.ProductManufacturer != null && p.ProductManufacturer.ManufaturerImage.FirstOrDefault() != null)
+                                        {
+                        <a href="@p.PermLink" class="Product_image_link LSF_@(p.ModuleID)Product_image_link_@(p.ProductID)">
+                            @if (p.ProductImages.FirstOrDefault() == null)
+                                                {
+                            <img src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" class="ms-img-responsive product_item_image" />
+                                                }
+                                                else
+                                                {
+                            <img class="ms-img-responsive manufactureLogo manufacture-img" src="@p.ProductManufacturer.ManufaturerImage.FirstOrDefault().ImageUrl" alt="@(p.ProductManufacturer.ManufaturerImage.FirstOrDefault().Alt)" title="@(p.ProductManufacturer.ManufaturerImage.FirstOrDefault().Title)" />
+                            <img src="@p.ProductImages.FirstOrDefault().ImageUrl" class="ms-img-responsive product_manufacture_item_image" title="@(p.ProductImages.FirstOrDefault().Title)" />
+                                                }
+                        </a>
+                                        }
+                                        else
+                                        {
+                        <a href="@p.PermLink" class="Product_image_link LSF_@(p.ModuleID)Product_image_link_@(p.ProductID)">
+                            @if (p.ProductImages.FirstOrDefault() == null)
+                                                {
+                            <img src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" class="ms-img-responsive product_item_image" />
+                                                }
+                                                else
+                                                {
+                            <img src="@p.ProductImages.FirstOrDefault().ImageUrl" class="ms-img-responsive product_item_image" alt="@(p.ProductImages.FirstOrDefault().Alt)" title="@(p.ProductImages.FirstOrDefault().Title)" />
+                                                }
+                        </a>
+                                        }
+                        <a href="@p.PermLink" class="product_name_heading"><h3>@p.Name</h3></a>
+
+                        <div class="fancy">
+                            @if (p.AllowRating && p.AllowReviews)
+                                            {
+                            <span class="rating" data-plugin-options="{'score': @p.Ratings, 'hints': ['[LS:VeryBad]', '[LS:Poor]', '[LS:Fair]', '[LS:Good]', '[LS:Excellent]'], 'path': '@Model.Store.Theme.ThemePath/Resources/Images/', 'readOnly': true}"></span>
+
+                                            }
+                        </div>
+                        @if (p.CallforPrice)
+                                        {
+                        <h4 class="callforprice">[LS:CallForPrice]</h4>
+                                        }
+                                        else
+                                        {
+                        <span class="product_price">
+                            @if (!p.CustomPrice)
+                                                {
+                                                    if (p.IsOnSale)
+                                                    {
+                                                        if (p.SpecialPrice >= 0)
+                                                        {
+                            <span><del>@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? p.FormattedOldPriceIncludeTax : p.FormattedPrice)</del></span>
+                            <span class="amount"><ins>@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? p.FormattedSalePriceIncludeTax : p.FormattedSalePrice)</ins>&nbsp;<span class="unitofmeasure">@p.UnitOfMeasurment</span></span>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                            <span class="amount"><ins>@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? p.FormattedPriceIncludeTax : p.FormattedPrice)</ins>&nbsp;<span class="unitofmeasure">@p.UnitOfMeasurment</span></span>
+                                                    }
+                                                }
+                        </span>
+                                            if (!p.CustomPrice && Model.Store.Catalog.DisplayTaxSuffix)
+                                            {
+                                                if (Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                {
+                        <span><ins>[LS:Including_Tax]</ins></span>
+                                                }
+                                                else
+                                                {
+                        <span><ins>[LS:Excluding_Tax]</ins></span>
+                                                }
+                                            }
+                                        }
+                        <div class="clear"></div>
+                        @if (!p.DisableBuyButton)
+                                        {
+
+                                            if (!Model.Store.Catalog.EnableCompareProducts)
+                                            {
+                        <a onclick="Cart.add(@p.ProductID,@VariationCount,'@p.PermLink','@Model.Store.ShoppingCart.DisplayCartAfterAddingProduct.ToString()','@Model.Store.URL.Cart',0,@p.MinOrderQty)" class="ms-btn LSF_@(p.ModuleID)addtocart_btn_@p.ProductID addtocart_btn @Addclass" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" title="Add To Cart"><em class="fas fa-shopping-cart"></em>[LS:AddToCart]</a>
+
+                                                if (Model.Store.ShoppingCart.AllowWishlist)
+                                                {
+                        <a onclick="Wishlist.add(@p.ProductID,@VariationCount,'@p.PermLink','@Model.Store.ShoppingCart.DisplayWishlistAfterAddingProduct.ToString()','@Model.Store.URL.Wishlist',1,@p.MinOrderQty)" class="ms-btn wishlist_btn" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" title="Add to Wishlist"><i class="fas fa-heart"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                        <div class="button_group">
+                            @if (Model.Store.ShoppingCart.AllowWishlist)
+                                                    {
+                            <a onclick="Wishlist.add(@p.ProductID,@VariationCount,'@p.PermLink','@Model.Store.ShoppingCart.DisplayWishlistAfterAddingProduct.ToString()','@Model.Store.URL.Wishlist',1,@p.MinOrderQty)" class="ms-btn wishlist_link" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" title="Add to Wishlist"><i class="fas fa-heart"></i></a>
+                                                    }
+
+                            <a onclick="Cart.add(@p.ProductID,@VariationCount,'@p.PermLink','@Model.Store.ShoppingCart.DisplayCartAfterAddingProduct.ToString()','@Model.Store.URL.Cart',0,@p.MinOrderQty)" class="ms-btn addtocart_link @Addclass" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" title="[LS:AddToCart]"><em class="fas fa-shopping-cart"></em>[LS:AddToCart]</a>
+                            <a class="ms-btn compare_link btn_margin" onclick="Compare.Add(@p.ProductID,'@Model.Store.URL.Compare')" title="Add to Compare"><i class="fas fa-signal"></i></a>
+                        </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (Model.Store.ShoppingCart.AllowWishlist)
+                                            {
+                        <a onclick="Wishlist.add(@p.ProductID,@p.Variations.Count,'@p.PermLink','@Model.Store.ShoppingCart.DisplayWishlistAfterAddingProduct.ToString()','@Model.Store.URL.Wishlist',1,@p.MinOrderQty)" class="ms-btn wishlist_btn btn_margin" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" title="Add to Wishlist"><i class="fas fa-heart"></i></a>
+                                            }
+                                            if (Model.Store.Catalog.EnableCompareProducts)
+                                            {
+                        <a class="ms-btn compare_btn btn_margin" onclick="Compare.Add(@p.ProductID,'@Model.Store.URL.Compare')" title="Add to Compare"><i class="fas fa-signal"></i></a>
+                                            }
+                                        }
+                    </div>
+                </div>
+                            }
+            </div>
+        </div>
+                }
+                else
+                {
+        <div class="product_list_gallery">
+            @foreach (Product p in Model.Products.Items)
+                        {
+                            int VariationCount = (p.CustomPrice) ? 1 : p.Variations.Count;
+            <div class="ms-col-md-12">
+                @if (Model.Store.Current.HasEditPermission)
+                                {
+                <span class="product_edit_icon">
+                    <a class="fas fa-pencil-alt" onclick="Edit_product.ProductEdit(@p.ProductID)"></a>
+                </span>
+                                }
+                <div class="product-list ">
+                    <div class="product-image">
+                        @if (p.ProductManufacturer != null && p.ProductManufacturer.ManufaturerImage.FirstOrDefault() != null)
+                                        {
+                        <a href="@p.PermLink" class="Product_image_link">
+                            @if (p.ProductImages.FirstOrDefault() == null)
+                                                {
+                            <img src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" class="ms-img-responsive product_item_image" />
+                                                }
+                                                else
+                                                {
+                            <img class="ms-img-responsive manufactureLogo manufacture-img" src="@p.ProductManufacturer.ManufaturerImage.FirstOrDefault().ImageUrl" alt="@(p.ProductManufacturer.ManufaturerImage.FirstOrDefault().Alt)" title="@(p.ProductManufacturer.ManufaturerImage.FirstOrDefault().Title)" />
+                            <img src="@p.ProductImages.FirstOrDefault().ImageUrl" class="ms-img-responsive product_manufacture_item_image" alt="@(p.ProductImages.FirstOrDefault().Alt)" title="@(p.ProductImages.FirstOrDefault().Title)" />
+                                                }
+                        </a>
+                                        }
+                                        else
+                                        {
+                        <a href="@p.PermLink" class="Product_image_link">
+                            @if (p.ProductImages.FirstOrDefault() == null)
+                                                {
+                            <img src="@Model.Store.Theme.ThemePath/Resources/Images/blank.jpg" class="ms-img-responsive product_item_image" />
+                                                }
+                                                else
+                                                {
+                            <img src="@p.ProductImages.FirstOrDefault().ImageUrl" class="ms-img-responsive product_item_image" alt="@(p.ProductImages.FirstOrDefault().Alt)" title="@(p.ProductImages.FirstOrDefault().Title)" />
+                                                }
+                        </a>
+
+                                        }
+
+                        @if (p.EnableShipping && p.IsFreeShipping && Model.Store.Catalog.ShowFreeShippingIcon)
+                                        {
+                        <a href="@p.PermLink" class="free-shipping">
+                            <span class="onfreeshipping">[LS:FreeShipping]</span>
+                        </a>
+                                        }
+
+                        @foreach (ProductSpecificationInfo v in p.ProductSpecificationInfo)
+                                        {
+
+                                            if (v.Name == "Levertijd")
+                                            {
+                        <a href="@p.PermLink">
+                            <span class="onspecification"> @v.Name </span>
+                        </a>
+                                            }
+                                        }
+
+                        <span class="new_sale">
+                            @if (p.IsNewProduct)
+                                            {
+                            <a href="@p.PermLink">
+                                <span class="onsale new_product">[LS:New]</span>
+                            </a>
+                                            }
+                            @if (p.IsOnSale)
+                                            {
+                            <a href="@p.PermLink">
+                                <span class="onsale">[LS:Sale]</span>
+                            </a>
+                                            }
+                        </span>
+
+                    </div>
+                    <div class="product-text">
+
+                        <a href="@p.PermLink">
+                            <h3>
+                                @p.Name
+                            </h3>
+                        </a>
+                        @if (p.AllowRating && p.AllowReviews)
+                                        {
+                        <div class="fancy">
+                            <span class="rating" data-plugin-options="{'score': @p.Ratings, 'hints': ['[LS:VeryBad]', '[LS:Poor]', '[LS:Fair]', '[LS:Good]', '[LS:Excellent]'], 'path': '@Model.Store.Theme.ThemePath/Resources/Images/', 'readOnly': true}"></span>
+                        </div>
+                                        }
+
+                        @if (!string.IsNullOrEmpty(p.Summary))
+                                        {
+                        <p>
+                            @p.Summary
+                        </p>
+                                        }
+                        <p>
+                            @if (p.CallforPrice)
+                                            {
+                            <h4 class="callforprice">[LS:CallForPrice]</h4>
+                                            }
+                                            else
+                                            {
+                                                if (p.IsOnSale)
+                                                {
+                            <span class="del"> @(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? p.FormattedOldPriceIncludeTax : String.Format("{0:0.00}", p.FormattedPrice) ) </span>
+                            <span>
+                                <b>@String.Format("{0:0.00}", p.FormattedSalePrice)</b>&nbsp;<span class="unitofmeasure">@p.UnitOfMeasurment</span>
+                            </span>
+                                                }
+                                                else
+                                                {
+                            <span><b>@(Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax ? p.FormattedPriceIncludeTax : String.Format("{0:0.00}", p.FormattedPrice)) </b>&nbsp;<span class="unitofmeasure">@p.UnitOfMeasurment</span></span>
+                                                }
+                                            }
+
+                            @if (!p.CustomPrice && Model.Store.Catalog.DisplayTaxSuffix)
+                                            {
+                                                if (Model.Store.Catalog.TaxDisplayType == (int)TaxDisplayType.Includingtax)
+                                                {
+                            <span>[LS:Including_Tax]</span>
+                                                }
+                                                else
+                                                {
+                            <span>[LS:Excluding_Tax]</span>
+                                                }
+                                            }
+                        </p>
+
+                        @if (!p.DisableBuyButton)
+                                        {
+
+
+                                            if (!Model.Store.Catalog.EnableCompareProducts)
+                                            {
+
+                        <a class="ms-btn addtocart_btn margin_bottom" onclick="Cart.add(@p.ProductID,@VariationCount,'@p.PermLink','@Model.Store.ShoppingCart.DisplayCartAfterAddingProduct.ToString()','@Model.Store.URL.Cart',0,@p.MinOrderQty)" title="Add To Cart"><em class="fas fa-shopping-cart"></em>[LS:AddToCart]</a>
+
+                                                if (Model.Store.ShoppingCart.AllowWishlist)
+                                                {
+                        <a class="ms-btn wishlist_btn" onclick="Wishlist.add(@p.ProductID,@VariationCount,'@p.PermLink','@Model.Store.ShoppingCart.DisplayWishlistAfterAddingProduct.ToString()','@Model.Store.URL.Wishlist',0,@p.MinOrderQty)" title="Add to Wishlist"><i class="fas fa-heart"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                        <a class="ms-btn addtocart_btn  margin_bottom" onclick="Cart.add(@p.ProductID,@VariationCount,'@p.PermLink','@Model.Store.ShoppingCart.DisplayCartAfterAddingProduct.ToString()','@Model.Store.URL.Cart',0,@p.MinOrderQty)" title="Add To Cart"><em class="fas fa-shopping-cart"></em>[LS:AddToCart]</a>
+
+                                                if (Model.Store.ShoppingCart.AllowWishlist)
+                                                {
+                        <a class="ms-btn wishlist_btn" onclick="Wishlist.add(@p.ProductID,@VariationCount,'@p.PermLink','@Model.Store.ShoppingCart.DisplayWishlistAfterAddingProduct.ToString()','@Model.Store.URL.Wishlist',0,@p.MinOrderQty)" title="Add to Wishlist"><i class="fas fa-heart"></i></a>
+                                                }
+                        <a class="ms-btn compare_btn btn_margin" onclick="Compare.Add(@p.ProductID,'@Model.Store.URL.Compare')" title="Add to Compare"><i class="fas fa-signal"></i></a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (Model.Store.ShoppingCart.AllowWishlist)
+                                            {
+                        <a class="ms-btn wishlist_btn" onclick="Wishlist.add(@p.ProductID,@VariationCount,'@p.PermLink','@Model.Store.ShoppingCart.DisplayWishlistAfterAddingProduct.ToString()','@Model.Store.URL.Wishlist',1,@p.MinOrderQty)" title="Add to Wishlist"><i class="fas fa-heart"></i></a>
+                                            }
+                                            if (Model.Store.Catalog.EnableCompareProducts)
+                                            {
+                        <a class="ms-btn compare_btn btn_margin" onclick="Compare.Add(@p.ProductID,'@Model.Store.URL.Compare')" title="Add to Compare"><i class="fas fa-signal"></i></a>
+                                            }
+                                        }
+                    </div>
+                </div>
+                <br />
+            </div>
+            <hr />
+                        }
+        </div>
+                }
+    </div>
+    <hr />
+    <div>
+        <div class="ms-pull-left">
+            <div class="product-display-per-page display_inline">
+                @if (Model.Store.PageSizeDropdown.Count > 1)
+                        {
+                            string SelectedPageSize = null;
+                <div class="ms-dropdown">
+                    <ul class="ms-dropdown-menu">
+                        @foreach (var ListItem in Model.Store.PageSizeDropdown)
+                                    {
+                        <li class="@(ListItem.Selected ? "ms-active" : null)">
+                            <a href="@ListItem.Value" rel="ajaxload">@ListItem.Text</a>
+                        </li>
+                                        if (ListItem.Selected)
+                                        {
+                                            SelectedPageSize = ListItem.Text;
+                                        }
+                                    }
+                    </ul>
+                    @if (SelectedPageSize != null)
+                                {
+                    <button class="ms-btn ms-btn-default ms-dropdown-toggle" type="button" title="[LS:Sortby]" id="dropdownMenuButton" data-toggle="ms-dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span>@SelectedPageSize</span>
+                    </button>
+                    <button type="button" class="ms-btn ms-btn-default SortIcon ms-dropdown-toggle" title="[LS:Sortby]" data-toggle="ms-dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span><em class="ms-glyphicon ms-glyphicon-chevron-down"></em></span>
+                    </button>
+                    <span class="pageitems">[LS:Pageitems]</span>
+                                }
+                </div>
+                        }
+            </div>
+        </div>
+        @Include("Common/Pager", Model.Products)
+        <div class="clear">
+        </div>
+    </div>
+        }
+        else
+        {
+    <div class="ms-alert ms-alert-warning">
+        <strong>[LS:Warning]</strong> [LS:StoreCurrencyNotFound]
+    </div>
+
+        }
+</div>
+}
+
+else
+{
+<h5 class="Productnoitfy">[LS:ThereIsNoProduct]</h5>
+}

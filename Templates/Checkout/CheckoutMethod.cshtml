@@ -1,0 +1,37 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+<div id="LSF_@Model.Store.StoreModuleID" class="LSF_@Model.Store.StoreModuleID lsf_aisoft @((((IDictionary<string, Object>)Model).ContainsKey("SelectListItem") == true) && Model.SelectListItem !=null && !string.IsNullOrEmpty(Model.SelectListItem.Text) ? Model.SelectListItem.Text : "")">
+    <div class="ms-row lsf_checkoutmethod">
+        <div class="ms-col-md-6">
+            <div class="login_Checkout">
+                <div class="shopping_cart">
+                    <h3>[L:RegisteredCustomers]</h3>
+                </div>
+                <div class="guestpage">
+                    <p>[L:RegisteredCustomersInfo]</p>
+                    <a href="@Model.Store.URL.Login" class="ms-btn proceedchkout">[L:LoginCheckout]</a>
+                </div>
+            </div>
+        </div>
+        <div class="ms-col-md-6">
+            <div class="guest_Checkout">
+                <div class="shopping_cart">
+                    <h3>[L:CheckoutMethod]</h3>
+                </div>
+                <div class="guestpage">
+                    <p>[L:CheckoutMethodInfo]</p>
+                    @if (Model.Store.Checkout.AnonymousCheckoutAllowed)
+                    {
+                        <a href="@Model.Store.URL.Checkout" class="ms-btn ms-btn-default">[L:CheckoutMethod]</a>
+                    }
+                    else
+                    {
+                        <a href="@Model.Store.URL.Login" class="ms-btn ms-btn-default">[L:LoginCheckout]</a>
+                    }
+                    @*<button class="ms-btn ms-btn-default">Guest Checkout</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

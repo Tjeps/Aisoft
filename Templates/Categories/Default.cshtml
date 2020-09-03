@@ -1,0 +1,115 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@inherits TemplateBase<dynamic>
+
+<div id="LSF_@Model.Store.StoreModuleID" class="LSF_@Model.Store.StoreModuleID lsf_aisoft">
+    <div class="ms-container categories_view_page">
+        <div class="product_view_page">
+            @if (Model.Store.Catalog.AllowViewModeChanging != false || Model.Store.PageSizeDropdown.Count > 0 || Model.Store.Catalog.AllowProductSorting != false)
+            {
+                <div class="ms-container product-style-row">
+                    <div class="ms-row">
+                        <div class="ms-col-md-12 product-sort">
+                            <div class="product-display-sortby display_inline">
+                                @if (Model.Store.Catalog.AllowProductSorting)
+                                {
+                                    string SelectedSortProduct = null;
+                                    <div class="ms-dropdown">
+                                        <ul class="ms-dropdown-menu">
+                                            @foreach (var ListItem in Model.Store.SortProduct)
+                                            {
+                                                <li class="@(ListItem.Selected ? "ms-active" : null)">
+                                                    <a href="@ListItem.Value" rel="ajaxload">[LS:@ListItem.Text]</a>
+                                                </li>
+                                                if (ListItem.Selected)
+                                                {
+                                                    SelectedSortProduct = ListItem.Text;
+                                                }
+                                            }
+                                        </ul>
+                                        @if (SelectedSortProduct != null)
+                                        {
+                                            <button type="button" class="ms-btn ms-btn-default ms-dropdown-toggle" title="[LS:Sortby]" data-toggle="ms-dropdown" aria-haspopup="true" aria-expanded="false">[LS:@SelectedSortProduct]</button>
+                                            <button type="button" class="ms-btn ms-btn-default SortIcon ms-dropdown-toggle" title="[LS:Sortby]" data-toggle="ms-dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span><em class="ms-glyphicon ms-glyphicon-sort-by-attributes"></em></span>
+                                            </button>
+                                        }
+                                    </div>
+
+                                    @*<select onchange="LSFTheme.sort_url(this.value)">
+                                            @foreach (var ListItem in Model.Store.SortProduct)
+                                            {
+                                                <option selected="@ListItem.Selected" value="@ListItem.Value">[L:@ListItem.Text]</option>
+                                            }
+                                        </select>*@
+                                }
+                            </div>
+                            <div class="page_view display_inline">
+                                <div class="product_view_icon">
+                                    @if (Model.Store.Current.HasEditPermission || (Model.Store.Current.Customer != null && Model.Store.Current.Customer.HasGranularPermissions))
+                                    {
+                                        <div class="manageIcon">
+                                            @*<img src="@Model.Store.Current.AppPath/Resources/Images/MandeepsLogo.png" />*@
+                                            <a class="manage ms-btn ms-btn-default" href="@Model.Store.URL.Manage" title="[LS:Manage]" data-toggle="ms-tooltip"><em class="fas fa-cog"></em><span> [LS:Administrator]</span></a>
+                                        </div>
+                                    }
+
+                                    @if (Model.Store.Catalog.AllowViewModeChanging)
+                                    {
+                                        if (Model.Store.Current.ViewMode == "grid")
+                                        {
+                                            <a class="ms-btn ms-btn-default ms-active" href="@(Model.Store.Current.Grid_URL)" rel="ajaxload" title="[LS:Grid]" data-toggle="ms-tooltip"><em class="ms-glyphicon ms-glyphicon-th"></em></a>
+                                            <a class="ms-btn ms-btn-default" href="@(Model.Store.Current.List_URL)" rel="ajaxload" title="[LS:List]" data-toggle="ms-tooltip"><em class="ms-glyphicon ms-glyphicon-list"></em></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="ms-btn ms-btn-default" href="@(Model.Store.Current.Grid_URL)" rel="ajaxload" title="[LS:Grid]" data-toggle="ms-tooltip"><em class="ms-glyphicon ms-glyphicon-th"></em></a>
+                                            <a class="ms-btn ms-btn-default ms-active" href="@(Model.Store.Current.List_URL)" rel="ajaxload" title="[LS:List]" data-toggle="ms-tooltip"><em class="ms-glyphicon ms-glyphicon-list"></em></a>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            }
+
+
+            @if (((IDictionary<string, Object>)Model).ContainsKey("Category") == true && Model.Category != null)
+            {
+                if (!string.IsNullOrEmpty(Model.Category.Name))
+                {
+                    if (!string.IsNullOrEmpty(Model.Category.Description) || (Model.Category.CategoryImage != null && Model.Category.CategoryImage.Count > 0))
+                    {
+                        <div class="banner-list">
+                            @if (!string.IsNullOrEmpty(Model.Category.Description))
+                            {
+                                <div class="ms-col-md-@((Model.Category.CategoryImage != null && Model.Category.CategoryImage.Count > 0) ? 8 : 12) banner-text">
+                                    <h1>
+                                        @Model.Category.Name
+                                    </h1>
+
+
+                                    <p>
+                                        @Model.Category.Description
+                                    </p>
+                                </div>
+                            }
+
+                            @if (Model.Category.CategoryImage != null && Model.Category.CategoryImage.Count > 0)
+                            {
+                                <div class="ms-col-md-@(!string.IsNullOrEmpty(Model.Category.Description)?4:12) banner-image" style="text-align:@(string.IsNullOrEmpty(Model.Category.Description)?"left":"")">
+                                    <img src="@Model.Category.CategoryImage[0].ImageUrl" class="ms-img-responsive ms-img-thumbnail product_item_image" alt="@(Model.Category.CategoryImage[0].Alt)" title="@(Model.Category.CategoryImage[0].Title)" />
+                                </div>
+                            }
+                            <div style="clear: both;"></div>
+                        </div>
+                    }
+                }
+            }
+
+            @Include("Common/productlist", @Model)
+        </div>
+    </div>
+</div>

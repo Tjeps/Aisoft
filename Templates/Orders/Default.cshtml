@@ -1,0 +1,488 @@
+﻿@using RazorEngine.Templating
+@using Mandeeps.LSF.Data.Entities
+@using Mandeeps.LSF.Entities.Products
+@using Mandeeps.LSF.Entities.Payment;
+@using Mandeeps.LSF.Entities.Extensions.Payment;
+@inherits TemplateBase<dynamic>
+<div id="LSF_@Model.Store.StoreModuleID" class="LSF_@Model.Store.StoreModuleID lsf_aisoft">
+    <div class="order_detail">
+        <div class="ms-container">
+            <div class="order-info" id="invoiceprint">
+                <div class="shopping_cart">
+                    <h2>[LS:OrderNumbers] [LS:Hash]@Model.Order.OrderID</h2>
+                </div>
+                <div class="tablecart">
+                    <div class="ms-col-md-12">
+                        <div class="ms-alert" id="msgAlert" style="display:none"></div>
+                    </div>
+                    <div class="invoice_btn">
+                        <a class="ms-btn shop_btn" onclick="Order.PrintContent()"><em class="fa fa-print"></em> [L:Print]</a>
+
+                        @if (Model.Order.IsDownloadable && Model.Order.OrderStatus != "Pending" && Model.Order.PaymentStatus != "Pending")
+                        {
+                        <a href="@Model.Store.URL.MyAccount?#download" class="ms-btn pdf_invoice_btn"><em class="fa fa-download"></em> [L:Download]</a>
+                        }
+
+                        @if (Model.Order.PaymentStatusID == (int)PaymentStatus.Pending && Model.Order.PaymentExtensionMethod != null && Model.Order.PaymentExtensionMethod.PaymentProcessorType == PaymentProcessorTypes.Redirect)
+                        {
+                            //Show the Retry Payment or Pay Order Payment Button When PaymentExtension is Paypal ExpressCheckout and PaymentProcessorType == PaymentProcessorTypes.Redirect
+                            if (Model.Order.PaymentExtension.ToLower() == "7f0b014c-99cb-41ee-886f-debf4a06ed0c")
+                            {
+                        <a class="ms-btn print_btn payment_btn" onclick="Order.Payment(@Model.Store.StoreModuleID,'@Model.Order.OrderGUID')">
+                            [L:Payment]
+                        </a>
+                            }
+                        }
+
+                    </div>
+                    @Include("Common/Order", Model)
+                </div>
+                <style>
+                    @@media print {
+                        body * {
+                            display: none;
+                        }
+
+                        body {
+                            margin-left: 0 !important;
+                        }
+
+                        a[href]:after {
+                            content: none !important;
+                        }
+
+                        #PrintInvoice, #PrintInvoice * {
+                            display: block !important;
+                        }
+
+                        ul {
+                            list-style: none;
+                            padding: 10px;
+                        }
+
+                        #PrintInvoice table {
+                            display: table !important;
+                            width: 100%;
+                            margin-bottom: 10px;
+                        }
+
+                        #PrintInvoice tbody {
+                            display: table-row-group !important;
+                        }
+
+                        #PrintInvoice thead {
+                            display: table-header-group !important;
+                        }
+
+                        #PrintInvoice tr {
+                            display: table-row !important;
+                        }
+
+                        #PrintInvoice td, #PrintInvoice th {
+                            width: auto !important;
+                            display: table-cell !important;
+                        }
+
+                        #PrintInvoice .tophr {
+                            display: none !important;
+                        }
+
+                        #PrintInvoice .Infostore {
+                            margin-top: 10px;
+                        }
+
+
+                        .order_table td p {
+                            margin-bottom: 0;
+                        }
+
+                        .table_detail {
+                            margin-top: 10px;
+                        }
+
+                        .order_table {
+                            border: 1px solid #ddd;
+                            width: 100%;
+                        }
+
+                        .invoice_btn,
+                        .shopping_cart {
+                            display: none;
+                        }
+
+                        .ms-row {
+                            display: -webkit-box;
+                        }
+
+                        .ms-col-md-12 {
+                            width: 100%;
+                        }
+
+                        .ms-col-md-6 {
+                            width: 50%;
+                        }
+
+                        .ms-col-md-8 {
+                            width: 66.66666667%;
+                        }
+
+                        .ms-col-md-4 {
+                            width: 33.33333333%;
+                        }
+
+                        li {
+                            list-style: none;
+                        }
+
+                        .invoice_btn {
+                            text-align: center;
+                        }
+
+                        ul.order_info {
+                            text-align: center;
+                        }
+
+
+                        .invoice_title h2, .invoice_title h3 {
+                            display: inline-block;
+                        }
+
+                        .order_information {
+                            margin: 0;
+                        }
+
+                        .StoreLogo span {
+                            display: block;
+                            font-size: 14px;
+                        }
+
+                            .StoreLogo span.uppercase {
+                                margin-top: 0px;
+                            }
+
+                        .uppercase {
+                            text-transform: uppercase;
+                        }
+
+                        .cart_box_info h2 {
+                            padding-bottom: 10px;
+                            border-bottom: 1px solid #ddd;
+                            margin-bottom: 10px;
+                            text-align: left;
+                            color: #808080;
+                            margin: 0;
+                            font-size: 16px;
+                            text-transform: uppercase;
+                            font-weight: bold;
+                            letter-spacing: 0;
+                            -webkit-print-color-adjust: exact !important;
+                            color-adjust: exact !important;
+                        }
+
+                        .order_table th {
+                            background-color: rgb(246, 246, 246);
+                            white-space: nowrap;
+                            font-weight: normal;
+                            border-width: 1px 1px 0px;
+                            border-style: solid;
+                            border-color: rgb(221, 221, 221);
+                            padding: 10px;
+                            -webkit-print-color-adjust: exact !important;
+                            color-adjust: exact !important;
+                        }
+
+                        .order_table td {
+                            min-width: 50px;
+                            border-width: 1px;
+                            border-style: solid;
+                            border-color: transparent #ddd #ddd;
+                            background-color: #fff;
+                            padding: 10px;
+                            color: #444;
+                            text-align: left;
+                            -webkit-print-color-adjust: exact !important;
+                            color-adjust: exact !important;
+                        }
+
+
+                        .StoreLogo {
+                            text-align: left;
+                        }
+
+                        #logo {
+                            margin-bottom: 20px;
+                            height: 70px;
+                        }
+
+                        .invoicetitle {
+                            margin: 0;
+                        }
+
+
+                        .ms-col-md-4.order_info.StoreDetail {
+                            text-align: right;
+                            font-size: 20px;
+                        }
+
+                        .paymentdisplayname {
+                            font-weight: bold;
+                        }
+
+
+                        .invoice_title {
+                            font-size: 25px;
+                            margin-bottom: 15px;
+                        }
+
+                        .order_information h3 {
+                            margin: 0;
+                            font-size: 20px;
+                        }
+
+
+                        .orderdate {
+                            font-size: 12px;
+                            color: #757575;
+                        }
+
+
+                        .invoice_title {
+                            font-size: 25px;
+                            margin-top: 15px;
+                        }
+
+                        .addressdetail {
+                            font-size: 16px;
+                            margin-bottom: 20px;
+                        }
+
+                        .table_detail {
+                            margin-top: 10px;
+                        }
+
+                        .Paymentmethod {
+                            margin-top: 15px;
+                        }
+
+                        .StoreDetail span {
+                            display: block;
+                        }
+
+                        .StoreName {
+                            font-size: 25px;
+                        }
+
+                        .storeInfo {
+                            white-space: pre-line;
+                            font-size: 14px;
+                            display: block;
+                            color: #808080;
+                        }
+
+                        .tvalue {
+                            text-align: right;
+                        }
+
+                        .order_table {
+                            border: 1px solid #ddd;
+                        }
+
+                            .order_table td .skudetail {
+                                font-size: 10px;
+                                margin: 0;
+                            }
+
+                            .order_table td.productspecs p {
+                                font-size: 12px;
+                                line-height: 16px;
+                            }
+
+                            .order_table td .skudetail {
+                                display: inline-block !important;
+                            }
+
+                        .ordertitle {
+                            text-transform: uppercase;
+                            padding: 0;
+                            margin-bottom: 5px !important;
+                        }
+
+                        .order_table th {
+                            border-width: 1px 1px 0;
+                            border-style: solid;
+                            border-color: #ddd;
+                            background-color: #f6f6f6;
+                            padding: 10px;
+                            white-space: nowrap;
+                            font-weight: normal;
+                            -webkit-print-color-adjust: exact !important;
+                            color-adjust: exact !important;
+                        }
+
+                        .order_table td {
+                            min-width: 50px;
+                            border-width: 1px;
+                            border-style: solid;
+                            border-color: transparent #ddd #ddd;
+                            background-color: #fff;
+                            padding: 10px;
+                            color: #494949;
+                            text-align: left;
+                            -webkit-print-color-adjust: exact !important;
+                            color-adjust: exact !important;
+                        }
+
+                        .cart_box_info {
+                            text-align: left;
+                            margin-top: 10px;
+                        }
+
+                        .summarytitle {
+                            color: #808080 !important;
+                            margin: 0;
+                            font-size: 16px !important;
+                            text-transform: uppercase;
+                            font-weight: bold;
+                            letter-spacing: 1px;
+                            padding-bottom: 10px;
+                            border-bottom: 1px solid #ddd;
+                            margin-bottom: 10px;
+                        }
+
+                        .cart_box_info .cart-totals tr {
+                            font-size: 16px;
+                            border-bottom: 1px solid #eee;
+                            color: #494949;
+                            -webkit-print-color-adjust: exact !important;
+                            color-adjust: exact !important;
+                        }
+
+                            .cart_box_info .cart-totals tr:last-child {
+                                border-bottom: 0;
+                            }
+
+                            .cart_box_info .cart-totals tr td {
+                                padding: 6px 0;
+                            }
+
+                        .transaction {
+                            word-break: break-word !important;
+                        }
+
+
+                        .order-info .cart_box_info h2 {
+                            padding-bottom: 10px;
+                            border-bottom: 1px solid #ddd;
+                            margin-bottom: 10px;
+                        }
+
+                        .Paymentmethod {
+                            margin-top: 15px;
+                        }
+
+                        .billing_detail_info,
+                        .shipping_detail_info {
+                            background-color: #f9f9f9 !important;
+                            max-width: 100%;
+                            color: #757575 !important;
+                            font-size: 16px;
+                            font-weight: normal;
+                            min-height: 218px;
+                            -webkit-print-color-adjust: exact !important;
+                            color-adjust: exact !important;
+                        }
+
+                            .billing_detail_info .title,
+                            .shipping_detail_info .title {
+                                border-top-left-radius: 4px;
+                                border-top-right-radius: 4px;
+                                background: #808080 !important;
+                                color: white !important;
+                                padding: 5px 10px;
+                                -webkit-print-color-adjust: exact;
+                                color-adjust: exact;
+                            }
+
+                        .vat_msg .title {
+                            padding: 7px;
+                            margin-bottom: 20px;
+                            border: 1px solid transparent;
+                            border-radius: 4px;
+                            color: #777 !important;
+                            background-color: #000 !important;
+                            color-adjust: exact !important;
+                        }
+
+                        .methodBox {
+                            min-height: 122px !important;
+                        }
+
+                        .tophr {
+                            display: none;
+                        }
+
+
+                        .order_table th:first-child,
+                        .order_table td:first-child {
+                            min-width: 220px;
+                        }
+
+                        .StoreDetail {
+                            text-align: right;
+                            font-size: 20px;
+                        }
+
+                        .StoreName {
+                            font-size: 25px;
+                        }
+
+                        .storeInfo {
+                            font-size: 16px;
+                            display: block;
+                        }
+
+
+                        ul.billing-info,
+                        ul.shipping-info {
+                            list-style: none;
+                            text-align: left;
+                            padding: 10px;
+                            margin-left: 0;
+                            color: #757575 !important;
+                            -webkit-print-color-adjust: exact;
+                            color-adjust: exact;
+                        }
+
+                            ul.billing-info li.title,
+                            ul.shipping-info li.title {
+                                font-size: 16px;
+                                font-weight: 600;
+                            }
+
+                        .invoicedetail {
+                            text-align: right;
+                            display: block;
+                            font-size: 14px;
+                        }
+
+
+                        .order_information .ordertitle .barcodeDiv {
+                            width: 100% !important;
+                        }
+
+                            .order_information .ordertitle .barcodeDiv > object {
+                                float: right;
+                                margin-bottom: 10px;
+                                overflow: visible !important;
+                            }
+
+                        @@page {
+                            size: auto;
+                            margin: 0mm 5mm;
+                        }
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+</div>
